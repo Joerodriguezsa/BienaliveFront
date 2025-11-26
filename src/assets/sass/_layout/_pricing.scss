@@ -1,0 +1,242 @@
+// Pricing area start here ***
+.pricing-section {
+	overflow: hidden;
+	padding: 0 50px;
+	@include breakpoint(max-lg) {
+		padding: 0px 15px;
+	}
+
+	.image-column {
+		.inner-column {
+			border-radius: 30px;
+			overflow: hidden;
+			height: 100%;
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+
+	.content-column {
+		.inner-column {
+			background-color: var(--theme-color1);
+			padding: 120px 100px;
+			border-radius: 30px;
+			position: relative;
+			z-index: 1;
+			@include breakpoint(max-xxxl) {
+				padding: 60px;
+			}
+			@include breakpoint(max-lg) {
+				padding: 60px 30px;
+			}
+			.outer-shape {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: -1;
+				@include breakpoint(max-lg) {
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+.pricing-block {
+	.inner-box {
+		position: relative;
+		z-index: 1;
+		padding: 60px;
+		padding-bottom: 35px;
+		border-radius: 30px;
+		overflow: hidden;
+		border: 1px solid var(--theme-color-white);
+		background-color: var(--theme-color-white);
+		@include breakpoint(max-xxxl) {
+			padding: 30px;
+		}
+
+		.shape {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 1;
+		}
+		.price {
+			margin-bottom: 20px;
+			border-bottom: 1px solid #ffffff4d;
+			padding-bottom: 20px;
+			span {
+				font-size: 22px;
+				font-weight: 500;
+			}
+		}
+		ul {
+			li {
+				color: var(--headings-color);
+				margin-top: 10px;
+			}
+		}
+		&.transparent {
+			background-color: transparent;
+			.price {
+				color: var(--theme-color-white);
+			}
+			h6 {
+				color: var(--theme-color-white);
+			}
+			ul {
+				li {
+					color: var(--theme-color-white);
+				}
+			}
+		}
+	}
+}
+// Pricing area end here ***
+
+// Pricing three area start here ***
+.pricing-section-three {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+
+	.shape1 {
+		position: absolute;
+		top: 60px;
+		left: 0;
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+
+	.shape2 {
+		position: absolute;
+		bottom: 0px;
+		right: 10px;
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+
+	.outer-box {
+		&:hover {
+			.image-column {
+				.image-box {
+					img {
+						transform: scale(1.1);
+					}
+				}
+			}
+		}
+	}
+
+	.image-column {
+		.image-box {
+			overflow: hidden;
+			border-radius: 30px;
+			img {
+				width: 100%;
+				transition: 1s;
+			}
+		}
+	}
+}
+// Pricing three area end here ***
+
+// Pricing five area start here ***
+.pricing-section-five {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	&::after {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #00000099;
+		z-index: -1;
+		content: "";
+	}
+}
+.pricing-block-five {
+	.inner-box {
+		position: relative;
+		z-index: 1;
+		padding: 60px;
+		padding-bottom: 35px;
+		border-radius: 30px;
+		overflow: hidden;
+		text-align: center;
+		background-color: var(--theme-color-white);
+
+		@include breakpoint(max-xxxl) {
+			padding: 30px;
+		}
+
+		.shape {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 1;
+		}
+
+		.icon {
+			width: 100px;
+			height: 100px;
+			line-height: 100px;
+			text-align: center;
+			background-color: var(--theme-color-gray);
+			border-radius: 50%;
+			margin: 0 auto;
+			margin-bottom: 10px;
+			svg {
+				transition: 0.9s;
+			}
+		}
+		.price {
+			margin: 10px 0;
+			span {
+				font-size: 22px;
+				font-weight: 500;
+			}
+		}
+		ul {
+			li {
+				color: var(--headings-color);
+				margin-top: 10px;
+			}
+		}
+		&:hover {
+			.icon {
+				svg {
+					transform: rotateY(360deg);
+				}
+			}
+		}
+		&.active {
+			background-color: var(--theme-color1);
+			.icon {
+				background-color: var(--theme-color-white);
+			}
+			.price {
+				color: var(--theme-color-white);
+			}
+			ul {
+				li {
+					color: var(--theme-color-white);
+				}
+			}
+		}
+	}
+}
+// Pricing five area end here ***

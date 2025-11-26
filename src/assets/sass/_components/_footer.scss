@@ -1,0 +1,159 @@
+// Footer area start here ***
+.footer {
+	&-area {
+		@include section;
+		background-color: var(--theme-color2);
+		padding: 60px 0;
+	}
+	&__shape {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+	&__head {
+		border-bottom: 1px solid rgba(var(--theme-color-white-rgb), 0.1);
+		padding-bottom: 30px;
+		margin-bottom: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	&__item {
+		height: 100%;
+		.title,
+		.text,
+		li,
+		a {
+			color: var(--theme-color-white);
+		}
+		.footer-about {
+			max-width: 330px;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			height: 100%;
+			justify-content: space-between;
+		}
+		.title {
+			margin-bottom: 30px;
+		}
+		ul {
+			li {
+				&:not(:last-child) {
+					margin-bottom: 12px;
+				}
+				a {
+					&:hover {
+						letter-spacing: 1px;
+						color: var(--theme-color1);
+					}
+				}
+			}
+			&.time-table {
+				li {
+					@include justify-wrp;
+				}
+			}
+		}
+		.socials {
+			margin-top: 15px;
+			@include flex;
+			gap: 20px;
+			a {
+				font-size: 24px;
+				i,
+				svg {
+					transition: 0.9s;
+				}
+				&:hover {
+					color: var(--theme-color1);
+					i,
+					svg {
+						transform: rotateY(360deg);
+					}
+				}
+			}
+		}
+		.copyright-text {
+			color: var(--theme-color-white);
+			a {
+				color: var(--theme-color1);
+				&:hover {
+					letter-spacing: 1px;
+				}
+			}
+		}
+	}
+}
+// Footer area end here ***
+
+// Footer two area start here ***
+.footer-two {
+	&-area {
+		@extend .footer-area;
+		padding-top: 30px;
+		&.bg-image {
+			&::before {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(var(--theme-color2-rgb), 0.85);
+				z-index: -1;
+			}
+		}
+	}
+	&__head {
+		@extend .footer__head;
+		gap: 20px;
+		justify-content: space-between;
+		@include breakpoint(max-sm) {
+			flex-wrap: wrap;
+		}
+
+		.title {
+			color: var(--theme-color-white);
+		}
+		.newsletter {
+			@include flex-wrp;
+			justify-content: end;
+			gap: 25px;
+			width: 100%;
+			.input {
+				max-width: 395px;
+				width: 100%;
+				position: relative;
+				z-index: 1;
+				input {
+					width: 100%;
+					padding: 15px 30px;
+					border-radius: 30px;
+					background-color: #222122;
+					border: 1px solid rgba(var(--theme-color-white-rgb), 0.1);
+					color: var(--theme-color-white);
+					&:focus {
+						border: 1px solid var(--theme-color1);
+					}
+				}
+				button {
+					top: 5px;
+					right: 5px;
+					position: absolute;
+					@include radius(50px, 50px, 50px);
+					background-color: var(--theme-color1);
+				}
+			}
+			@include breakpoint(max-sm) {
+				justify-content: start;
+			}
+		}
+	}
+}
+// Footer two area end here ***

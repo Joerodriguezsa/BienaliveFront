@@ -1,0 +1,148 @@
+// Feature area start here ***
+.feature-section {
+	overflow: hidden;
+}
+
+.feature-block {
+	.inner-box {
+		padding: 20px;
+		background-color: var(--theme-color-gray);
+		border-radius: 30px;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		gap: 40px;
+
+		.image-box {
+			max-width: 233px;
+			border-radius: 30px;
+			overflow: hidden;
+			img {
+				transition: 0.5s;
+			}
+		}
+
+		.content-box {
+			display: flex;
+			flex-direction: column;
+			gap: 80px;
+			justify-content: space-between;
+			height: 100%;
+			.icon{
+				font-size: 80px;
+				color: var(--theme-color1);
+			}
+			.sub-title {
+				color: var(--theme-color1);
+			}
+			.text {
+				padding-top: 10px;
+				margin-top: 15px;
+				border-top: 1px solid #dfdada;
+			}
+			a {
+				&:hover {
+					color: var(--theme-color1);
+				}
+			}
+			@include breakpoint(max-xl) {
+				gap: 20px;
+			}
+		}
+
+		&:hover {
+			.image {
+				img {
+					transform: scale(1.1);
+				}
+			}
+			.icon {
+				svg {
+					animation: iconBounceIn 1s forwards;
+				}
+			}
+		}
+		@include breakpoint(max-xxs) {
+			padding: 10px;
+			gap: 20px;
+			.icon {
+				svg {
+					width: 40px;
+					height: 40px;
+				}
+			}
+		}
+	}
+}
+
+.feature-arrys {
+	border-top: 1px solid rgba(var(--theme-color-black-rgb), 0.1);
+	@include flex;
+	gap: 5px;
+	justify-content: center;
+	button {
+		@include radius(30px, 30px, 26px);
+		background-color: #f9f6f1;
+		color: var(--theme-color2);
+		font-size: 15px;
+		transition: all 0.3s;
+		border-radius: 0;
+		&:hover {
+			background-color: var(--theme-color1);
+			color: var(--theme-color-white);
+		}
+	}
+	.wrp {
+		margin-top: -17px;
+		background-color: var(--theme-color-white);
+		padding: 0 15px;
+	}
+}
+// Feature area end here ***
+
+// Feature six area start here ***
+.feature-section-six {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+	.shape {
+		position: absolute;
+		top: 0;
+		left: -60px;
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+}
+
+.feature-block-six {
+	.inner-box {
+		display: flex;
+		align-items: center;
+		gap: 25px;
+		.title {
+			margin-bottom: 10px;
+		}
+		.icon-box {
+			display: inline-block;
+			position: relative;
+			z-index: 1;
+			.icon-bg {
+				fill: var(--theme-color-gray);
+			}
+			.icon {
+				@include center;
+				transition: 0.9s;
+			}
+		}
+		&:hover {
+			.icon-box {
+				.icon {
+					transform: translate(-50%, -50%) rotateY(360deg);
+				}
+			}
+		}
+	}
+}
+// Feature six area end here ***

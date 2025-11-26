@@ -1,0 +1,151 @@
+// Blog area start here ***
+.blog-section {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+	.shape {
+		position: absolute;
+		top: 0;
+		left: -230px;
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+}
+
+.blog-block {
+	.inner-box {
+		overflow: hidden;
+		border-radius: 30px;
+		.image-box {
+			.image {
+				overflow: hidden;
+				img {
+					transition: 0.5s;
+				}
+			}
+		}
+		.content-box {
+			padding: 40px;
+			background-color: var(--theme-color-gray);
+			.info {
+				font-weight: 400;
+				@include flex;
+				gap: 30px;
+				.dot {
+					color: var(--theme-color1);
+					position: relative;
+					&::before {
+						position: absolute;
+						top: 15px;
+						left: -15px;
+						width: 3px;
+						height: 3px;
+						border-radius: 50%;
+						background-color: var(--theme-color1);
+						content: "";
+					}
+				}
+			}
+			.title {
+				margin: 20px 0;
+				a {
+					&:hover {
+						color: var(--theme-color1);
+						text-decoration: underline;
+					}
+				}
+			}
+			.readMore-btn {
+				color: var(--headings-color);
+				&:hover {
+					letter-spacing: 2px;
+				}
+			}
+		}
+		&:hover {
+			.image {
+				img {
+					transform: scale(1.1);
+				}
+			}
+		}
+	}
+}
+
+// Blog area end here ***
+
+// Blog two area start here ***
+.blog-section {
+	overflow: hidden;
+}
+
+.blog-block-two {
+	.inner-box {
+		overflow: hidden;
+		border-radius: 30px;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		.image {
+			overflow: hidden;
+			img {
+				transition: 0.5s;
+			}
+		}
+		.content {
+			padding-top: 40px;
+			.info {
+				font-weight: 400;
+				@include flex;
+				gap: 30px;
+				.dot {
+					color: var(--theme-color1);
+					position: relative;
+					&::before {
+						position: absolute;
+						top: 15px;
+						left: -15px;
+						width: 3px;
+						height: 3px;
+						border-radius: 50%;
+						background-color: var(--theme-color1);
+						content: "";
+					}
+				}
+			}
+			.title {
+				margin: 20px 0;
+			}
+			.readMore-btn {
+				color: var(--headings-color);
+				margin-top: 15px;
+				opacity: 0;
+				visibility: hidden;
+				transform: translateY(-8px);
+				&:hover {
+					letter-spacing: 1px;
+					color: var(--theme-color1);
+				}
+			}
+		}
+		&:hover {
+			.image {
+				img {
+					transform: scale(1.1);
+				}
+			}
+			.title {
+				a {
+					color: var(--theme-color1);
+				}
+			}
+			.readMore-btn {
+				transform: translateY(0px);
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+	}
+}
+// Blog two area end here ***

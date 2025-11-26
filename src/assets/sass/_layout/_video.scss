@@ -1,0 +1,113 @@
+// Video area start here ***
+.video-section {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+
+	.shape {
+		position: absolute;
+		top: 20px;
+		left: 30px;
+		z-index: -1;
+	}
+
+	.image-column {
+		.inner-column {
+			img {
+				width: 100%;
+				border-radius: 30px;
+			}
+		}
+	}
+
+	.video-column {
+		.inner-box {
+			.image {
+				position: relative;
+				z-index: 1;
+				border-radius: 30px;
+				overflow: hidden;
+				.btn-video {
+					@include center;
+					a {
+						@include radius(80px, 80px, 70px);
+						background-color: transparent;
+					}
+				}
+
+				@include breakpoint(max-md) {
+					img {
+						width: 100%;
+						height: auto;
+						aspect-ratio: 1.5/1;
+						object-fit: cover;
+					}
+				}
+			}
+			.list {
+				max-width: 600px;
+				@include justify-wrp;
+				gap: 20px;
+				ul {
+					@include flex;
+					gap: 30px;
+					.icon {
+						font-size: 60px;
+						color: var(--theme-color1);
+						transition: 0.9s;
+					}
+					&:hover {
+						.icon {
+							transform: rotateY(360deg);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// Video area end here ***
+
+// Video three area start here ***
+.video-section-three {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+
+	.image-box {
+		position: relative;
+		z-index: 1;
+		img {
+			width: 100%;
+		}
+		.btn-video {
+			@include center;
+			&.video-pulse {
+				&::before {
+					border-color: var(--theme-color1);
+					opacity: 0.5;
+				}
+				&::after {
+					border-color: var(--theme-color1);
+					opacity: 0.5;
+				}
+			}
+			a {
+				background-color: var(--theme-color1);
+			}
+		}
+	}
+}
+// Video three area end here ***
+
+// Video five area start here ***
+.video-five {
+	&-area {
+		@include section;
+		@include breakpoint(max-md) {
+			padding: 0 15px;
+		}
+	}
+}
+// Video five area end here ***

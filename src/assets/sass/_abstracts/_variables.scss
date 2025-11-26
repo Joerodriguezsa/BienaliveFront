@@ -1,0 +1,58 @@
+:root {
+	//Default colors
+	--theme-color-light: #ffffff;
+	--theme-color-white: #ffffff;
+	--theme-color-white-rgb: 255, 255, 255;
+	--theme-color-dark: #1c1a1d;
+	--theme-color-dark2: #222222;
+	--theme-color-gray: #f5f2ec;
+	--theme-color-gray2: #fdf6f2;
+	--theme-color-black: #000000;
+	--theme-color-black-rgb: 0, 0, 0;
+	--theme-light-background: #f8f6f1;
+
+	//theme colors
+	--theme-color1: #e7a391;
+	--theme-color1-rgb: 231, 163, 145;
+	--theme-color2: #1c1a1d;
+	--theme-color2-rgb: 28, 26, 29;
+
+	--bg-theme-color1: var(--theme-color1);
+	--bg-theme-color2: var(--theme-color2);
+
+	//text heading color
+	--text-color: #707070;
+	--text-color2: #c4c4c4;
+	--headings-color: #1c1a1d;
+	--review-color: #ffc737;
+	--link-color: var(--headings-color);
+	--link-hover-color: var(--headings-color);
+
+	//font family
+	--title-font: "Literata", serif;
+	--text-font: "Mulish", serif;
+
+	//body
+	--body-font-size: 16px;
+	--body-line-height: 1.75;
+	--body-font-weight: 400;
+
+	//heading font size + weight
+	--line-height-heading-h1: 1.2em;
+	--line-height-heading: 1.2;
+	--line-height-heading-small: 1.35em;
+
+	--h1-font-size: 72px;
+	--h2-font-size: 50px;
+	--h3-font-size: 36px;
+	--h4-font-size: 24px;
+	--h5-font-size: 22px;
+	--h6-font-size: 20px;
+
+	--h1-font-weight: 400;
+	--h2-font-weight: 400;
+	--h3-font-weight: 400;
+	--h4-font-weight: 400;
+	--h5-font-weight: 400;
+	--h6-font-weight: 400;
+}

@@ -1,0 +1,109 @@
+// Step area start here ***
+.step-section {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+	.shape1 {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+	.shape2 {
+		position: absolute;
+		top: 130px;
+		right: 0;
+		z-index: -1;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+	.outer-box {
+		position: relative;
+		z-index: 1;
+
+		.step-line {
+			position: absolute;
+			top: 50px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: -1;
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+	}
+}
+.step-block {
+	.inner-box {
+		text-align: center;
+		max-width: 380px;
+		margin: 0 auto;
+		.icon-box {
+			display: inline-block;
+			position: relative;
+			z-index: 1;
+			.icon {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				transition: 0.9s;
+				path {
+					transition: all 0.3s;
+				}
+			}
+			.icon-bg {
+				path {
+					transition: all 0.3s;
+				}
+			}
+			.number {
+				width: 35px;
+				height: 35px;
+				line-height: 35px;
+				border-radius: 50%;
+				color: var(--theme-color-white);
+				font-weight: 500;
+				background-color: var(--theme-color1);
+				position: absolute;
+				top: -20px;
+				left: 50%;
+				transform: translateX(-50%);
+				transition: all 0.3s;
+			}
+		}
+		.title {
+			margin-top: 40px;
+			margin-bottom: 15px;
+			text-transform: capitalize;
+			a {
+				&:hover {
+					color: var(--theme-color1);
+				}
+			}
+		}
+		&.active {
+			.icon-box {
+				.icon{
+					transform: translate(-50%, -50%) rotateY(360deg);
+					path{
+						fill: var(--theme-color-white);
+					}
+				}
+				.number {
+					background-color: var(--theme-color2);
+				}
+				.icon-bg {
+					path {
+						fill: var(--theme-color1);
+					}
+				}
+			}
+		}
+	}
+}
+// Step area end here ***

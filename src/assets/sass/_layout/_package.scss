@@ -1,0 +1,178 @@
+// Pricing area start here ***
+.package-section {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+
+	.shape1 {
+		top: 80px;
+		left: 0;
+		z-index: -1;
+		position: absolute;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+
+	.shape2 {
+		bottom: 20px;
+		right: 0;
+		z-index: -1;
+		position: absolute;
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+}
+
+.package-tab {
+	ul.nav.nav-tabs {
+		@include flex-wrp;
+		gap: 50px;
+		justify-content: center;
+		border: none;
+		li.nav-item {
+			a.nav-link {
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				text-align: center;
+				.icon-box {
+					position: relative;
+					z-index: 1;
+					.icon-bg {
+						path {
+							transition: all 0.3s;
+						}
+					}
+					.icon {
+						@include center;
+						font-size: 36px;
+						color: var(--theme-color1);
+						path {
+							transition: all 0.3s;
+						}
+					}
+				}
+				.title {
+					margin-top: 5px;
+				}
+				&:hover {
+					.icon-box {
+						.icon-bg {
+							path {
+								fill: var(--theme-color1);
+							}
+						}
+						.icon {
+							color: var(--theme-color-white);
+							path {
+								fill: var(--theme-color-white);
+							}
+						}
+					}
+				}
+				&.active {
+					.icon-box {
+						.icon-bg {
+							path {
+								fill: var(--theme-color1);
+							}
+						}
+						.icon {
+							path {
+								fill: var(--theme-color-white);
+							}
+						}
+					}
+				}
+			}
+		}
+		@include breakpoint(max-lg) {
+			gap: 20px;
+		}
+		@include breakpoint(max-md) {
+			li.nav-item {
+				a.nav-link {
+					.icon-bg {
+						width: 50px;
+						height: 50px;
+					}
+					.icon {
+						width: 30px;
+						height: 30px;
+					}
+				}
+			}
+		}
+		@include breakpoint(max-xs) {
+			gap: 10px;
+			li.nav-item {
+				a.nav-link {
+					.icon-bg {
+						width: 30px;
+						height: 30px;
+					}
+					.icon {
+						width: 18px;
+						height: 18px;
+					}
+					.title {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+	}
+}
+
+.package-block {
+	.inner-box {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		.image {
+			width: 76px;
+			border-radius: 8px;
+			overflow: hidden;
+			img {
+				transition: 0.5s;
+			}
+		}
+		.content {
+			width: 100%;
+			.title {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				margin-bottom: 5px;
+				a {
+					font-size: 22px;
+					white-space: nowrap;
+					&:hover {
+						color: var(--theme-color1);
+					}
+				}
+				span {
+					font-size: 16px;
+					color: var(--text-color);
+					font-weight: 400;
+				}
+				.line {
+					width: 100%;
+					height: 1px;
+					background-color: #e2e2e2;
+				}
+			}
+		}
+		&:hover {
+			.image {
+				img {
+					transform: scale(1.3);
+				}
+			}
+		}
+	}
+}
+
+// Pricing area end here ***

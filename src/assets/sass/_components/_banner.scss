@@ -1,0 +1,708 @@
+// Banner area start here ***
+.banner {
+	&-area {
+		overflow: hidden;
+		position: relative;
+		z-index: 1;
+		border-radius: 50px;
+		margin: 0 50px;
+		&::before {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			content: "";
+			background: linear-gradient(
+				180deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(28, 26, 29, 0.7) 100%
+			);
+			z-index: 0;
+		}
+		@include breakpoint(max-md) {
+			margin: 0 15px;
+		}
+	}
+	&__video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+	}
+	&__content {
+		padding-top: 430px;
+		padding-left: 100px;
+		padding-right: 30px;
+		padding-bottom: 100px;
+		position: relative;
+		z-index: 1;
+
+		@include breakpoint(max-lg) {
+			padding-top: 200px;
+			padding-bottom: 80px;
+			padding-left: 30px;
+		}
+
+		@include breakpoint(max-md) {
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+
+		.sub-title {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: var(--text-font);
+			color: var(--theme-color-white);
+			@include flex;
+			gap: 10px;
+		}
+		.title {
+			color: var(--theme-color-white);
+			font-weight: 300;
+			span {
+				font-weight: 500;
+				display: block;
+			}
+		}
+		.text {
+			color: var(--theme-color-white);
+			font-size: 18px;
+			line-height: 36px;
+			margin-top: 25px;
+			max-width: 630px;
+		}
+		.arry-btn {
+			margin-top: 50px;
+			font-size: 48px;
+			color: var(--theme-color-white);
+			&:hover {
+				transform: rotate(45deg);
+			}
+			@include breakpoint(max-sm) {
+				margin-top: 20px;
+			}
+		}
+	}
+}
+// Banner area end here ***
+
+// Banner two area start here ***
+.banner-two {
+	&-area {
+		overflow: hidden;
+		position: relative;
+		z-index: 1;
+		&::after {
+			z-index: 1;
+		}
+		.swiper-pagination-bullets {
+			position: absolute;
+			top: 50%;
+			left: unset !important;
+			right: 12%;
+			transform: translateY(-50%);
+			z-index: 2;
+			width: 20px !important;
+			text-align: center;
+			height: 85px;
+			.swiper-pagination-bullet {
+				width: 15px;
+				height: 15px;
+				opacity: 1;
+				background-color: var(--theme-color-white);
+				margin: 0 !important;
+				transition: all 0.3s;
+				&-active {
+					width: 10px;
+					height: 10px;
+					background-color: var(--theme-color1);
+				}
+			}
+			@include breakpoint(max-sm) {
+				display: none;
+			}
+		}
+	}
+	&__shape {
+		position: absolute;
+		top: 80px;
+		left: 65px;
+		z-index: 2;
+		img {
+			-webkit-animation-name: floatBob;
+			animation-name: floatBob;
+			-webkit-animation-duration: 5s;
+			animation-duration: 5s;
+			-webkit-animation-iteration-count: infinite;
+			animation-iteration-count: infinite;
+			-webkit-animation-timing-function: ease-in-out;
+			animation-timing-function: ease-in-out;
+		}
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+	&__content {
+		padding-top: 300px;
+		padding-bottom: 170px;
+		position: relative;
+		z-index: 1;
+
+		@include breakpoint(max-lg) {
+			padding-top: 200px;
+			padding-bottom: 130px;
+		}
+
+		.sub-title {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: var(--text-font);
+			color: var(--theme-color-white);
+			@include flex;
+			gap: 10px;
+		}
+		.title {
+			color: var(--theme-color-white);
+			font-weight: 300;
+			span {
+				font-weight: 500;
+				display: block;
+			}
+		}
+		.text {
+			color: var(--theme-color-white);
+			font-size: 18px;
+			line-height: 36px;
+			margin-top: 25px;
+			max-width: 630px;
+		}
+		.arry-btn {
+			margin-top: 50px;
+			font-size: 48px;
+			color: var(--theme-color-white);
+			&:hover {
+				transform: rotate(45deg);
+			}
+			@include breakpoint(max-sm) {
+				margin-top: 20px;
+			}
+		}
+	}
+	&__slider {
+		.slide-bg {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 1;
+			z-index: 1;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: cover;
+			transform: scale(1);
+			-webkit-transition: all 8s ease-out 0s;
+			-moz-transition: all 8s ease-out 0s;
+			-ms-transition: all 8s ease-out 0s;
+			-o-transition: all 8s ease-out 0s;
+			transition: all 8s ease-out 0s;
+			&::before {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				content: "";
+				background: linear-gradient(
+					180deg,
+					rgba(0, 0, 0, 0) 0%,
+					rgba(28, 26, 29, 0.7) 100%
+				);
+				z-index: 1;
+			}
+		}
+		.swiper-slide-active .slide-bg {
+			-webkit-transform: scale(1.12);
+			-moz-transform: scale(1.12);
+			transform: scale(1.12);
+		}
+	}
+}
+// Banner two area end here ***
+
+// Banner three area start here ***
+.banner-three {
+	&-area {
+		@include section;
+		background-color: var(--theme-color-gray);
+	}
+	&__shape {
+		&-one {
+			position: absolute;
+			top: 80px;
+			left: 0;
+			z-index: -1;
+			@include breakpoint(max-sm) {
+				display: none;
+			}
+		}
+		&-two {
+			position: absolute;
+			top: 130px;
+			left: 30%;
+			z-index: -1;
+		}
+	}
+	&__bg {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+	}
+	&__image {
+		position: absolute;
+		bottom: 0;
+		right: 2%;
+
+		@include breakpoint(max-xxl) {
+			right: -150px;
+		}
+
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+	}
+	&__content {
+		padding-top: 240px;
+		padding-bottom: 220px;
+		position: relative;
+		z-index: 1;
+
+		@include breakpoint(max-lg) {
+			padding-top: 150px;
+			padding-bottom: 130px;
+		}
+
+		.sub-title {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: var(--text-font);
+			@include flex;
+			gap: 10px;
+		}
+		.title {
+			font-weight: 300;
+			span {
+				font-weight: 500;
+				display: block;
+			}
+		}
+		.text {
+			font-size: 18px;
+			line-height: 36px;
+			margin-top: 25px;
+			max-width: 630px;
+		}
+	}
+}
+// Banner three area end here ***
+
+// Banner four area start here ***
+.banner-four {
+	&-area {
+		@include section;
+		padding-bottom: 40px;
+
+		.swiper-pagination-bullets {
+			position: relative;
+			margin-bottom: 0px;
+			text-align: center;
+			.swiper-pagination-bullet-active {
+				background-color: var(--theme-color1);
+			}
+		}
+	}
+	&__shape {
+		&-one {
+			position: absolute;
+			top: 30px;
+			right: 0;
+			z-index: -1;
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+		&-two {
+			position: absolute;
+			bottom: 20px;
+			right: 0;
+			z-index: -1;
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+	}
+	&__wrp {
+		position: relative;
+		z-index: 1;
+		max-width: 1335px;
+	}
+	&__image {
+		img {
+			width: 100%;
+		}
+		@include breakpoint(max-sm) {
+			img {
+				height: 450px;
+				object-fit: cover;
+			}
+		}
+	}
+	&__content {
+		position: absolute;
+		left: 100px;
+		bottom: 85px;
+
+		.sub-title {
+			font-size: 20px;
+			font-weight: 300;
+			font-family: var(--title-font);
+			@include flex;
+			gap: 10px;
+			color: var(--theme-color-white);
+		}
+		.title {
+			font-weight: 300;
+			color: var(--theme-color-white);
+			span {
+				font-weight: 500;
+				display: block;
+			}
+		}
+
+		@include breakpoint(max-sm) {
+			left: 15px;
+			bottom: 60px;
+		}
+	}
+	&__product {
+		padding: 30px 20px;
+		background-color: var(--theme-color-gray);
+		max-width: 480px;
+		position: absolute;
+		bottom: 0px;
+		right: 14%;
+		z-index: 1;
+		.item {
+			position: relative;
+			z-index: 1;
+			text-align: center;
+			padding-bottom: 30px;
+			.new-tag {
+				@include radius(75px, 75px, 75px);
+				background-color: var(--theme-color2);
+				color: var(--theme-color-white);
+				position: absolute;
+				top: 10px;
+				right: 20px;
+				font-family: var(--title-font);
+				font-weight: 500;
+			}
+			.hot-tag {
+				@include radius(75px, 75px, 75px);
+				background-color: var(--theme-color1);
+				color: var(--theme-color-white);
+				position: absolute;
+				top: 10px;
+				right: 20px;
+				font-family: var(--title-font);
+				font-weight: 500;
+			}
+			.content {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				.price {
+					color: var(--theme-color1);
+				}
+				.title {
+					margin: 3px 0;
+					a {
+						&:hover {
+							color: var(--theme-color1);
+						}
+					}
+				}
+			}
+		}
+		@include breakpoint(max-xxxl) {
+			right: 30px;
+		}
+		@include breakpoint(max-xxl) {
+			right: 10px;
+		}
+		@include breakpoint(max-xl) {
+			display: none;
+		}
+	}
+	
+}
+// Banner four area end here ***
+
+// Banner five area start here ***
+.banner-five {
+	&-area {
+		@include section;
+		padding-top: 190px;
+		padding-bottom: 150px;
+		background: linear-gradient(
+			256deg,
+			rgba(245, 242, 236, 0.5) 0.9%,
+			#f5f2ec 99.99%
+		);
+	}
+	&__shape {
+		&-one {
+			position: absolute;
+			left: 0;
+			bottom: 50px;
+			z-index: -1;
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+		&-two {
+			position: absolute;
+			left: 22%;
+			top: 0;
+			z-index: -1;
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+	}
+	&__wrp {
+		position: relative;
+		z-index: 1;
+		max-width: 1360px;
+		margin: 0 auto;
+		padding-top: 50px;
+		padding-bottom: 150px;
+		@include breakpoint(max-lg) {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+	}
+	&__image {
+		&-left {
+			max-width: 337px;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			z-index: -1;
+			img {
+				width: 100%;
+			}
+			.shape {
+				position: absolute;
+				top: -130px;
+				left: -180px;
+				max-width: 281px;
+			}
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+		&-right {
+			max-width: 388px;
+			position: absolute;
+			right: 0;
+			top: 0;
+			z-index: -1;
+			img {
+				width: 100%;
+			}
+			.shape {
+				position: absolute;
+				bottom: -145px;
+				right: -155px;
+				max-width: 309px;
+			}
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+	}
+	&__content {
+		max-width: 1070px;
+		margin: 0 auto;
+		.title {
+			font-size: 150px;
+			line-height: 160px;
+			font-weight: 600;
+			text-align: center;
+			span {
+				display: block;
+				color: var(--theme-color1);
+			}
+			@include breakpoint(max-xl) {
+				font-size: 100px;
+				line-height: 120px;
+			}
+			@include breakpoint(max-lg) {
+				font-size: 80px;
+				line-height: 90px;
+			}
+			@include breakpoint(max-md) {
+				font-size: 60px;
+				line-height: 70px;
+			}
+			@include breakpoint(max-sm) {
+				font-size: 46px;
+				line-height: 60px;
+			}
+		}
+		.info {
+			max-width: 530px;
+			margin: 0 auto;
+			margin-top: 35px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 20px;
+			transform: translate(70px);
+			position: relative;
+			z-index: 1;
+			.video-btn {
+				@include radius(97px, 97px, 95px);
+				border: 1px solid var(--theme-color2);
+			}
+			.text {
+				max-width: 330px;
+			}
+			.arry {
+				position: absolute;
+				bottom: -110px;
+				left: 80px;
+				z-index: -1;
+			}
+			@include breakpoint(max-md) {
+				transform: translate(0);
+				.video-btn {
+					@include radius(60px, 60px, 55px);
+					width: 100%;
+					max-width: 60px;
+				}
+				.text {
+					font-size: 14px;
+				}
+			}
+		}
+	}
+}
+// Banner five area end here ***
+
+// Banner six area start here ***
+.banner-six {
+	&-area {
+		@include section;
+		@include bg-image;
+	}
+	&__shape {
+		&-one {
+			position: absolute;
+			top: 80px;
+			left: 0;
+			z-index: -1;
+			@include breakpoint(max-sm) {
+				display: none;
+			}
+		}
+		&-two {
+			position: absolute;
+			top: 100px;
+			left: 48%;
+			z-index: -1;
+			@include breakpoint(max-sm) {
+				display: none;
+			}
+		}
+		&-three {
+			position: absolute;
+			bottom: -35px;
+			left: 45%;
+			z-index: -1;
+		}
+	}
+	&__bg {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+	}
+	&__image {
+		position: absolute;
+		bottom: 0;
+		right: 10px;
+
+		@include breakpoint(max-xxl) {
+			right: -150px;
+		}
+
+		@include breakpoint(max-lg) {
+			display: none;
+		}
+		&-bg {
+			position: absolute;
+			bottom: 0;
+			right: 2%;
+			z-index: -1;
+
+			@include breakpoint(max-xxl) {
+				right: -150px;
+			}
+
+			@include breakpoint(max-lg) {
+				display: none;
+			}
+		}
+	}
+	&__content {
+		padding-top: 270px;
+		padding-bottom: 130px;
+		position: relative;
+		z-index: 1;
+
+		@include breakpoint(max-lg) {
+			padding-top: 150px;
+			padding-bottom: 130px;
+		}
+
+		.sub-title {
+			font-size: 20px;
+			font-weight: 400;
+			@include flex;
+			gap: 10px;
+			margin-bottom: 10px;
+		}
+		.title {
+			font-weight: 300;
+			span {
+				font-weight: 500;
+				display: block;
+			}
+		}
+		.text {
+			font-size: 16px;
+			line-height: 30px;
+			margin-top: 30px;
+			max-width: 670px;
+		}
+	}
+}
+// Banner six area end here ***

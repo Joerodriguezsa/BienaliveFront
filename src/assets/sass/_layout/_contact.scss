@@ -1,0 +1,154 @@
+// Contact area start here ***
+.contact-section {
+	overflow: hidden;
+	padding: 0px 50px;
+	@include breakpoint(max-md) {
+		padding: 0 15px;
+	}
+
+	.outer-box {
+		overflow: hidden;
+		border-radius: 30px;
+	}
+
+	.image-column {
+		.inner-column {
+			height: 100%;
+			.image-box {
+				height: 100%;
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+		}
+	}
+
+	.form-column {
+		.inner-column {
+			background-color: var(--theme-color1);
+			padding: 80px;
+			position: relative;
+			z-index: 1;
+			height: 100%;
+			@include bg-image;
+			form {
+				input,
+				textarea {
+					width: 100%;
+					padding: 14px 0px;
+					border: 1px solid transparent;
+					color: var(--theme-color-white);
+					background-color: transparent;
+					transition: all 0.3s;
+					border-bottom: 1px solid var(--theme-color-white);
+					&::placeholder {
+						color: var(--theme-color-white);
+					}
+				}
+				textarea {
+					height: 110px;
+					resize: none;
+				}
+				button {
+					padding: 12px 30px;
+					border-radius: 30px;
+					color: var(--theme-color-white);
+					font-weight: 500;
+					background-color: var(--theme-color2);
+					margin-top: 25px;
+					transition: all 0.3s;
+					&:hover {
+						letter-spacing: 1px;
+					}
+				}
+			}
+
+			.nice-select {
+				padding: 0;
+				border-radius: 0;
+				background-color: var(--theme-color1);
+				border: none;
+				border-bottom: 1px solid var(--theme-color-white);
+				color: var(--theme-color-white);
+				.current {
+					color: var(--theme-color-white);
+				}
+				&::before {
+					color: var(--theme-color-white);
+				}
+			}
+			.shape {
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				z-index: -1;
+				&.top-shape {
+					bottom: unset;
+					top: 0;
+				}
+			}
+
+			@include breakpoint(max-sm) {
+				padding: 30px 15px;
+			}
+		}
+	}
+}
+// Contact area end here ***
+
+// Contact two area start here ***
+.contact-section-two {
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	.form-column {
+		.inner-column {
+			background-color: #f5f2eccc;
+			padding: 100px 60px;
+			form {
+				input,
+				textarea {
+					width: 100%;
+					padding: 14px 20px;
+					border: 1px solid transparent;
+					color: var(--theme-color2);
+					background-color: var(--theme-color-white);
+					transition: all 0.3s;
+					border-radius: 5px;
+				}
+				textarea {
+					height: 160px;
+					resize: none;
+				}
+			}
+			.dateTimePicker {
+				i {
+					color: var(--text-color);
+					right: 20px;
+				}
+			}
+			.nice-select {
+				border-radius: 5px;
+				border: none;
+				border-bottom: 1px solid var(--theme-color-white);
+				.current {
+					color: var(--text-color);
+				}
+				&::before {
+					color: var(--text-color);
+				}
+			}
+
+			@include breakpoint(max-sm) {
+				padding: 60px 30px;
+			}
+		}
+	}
+}
+// Contact two area end here ***

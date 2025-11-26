@@ -1,0 +1,12 @@
+// Brand area start here ***
+.brand {
+	&-area {
+		overflow: hidden;
+		padding: 70px 0;
+		background-color: var(--theme-color-gray2);
+	}
+	&__item {
+		text-align: center;
+	}
+}
+// Brand area end here ***

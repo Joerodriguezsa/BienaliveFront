@@ -1,0 +1,207 @@
+// Marquee area start here ***
+.marquee {
+	&-area {
+		overflow: hidden;
+	}
+	&__wrp {
+		position: relative;
+	}
+	&__slide {
+		display: flex;
+		position: relative;
+		&.marquee-revers {
+			.marquee__item-wrp {
+				position: relative;
+				-webkit-animation: slide-har-revers 0s linear infinite;
+				animation: slide-har-revers 30s linear infinite;
+				@-webkit-keyframes slide-har-revers {
+					100% {
+						-webkit-transform: translateX(0%);
+						transform: translateX(0%);
+					}
+					0% {
+						-webkit-transform: translateX(-100%);
+						transform: translateX(-100%);
+					}
+				}
+
+				@keyframes slide-har-revers {
+					100% {
+						-webkit-transform: translateX(0%);
+						transform: translateX(0%);
+					}
+					0% {
+						-webkit-transform: translateX(-100%);
+						transform: translateX(-100%);
+					}
+				}
+			}
+		}
+	}
+
+	&__item {
+		padding: 0 30px;
+		h2 {
+			font-size: 110px;
+			line-height: 90px;
+			font-weight: 300;
+			text-transform: capitalize;
+			white-space: nowrap;
+			-webkit-text-stroke: 1px var(--theme-color2);
+			color: transparent;
+			padding-bottom: 30px;
+			@include breakpoint(max-lg) {
+				font-size: 40px;
+				line-height: 50px;
+				padding-bottom: 0px;
+			}
+			&:hover {
+				color: var(--theme-color2);
+			}
+		}
+
+		&.item-bold {
+			h2 {
+				font-weight: 500;
+				&.solid {
+					color: var(--theme-color2);
+					&:hover {
+						color: var(--theme-color2);
+					}
+				}
+				&:hover {
+					color: transparent;
+				}
+			}
+		}
+
+		@include breakpoint(max-lg) {
+			padding: 0 15px;
+			svg {
+				width: 40px;
+				height: 40px;
+			}
+		}
+
+		&-wrp {
+			display: flex;
+			align-items: center;
+			position: relative;
+			-webkit-animation: slide-har 30s linear infinite;
+			animation: slide-har 30s linear infinite;
+			@-webkit-keyframes slide-har {
+				0% {
+					-webkit-transform: translateX(0%);
+					transform: translateX(0%);
+				}
+				100% {
+					-webkit-transform: translateX(-100%);
+					transform: translateX(-100%);
+				}
+			}
+			@keyframes slide-har {
+				0% {
+					-webkit-transform: translateX(0%);
+					transform: translateX(0%);
+				}
+				100% {
+					-webkit-transform: translateX(-100%);
+					transform: translateX(-100%);
+				}
+			}
+		}
+	}
+}
+// Marquee area end here ***
+
+// Marquee four area start here ***
+.marquee-four {
+	&-area {
+		overflow: hidden;
+		background-color: var(--theme-color1);
+		padding: 25px 0px;
+		@include breakpoint(max-md) {
+			padding: 10px 0;
+		}
+	}
+	&__item {
+		@extend .marquee__item;
+		padding: 0 25px;
+		@include breakpoint(max-sm) {
+			padding: 0 10px;
+		}
+		&-wrp {
+			@extend .marquee__item-wrp;
+			h2 {
+				font-size: 40px;
+				line-height: 60px;
+				padding-bottom: 5px;
+				color: var(--theme-color-white);
+				-webkit-text-stroke: 0px var(--theme-color-white);
+				&:hover {
+					color: var(--theme-color-white);
+					letter-spacing: 1px;
+					-webkit-text-stroke: 0px var(--theme-color-white);
+				}
+				&.strock-text {
+					color: transparent;
+					-webkit-text-stroke: 1px var(--theme-color-white);
+				}
+			}
+			svg {
+				width: 50px;
+				height: 50px;
+				path {
+					fill: var(--theme-color-white);
+				}
+			}
+		}
+	}
+}
+// Marquee four area end here ***
+
+// Marquee four area start here ***
+.marquee-five {
+	&-area {
+		overflow: hidden;
+		background-color: var(--theme-color-gray);
+		padding: 25px 0px;
+		@include breakpoint(max-md) {
+			padding: 10px 0;
+		}
+	}
+	&__item {
+		@extend .marquee__item;
+		padding: 0 25px;
+		@include breakpoint(max-sm) {
+			padding: 0 10px;
+		}
+		&-wrp {
+			@extend .marquee__item-wrp;
+			h2 {
+				font-size: 40px;
+				line-height: 60px;
+				padding-bottom: 5px;
+				color: var(--theme-color2);
+				-webkit-text-stroke: 0px var(--theme-color-white);
+				&:hover {
+					color: var(--theme-color2);
+					letter-spacing: 1px;
+					-webkit-text-stroke: 0px var(--theme-color2);
+				}
+				&.strock-text {
+					color: transparent;
+					-webkit-text-stroke: 1px #70707054;
+				}
+			}
+			svg {
+				width: 50px;
+				height: 50px;
+				path {
+					fill: var(--theme-color1);
+				}
+			}
+		}
+	}
+}
+// Marquee four area end here ***

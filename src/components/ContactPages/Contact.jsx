@@ -3,6 +3,8 @@ import BackToTop from '../BackToTop.jsx';
 import Header from '../HomeOne/Header.jsx';
 import Footer from '../HomeOne/Footer.jsx';
 import PageTitle from '../PageTitle.jsx';
+import { SUPPORT_EMAIL, SUPPORT_PHONE, COMPANY_ADDRESS } from '../../config/constants.js';
+import { composePrefix } from "yet-another-react-lightbox";
 
 function Contact() {
 
@@ -64,7 +66,7 @@ function Contact() {
                                 <div className="sec-title">
                                     <span className="sub-title">Need any help?</span>
                                     <h2>Get in touch</h2>
-                                    <div className="text">Lorem ipsum is simply free text available dolor sit amet consectetur notted adipisicing elit sed do eiusmod tempor incididunt simply dolore magna.</div>
+                                    <div className="text">Connect with us anytime — your well-being matters to us. Whether you're curious about our treatments, need assistance scheduling an appointment, or simply want personalized recommendations, our team is always ready to support your journey toward natural wellness.</div>
                                 </div>
                                 <ul className="list-unstyled contact-details__info">
                                     <li className="d-block d-sm-flex align-items-sm-center ">
@@ -73,7 +75,7 @@ function Contact() {
                                     </div>
                                     <div className="text ml-xs--0 mt-xs-10">
                                         <h6>Have any question?</h6>
-                                        <a href="tel:980089850"><span>Free</span> +1 (587)336-0939</a>
+                                        <a href="tel:980089850"><span>Free</span>{SUPPORT_PHONE}</a>
                                     </div>
                                     </li>
                                     <li className="d-block d-sm-flex align-items-sm-center ">
@@ -82,7 +84,7 @@ function Contact() {
                                     </div>
                                     <div className="text ml-xs--0 mt-xs-10">
                                         <h6>Write email</h6>
-                                        <a href="mailto:needhelp@company.com">esbebanderas@hotmail.com</a>
+                                        <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
                                     </div>
                                     </li>
                                     <li className="d-block d-sm-flex align-items-sm-center ">
@@ -91,7 +93,7 @@ function Contact() {
                                     </div>
                                     <div className="text ml-xs--0 mt-xs-10">
                                         <h6>Visit anytime</h6>
-                                        <span>5920 Macleod Trail Southwest, Calgary, Alberta T2H 0K2, Canada</span>
+                                        <span>{COMPANY_ADDRESS}</span>
                                     </div>
                                     </li>
                                 </ul>

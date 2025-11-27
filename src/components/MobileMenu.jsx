@@ -42,7 +42,6 @@ const MobileMenu = () => {
                         <li><Link to="/index-2">Home two</Link></li>
                         <li><Link to="/index-3">Home three</Link></li>
                         <li><Link to="/index-4">Home four</Link></li>
-                        <li><Link to="/index-5">Home five</Link></li>
                         <li><Link to="/index-6">Home six</Link></li>
                         <li>
                             <Link className="arrow" to="#0">Single Styles</Link>
@@ -69,12 +68,12 @@ const MobileMenu = () => {
                             <div className={isSubActive.key === 5 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleSubClick(5)}><i className="fa fa-angle-down" /></div>
                         </li>
                     </ul> */}
-                    <div className={isActive.key === 1 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(1)}><i className="fa fa-angle-down" /></div>
+                    {/* <div className={isActive.key === 1 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(1)}><i className="fa fa-angle-down" /></div> */}
                 </li>
-                <li>
+                {/* <li>
                     <Link to="#0">Pages</Link>
                     <ul className={isActive.key === 2 ? "sub-menu d-block" : "d-none"}>
-                        {/* <li><Link to="/page-about">About Us</Link></li> */}
+                        <li><Link to="/page-about">About Us</Link></li>
                         <li>
                             <Link to="#0">Project</Link>
                             <ul className={isSubActive.key === 1 ? "d-block" : "d-none"}>
@@ -107,31 +106,47 @@ const MobileMenu = () => {
                         <li><Link to="/page-404">404 Error</Link></li>
                     </ul>
                     <div className={isActive.key === 2 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(2)}><i className="fa fa-angle-down" /></div>
+                </li> */}
+                <li>
+                    <Link to="/page-team">Team</Link>
                 </li>
                 <li>
-                    <Link to="#0">Services</Link>
-                    <ul className={isActive.key === 3 ? "sub-menu d-block" : "d-none"}>
+                    <Link to="/page-services">Services</Link>
+                    {/* <ul className={isActive.key === 3 ? "sub-menu d-block" : "d-none"}>
                         <li><Link to="/page-services">Service Grid</Link></li>
                         <li><Link to="/page-service-details">Service Details</Link></li>
-                    </ul>
-                    <div className={isActive.key === 3 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(3)}><i className="fa fa-angle-down" /></div>
+                    </ul> */}
+                    {/* <div className={isActive.key === 3 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(3)}><i className="fa fa-angle-down" /></div> */}
                 </li>
                 <li>
+                    <Link to="/shop-products">Products</Link>
+                    <ul className={isActive.key === 1 ? "sub-menu d-block" : "d-none"}>
+                        {/* <li><Link to="/page-services">Service Grid</Link></li>
+                        <li><Link to="/page-service-details">Service Details</Link></li> */}
+                        <li><Link to="/shop-products">Shop Product</Link></li>
+                        <li><Link to="/shop-products-sidebar">Products Sidebar</Link></li>
+                        <li><Link to="/shop-product-details">Product Details</Link></li>
+                        <li><Link to="/shop-checkout">Checkout</Link></li>
+                        <li><Link to="/shop-cart">Cart</Link></li>
+                    </ul>
+                    <div className={isActive.key === 1 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(1)}><i className="fa fa-angle-down" /></div>
+                </li>
+                {/* <li>
                     <Link to="page-portfolio">Portfolio</Link>
                     <ul className={isActive.key === 4 ? "sub-menu d-block" : "d-none"}>
                         <li><Link to="/page-portfolio">Portfolio</Link></li>
                         <li><Link to="/page-portfolio-details">Portfolio Details</Link></li>
                     </ul>
                     <div className={isActive.key === 4 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(4)}><i className="fa fa-angle-down" /></div>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                     <Link to="#0">Blog</Link>
                     <ul className={isActive.key === 5 ? "sub-menu d-block" : "d-none"}>
                         <li><Link to="/news-grid">Blog Grid</Link></li>
                         <li><Link to="/news-details">Blog Details</Link></li>
                     </ul>
                     <div className={isActive.key === 5 ? "dropdown-btn active" : "dropdown-btn"} onClick={() => handleClick(5)}><i className="fa fa-angle-down" /></div>
-                </li>
+                </li> */}
                 <li><Link to="/contact">Contact</Link></li>
             </ul>
         </nav>

@@ -6,6 +6,7 @@ import logo2 from '../../assets/images/logo/logo-light.png';
 import Navigation from '../Navigation.jsx';
 import MobileMenu from '../MobileMenu.jsx';
 import StickyHeader from '../../lib/StickyMenu.js';
+import { SUPPORT_EMAIL, SUPPORT_PHONE, COMPANY_ADDRESS } from '../../config/constants.js';
 
 function Header({ className = '', scroll = false }) {
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -92,10 +93,9 @@ function Header({ className = '', scroll = false }) {
                     <div className="sidebar__contact-info mt-30">
                         <h5 className="text-white mb-20">Contact Info</h5>
                         <ul>
-                            <li><i className="fa-solid fa-location-dot"></i> <Link to="/#0">121 King Street, Melbourne</Link></li>
-                            <li className="py-2"><i className="fa-solid fa-phone-volume"></i> <Link to="/tel:+912659302003">+91 2659302
-                                    003</Link></li>
-                            <li><i className="fa-solid fa-paper-plane"></i> <Link to="/#0">info.company@gmail.com</Link></li>
+                            <li><i className="fa-solid fa-location-dot"></i> <Link to="/#0" style={{ whiteSpace: "pre-line" }}>{COMPANY_ADDRESS}</Link></li>
+                            <li className="py-2"><i className="fa-solid fa-phone-volume"></i> <Link to="/0">{SUPPORT_PHONE}</Link></li>
+                            <li><i className="fa-solid fa-paper-plane"></i> <Link to="/#0">{SUPPORT_EMAIL}</Link></li>
                         </ul>
                     </div>
                     <div className="sidebar__btns my-4">

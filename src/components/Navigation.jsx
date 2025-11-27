@@ -13,7 +13,6 @@ function Navigation() {
                     <li><Link to="/index-2">Home two</Link></li>
                     <li><Link to="/index-3">Home three</Link></li>
                     <li><Link to="/index-4">Home four</Link></li>
-                    <li><Link to="/index-5">Home five</Link></li>
                     <li><Link to="/index-6">Home six</Link></li>
                     <li>
                         <Link className="arrow" to="#0">Single Styles</Link>
@@ -41,36 +40,37 @@ function Navigation() {
             </li>
             {/* <li><Link to="/page-about">About</Link></li> */}
             <li>
-                <Link to="/#0">Pages <i className="fa-solid fa-angle-down"></i></Link>
-                <ul className="sub-menu">
-                    <li><Link to="/page-gallery">Gallery</Link></li>
+                <Link to="/page-team">Team </Link>
+                {/* <ul className="sub-menu"> */}
+                    {/* <li><Link to="/page-gallery">Gallery</Link></li>
                     <li>
                         <Link className="arrow" to="#0">Team</Link>
                         <ul className="sub-sub-menu">
-                            <li><Link to="/page-team">Team</Link></li>
-                            <li><Link to="/page-team-details">Team Details</Link></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <Link className="arrow" to="#0">Shop</Link>
-                        <ul className="sub-sub-menu">
-                            <li><Link to="/shop-products">Shop Product</Link></li>
-                            <li><Link to="/shop-products-sidebar">Products Sidebar</Link></li>
-                            <li><Link to="/shop-product-details">Product Details</Link></li>
-                            <li><Link to="/shop-checkout">Checkout</Link></li>
-                            <li><Link to="/shop-cart">Cart</Link></li>
-                        </ul>
-                    </li>
-                    <li><Link to="/page-testimonial">Testimonials</Link></li>
+                            <li><Link to="/page-team">Team</Link></li> */}
+                            {/* <li><Link to="/page-team-details">Team Details</Link></li> */}
+                        {/* </ul>
+                    </li> */}
+                    
+                    {/* <li><Link to="/page-testimonial">Testimonials</Link></li>
                     <li><Link to="/page-faq">FAQ’s</Link></li>
-                    <li><Link to="/page-404">404 Error</Link></li>
-                </ul>
+                    <li><Link to="/page-404">404 Error</Link></li> */}
+                {/* </ul> */}
             </li>
             <li>
-                <Link to="/#0">Services <i className="fa-solid fa-angle-down"></i></Link>
-                <ul className="sub-menu">
+                <Link to="/page-services">Services </Link>
+                {/* <ul className="sub-menu">
                     <li><Link to="/page-services">Service Grid</Link></li>
                     <li><Link to="/page-service-details">Service Details</Link></li>
+                </ul> */}
+            </li>
+            <li>
+                <Link to="/shop-products">Products <i className="fa-solid fa-angle-down"></i></Link>
+                <ul className="sub-menu">
+                    <li><Link to="/shop-products">Shop Product</Link></li>
+                    <li><Link to="/shop-products-sidebar">Products Sidebar</Link></li>
+                    <li><Link to="/shop-product-details">Product Details</Link></li>
+                    <li><Link to="/shop-checkout">Checkout</Link></li>
+                    <li><Link to="/shop-cart">Cart</Link></li>
                 </ul>
             </li>
             {/* <li>

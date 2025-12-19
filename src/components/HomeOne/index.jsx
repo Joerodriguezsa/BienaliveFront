@@ -28,7 +28,7 @@ function HomeOne() {
             {/* <About /> */}
             <Services />
             <Feature />            
-            <Marquee />
+            {/* <Marquee /> */}
             <Contact />
             <Video />
             <Package />

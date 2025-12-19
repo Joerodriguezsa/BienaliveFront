@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import FooterImage1 from '../../assets/images/shape/footer-shape-left.png';
 import FooterImage2 from '../../assets/images/logo/logo-light.png';
+import { COMPANY_NAME } from '../../config/constants';
 
 function FooterOne({ className }) {
 
@@ -19,7 +20,7 @@ function FooterOne({ className }) {
 						<div className="footer__item">
 							<div className="footer-about">
 								<div>
-									<p className="text">Bienalive Social Media.</p>
+									<p className="text">{COMPANY_NAME} Social Media.</p>
 									<div className="socials">
 										{/* <Link to="#0">
 											<svg width="22" height="23" viewBox="0 0 25 26" fill="none"
@@ -34,7 +35,7 @@ function FooterOne({ className }) {
 										{/* <Link to="#0"><i className="fa-brands fa-vimeo-v"></i></Link> */}
 									</div>
 								</div>
-								<p className="copyright-text">&copy; 2025 <Link to="#">Bienalive</Link>, All Rights Reserved
+								<p className="copyright-text">&copy; 2025 <Link to="#">{COMPANY_NAME}</Link>, All Rights Reserved
 								</p>
 							</div>
 						</div>

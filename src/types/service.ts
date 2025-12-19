@@ -1,0 +1,19 @@
+export interface ServiceImage {
+  id: number;
+  serviceId: number;
+  imageUrl: string;
+  tipoImagenId: number;
+}
+
+export interface Service {
+  id: number;
+  name: string;
+  shortDescription: string;
+  longDescription: string;
+  time1: number;
+  price1: number;
+  time2: number;
+  price2: number;
+  active: boolean;
+  serviceImages: ServiceImage[];
+}

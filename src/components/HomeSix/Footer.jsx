@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo/logo-light.png';
 import FooterBgImage from '../../assets/images/bg/footer-bg-image.jpg';
+import { COMPANY_NAME } from '../../config/constants';
 
 function FooterSix({ className }) {
 
@@ -50,7 +51,7 @@ function FooterSix({ className }) {
                                         <Link to="#0"><i className="fa-brands fa-vimeo-v"></i></Link>
                                     </div>
                                 </div>
-                                    <p className="copyright-text">&copy; 2025 <Link to="/">Bienalive</Link>, All Rights Reserved
+                                    <p className="copyright-text">&copy; 2025 <Link to="/">{COMPANY_NAME}</Link>, All Rights Reserved
                                 </p>
                             </div>
                         </div>

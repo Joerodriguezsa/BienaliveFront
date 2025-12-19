@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import FooterImage1 from '../../assets/images/shape/footer-shape-left.png';
 import FooterImage2 from '../../assets/images/logo/logo-light.png';
+import { COMPANY_NAME } from '../../config/constants';
 
 function FooterTwo({ className }) {
 
@@ -52,7 +53,7 @@ function FooterTwo({ className }) {
                                     </div>
 
                                 </div>
-                                <p className="copyright-text">&copy; 2025 <Link to="/">Bienalive</Link>, All Rights Reserved
+                                <p className="copyright-text">&copy; 2025 <Link to="/">{COMPANY_NAME}</Link>, All Rights Reserved
                                 </p>
                             </div>
                         </div>

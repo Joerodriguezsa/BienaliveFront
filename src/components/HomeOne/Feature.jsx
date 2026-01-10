@@ -27,17 +27,22 @@ function Features({ className }) {
   }, []);
 
   const getTimePriceLabels = (service) => {
-    const pairs = [
-      { time: service.time1, price: service.price1 },
-      { time: service.time2, price: service.price2 },
-      { time: service.time3, price: service.price3 },
-      { time: service.time4, price: service.price4 },
-      { time: service.time5, price: service.price5 },
-    ];
+    const list = Array.isArray(service?.servicesTimePrice)
+      ? service.servicesTimePrice
+      : [];
 
-    return pairs
-      .filter((p) => p.time > 0)
-      .map((p) => `$${p.price.toFixed(2)} | ${p.time} mins`)
+    return list
+      .filter((x) => Number(x?.time) > 0 && x?.price != null)
+      .sort((a, b) => Number(a.time) - Number(b.time)) // opcional: ordena por tiempo asc
+      .map((x) => {
+        const time = Number(x.time);
+        const price = Number(x.price);
+
+        // Si quieres USD con 2 decimales:
+        const priceLabel = price.toFixed(2);
+
+        return `$${priceLabel} | ${time} mins`;
+      })
       .join(" • ");
   };
 

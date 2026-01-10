@@ -5,6 +5,13 @@ export interface ServiceImage {
   tipoImagenId: number;
 }
 
+export interface ServicesTimePrice {
+  id: number;
+  serviceId: number;
+  time: number;
+  price: number;
+}
+
 export interface Service {
   id: number;
   name: string;
@@ -15,5 +22,6 @@ export interface Service {
   time2: number;
   price2: number;
   active: boolean;
+  servicesTimePrices: ServicesTimePrice[];
   serviceImages: ServiceImage[];
 }

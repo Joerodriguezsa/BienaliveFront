@@ -2,44 +2,31 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PackageShapeImage1 from "../../assets/images/shape/package-shape-left.png";
 import PackageShapeImage2 from "../../assets/images/shape/package-shape-right.png";
-import PackageImage1 from "../../assets/images/package/package-image1.png";
-import PackageImage2 from "../../assets/images/package/package-image2.png";
-import PackageImage3 from "../../assets/images/package/package-image3.png";
-import PackageImage4 from "../../assets/images/package/package-image4.png";
-import PackageImage5 from "../../assets/images/package/package-image5.png";
-import PackageImage6 from "../../assets/images/package/package-image6.png";
-import PackageImage7 from "../../assets/images/package/package-image7.png";
-import PackageImage8 from "../../assets/images/package/package-image8.png";
 import { getServicesWithImagesCached } from "../../services/servicesApi";
 
-const packages = [
-  { image: PackageImage1, title: "Aroma therapy" },
-  { image: PackageImage2, title: "Sauna relax" },
-  { image: PackageImage3, title: "Geothermal spa" },
-  { image: PackageImage4, title: "Aroma therapy" },
-  { image: PackageImage5, title: "Aroma therapy" },
-  { image: PackageImage6, title: "Sauna relax" },
-  { image: PackageImage7, title: "Geothermal spa" },
-  { image: PackageImage8, title: "Aroma therapy" },
-];
+const money = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "CAD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 const getServiceDurations = (service) => {
-  return [
-    { time: service.time1, price: service.price1 },
-    { time: service.time2, price: service.price2 },
-    { time: service.time3, price: service.price3 },
-    { time: service.time4, price: service.price4 },
-    { time: service.time5, price: service.price5 },
-  ].filter((item) => item.time > 0);
+  const list = Array.isArray(service?.servicesTimePrice)
+    ? service.servicesTimePrice
+    : [];
+
+  return list
+    .filter((x) => Number(x?.time) > 0 && x?.price != null)
+    .sort((a, b) => Number(a.time) - Number(b.time))
+    .map((x) => ({
+      time: Number(x.time),
+      price: Number(x.price),
+    }));
 };
 
 function Package() {
   const [activeIndex, setActiveIndex] = useState(1);
-
-  const handleOnClick = (index) => {
-    setActiveIndex(index);
-  };
-
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -103,6 +90,7 @@ function Package() {
           >
             <div className="row g-5">
               {loading && <p>Cargando servicios...</p>}
+
               {!loading &&
                 services.map((service) =>
                   getServiceDurations(service).map((item, index) => (
@@ -124,12 +112,11 @@ function Package() {
 
                         <div className="content">
                           <h3 className="title">
-                            {/* <Link to="#">{service.name}</Link> */}
                             <Link to={`/services/${service.id}`}>
                               {service.name}
                             </Link>
                             <span className="line"></span>
-                            <span>from</span> ${item.price}
+                            <span>from</span> {money.format(item.price)}
                           </h3>
 
                           <p>

@@ -13,12 +13,12 @@ if (!API_BASE) {
 const USERS_BASE = `${API_BASE}/Users`;
 
 export const getUsers = async (): Promise<User[]> => {
-  const response = await axios.get<User[]>(`${USERS_BASE}/ConsultarUsers`);
+  const response = await axios.get<User[]>(USERS_BASE);
   return response.data;
 };
 
 export const createUser = async (payload: UserPayload): Promise<User> => {
-  const response = await axios.post<User>(`${USERS_BASE}/CrearUser`, payload);
+  const response = await axios.post<User>(USERS_BASE, payload);
   return response.data;
 };
 
@@ -26,13 +26,10 @@ export const updateUser = async (
   id: number,
   payload: UserPayload
 ): Promise<User> => {
-  const response = await axios.put<User>(
-    `${USERS_BASE}/ActualizarUser/${id}`,
-    payload
-  );
+  const response = await axios.put<User>(`${USERS_BASE}/${id}`, payload);
   return response.data;
 };
 
 export const deleteUser = async (id: number): Promise<void> => {
-  await axios.delete(`${USERS_BASE}/EliminarUser/${id}`);
+  await axios.delete(`${USERS_BASE}/${id}`);
 };

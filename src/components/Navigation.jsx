@@ -81,6 +81,7 @@ function Navigation() {
                 </ul>
             </li> */}
             <li><Link to="/page-contact">Contact</Link></li>
+            <li><Link to="/page-users">Users</Link></li>
         </ul>
     );
 }

@@ -7,20 +7,23 @@ import {
   getUsers,
   updateUser,
 } from "../../services/usersApi";
+import { getRoles } from "../../services/rolesApi";
 
 const initialFormState = {
   name: "",
   email: "",
   phone: "",
-  role: "",
+  roleId: null,
   active: true,
 };
 
 function Users() {
   const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState(initialFormState);
   const [editingUser, setEditingUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRolesLoading, setIsRolesLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -38,8 +41,23 @@ function Users() {
     }
   };
 
+  const loadRoles = async () => {
+    setIsRolesLoading(true);
+    setError("");
+
+    try {
+      const data = await getRoles();
+      setRoles(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err?.message || "Unable to load roles.");
+    } finally {
+      setIsRolesLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadUsers();
+    loadRoles();
   }, []);
 
   const resetForm = () => {
@@ -80,7 +98,7 @@ function Users() {
       name: user.name || "",
       email: user.email || "",
       phone: user.phone || "",
-      role: user.role || "",
+      roleId: user.roleId ?? null,
       active: Boolean(user.active),
     });
   };
@@ -101,6 +119,8 @@ function Users() {
       setError(err?.message || "Unable to delete the user.");
     }
   };
+
+  const roleLookup = new Map(roles.map((role) => [role.id, role.name]));
 
   return (
     <section className="contact-details pt-100 pb-100">
@@ -131,8 +151,14 @@ function Users() {
                   {error}
                 </div>
               ) : null}
+              {isRolesLoading ? (
+                <div className="alert alert-info" role="alert">
+                  Loading roles...
+                </div>
+              ) : null}
               <UsersForm
                 formData={formData}
+                roles={roles}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 onReset={resetForm}
@@ -150,6 +176,7 @@ function Users() {
               <UsersTable
                 users={users}
                 isLoading={isLoading}
+                roleLookup={roleLookup}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />

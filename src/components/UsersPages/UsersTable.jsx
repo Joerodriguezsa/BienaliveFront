@@ -1,6 +1,6 @@
 import React from "react";
 
-function UsersTable({ users, isLoading, onEdit, onDelete }) {
+function UsersTable({ users, isLoading, onEdit, onDelete, roleLookup }) {
   if (isLoading) {
     return (
       <div className="text-center py-5">
@@ -36,7 +36,7 @@ function UsersTable({ users, isLoading, onEdit, onDelete }) {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.phone || "-"}</td>
-              <td>{user.role || "-"}</td>
+              <td>{user.role || roleLookup.get(user.roleId) || "-"}</td>
               <td>{user.active ? "Active" : "Inactive"}</td>
               <td className="text-end">
                 <div className="d-inline-flex gap-2">

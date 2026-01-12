@@ -4,6 +4,7 @@ export type User = {
   email: string;
   phone?: string;
   role?: string;
+  roleId?: number;
   active: boolean;
 };
 

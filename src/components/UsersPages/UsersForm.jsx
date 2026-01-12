@@ -2,6 +2,7 @@ import React from "react";
 
 function UsersForm({
   formData,
+  roles,
   onChange,
   onSubmit,
   onReset,
@@ -53,14 +54,25 @@ function UsersForm({
         </div>
         <div className="col-md-4">
           <div className="mb-3">
-            <input
-              name="role"
+            <select
+              name="roleId"
               className="form-control"
-              type="text"
-              placeholder="Role"
-              value={formData.role}
-              onChange={(event) => onChange("role", event.target.value)}
-            />
+              value={formData.roleId ?? ""}
+              onChange={(event) =>
+                onChange(
+                  "roleId",
+                  event.target.value ? Number(event.target.value) : null
+                )
+              }
+              required
+            >
+              <option value="">Select role</option>
+              {roles.map((role) => (
+                <option key={role.id} value={role.id}>
+                  {role.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="col-md-4">

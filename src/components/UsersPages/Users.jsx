@@ -8,11 +8,19 @@ import {
   updateUser,
 } from "../../services/usersApi";
 import { getRoles } from "../../services/rolesApi";
+import {
+  createCustomer,
+  getCustomers,
+  updateCustomer,
+} from "../../services/customersApi";
 
 const initialFormState = {
   name: "",
   email: "",
   password: "",
+  phone: "",
+  dateOfBirth: "",
+  address: "",
   roleId: null,
   active: true,
 };
@@ -20,10 +28,12 @@ const initialFormState = {
 function Users() {
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [formData, setFormData] = useState(initialFormState);
   const [editingUser, setEditingUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRolesLoading, setIsRolesLoading] = useState(true);
+  const [isCustomersLoading, setIsCustomersLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -31,6 +41,7 @@ function Users() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [editingCustomerId, setEditingCustomerId] = useState(null);
 
   const loadUsers = async () => {
     setIsLoading(true);
@@ -60,14 +71,55 @@ function Users() {
     }
   };
 
+  const loadCustomers = async () => {
+    setIsCustomersLoading(true);
+    setError("");
+
+    try {
+      const data = await getCustomers();
+      setCustomers(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err?.message || "Unable to load customers.");
+    } finally {
+      setIsCustomersLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadUsers();
     loadRoles();
+    loadCustomers();
   }, []);
+
+  useEffect(() => {
+    if (!editingUser) {
+      setEditingCustomerId(null);
+      return;
+    }
+
+    if (Number(formData.roleId) !== 3) {
+      setEditingCustomerId(null);
+      return;
+    }
+
+    const matchedCustomer = customers.find(
+      (customer) => customer.email === formData.email
+    );
+    if (matchedCustomer) {
+      setEditingCustomerId(matchedCustomer.id);
+      setFormData((prev) => ({
+        ...prev,
+        phone: matchedCustomer.phone || "",
+        dateOfBirth: matchedCustomer.dateOfBirth || "",
+        address: matchedCustomer.address || "",
+      }));
+    }
+  }, [customers, editingUser, formData.email, formData.roleId]);
 
   const resetForm = () => {
     setFormData(initialFormState);
     setEditingUser(null);
+    setEditingCustomerId(null);
   };
 
   const handleChange = (field, value) => {
@@ -93,6 +145,24 @@ function Users() {
       } else {
         await createUser(payload);
       }
+
+      if (Number(payload.roleId) === 3) {
+        const customerPayload = {
+          name: payload.name,
+          email: payload.email,
+          phone: formData.phone,
+          dateOfBirth: formData.dateOfBirth,
+          address: formData.address,
+        };
+
+        if (editingCustomerId) {
+          await updateCustomer(editingCustomerId, customerPayload);
+        } else {
+          await createCustomer(customerPayload);
+        }
+      }
+
+      await loadCustomers();
       await loadUsers();
       resetForm();
     } catch (err) {
@@ -108,9 +178,13 @@ function Users() {
       name: user.name || "",
       email: user.email || "",
       password: "",
+      phone: "",
+      dateOfBirth: "",
+      address: "",
       roleId: user.roleId ?? null,
       active: Boolean(user.active),
     });
+    setEditingCustomerId(null);
   };
 
   const handleDelete = async (user) => {
@@ -188,6 +262,11 @@ function Users() {
           {isRolesLoading ? (
             <div className="alert alert-info" role="alert">
               Loading roles...
+            </div>
+          ) : null}
+          {isCustomersLoading && Number(formData.roleId) === 3 ? (
+            <div className="alert alert-info" role="alert">
+              Loading customer details...
             </div>
           ) : null}
           <UsersForm

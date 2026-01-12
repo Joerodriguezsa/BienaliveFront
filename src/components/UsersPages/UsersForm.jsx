@@ -9,6 +9,8 @@ function UsersForm({
   isSubmitting,
   isEditing,
 }) {
+  const showCustomerFields = Number(formData.roleId) === 3;
+
   return (
     <form className="contact-form" onSubmit={onSubmit}>
       <div className="row">
@@ -39,6 +41,49 @@ function UsersForm({
           </div>
         </div>
       </div>
+      {showCustomerFields ? (
+        <div className="row">
+          <div className="col-md-4">
+            <div className="mb-3">
+              <input
+                name="phone"
+                className="form-control"
+                type="tel"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={(event) => onChange("phone", event.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="mb-3">
+              <input
+                name="dateOfBirth"
+                className="form-control"
+                type="date"
+                placeholder="Date of birth"
+                value={formData.dateOfBirth}
+                onChange={(event) => onChange("dateOfBirth", event.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="mb-3">
+              <input
+                name="address"
+                className="form-control"
+                type="text"
+                placeholder="Address"
+                value={formData.address}
+                onChange={(event) => onChange("address", event.target.value)}
+                required
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className="row">
         <div className="col-md-6">
           <div className="mb-3">

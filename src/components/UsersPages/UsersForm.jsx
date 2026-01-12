@@ -42,6 +42,21 @@ function UsersForm({
       <div className="row">
         <div className="col-md-6">
           <div className="mb-3">
+            <input
+              name="password"
+              className="form-control"
+              type="password"
+              placeholder={isEditing ? "New password (optional)" : "Password"}
+              value={formData.password}
+              onChange={(event) => onChange("password", event.target.value)}
+              required={!isEditing}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="mb-3">
             <select
               name="roleId"
               className="form-control"

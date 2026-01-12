@@ -7,4 +7,10 @@ export type User = {
   active: boolean;
 };
 
-export type UserPayload = Omit<User, "id">;
+export type UserPayload = {
+  name: string;
+  email: string;
+  password?: string;
+  roleId: number | null;
+  active: boolean;
+};

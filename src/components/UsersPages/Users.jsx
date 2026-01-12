@@ -12,6 +12,7 @@ import { getRoles } from "../../services/rolesApi";
 const initialFormState = {
   name: "",
   email: "",
+  password: "",
   roleId: null,
   active: true,
 };
@@ -82,10 +83,15 @@ function Users() {
     setError("");
 
     try {
+      const payload = { ...formData };
+      if (editingUser && !payload.password) {
+        delete payload.password;
+      }
+
       if (editingUser) {
-        await updateUser(editingUser.id, formData);
+        await updateUser(editingUser.id, payload);
       } else {
-        await createUser(formData);
+        await createUser(payload);
       }
       await loadUsers();
       resetForm();
@@ -101,6 +107,7 @@ function Users() {
     setFormData({
       name: user.name || "",
       email: user.email || "",
+      password: "",
       roleId: user.roleId ?? null,
       active: Boolean(user.active),
     });

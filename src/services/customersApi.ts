@@ -45,3 +45,10 @@ export const updateCustomer = async (
   );
   return response.data;
 };
+
+export const deleteCustomer = async (id: number): Promise<void> => {
+  await axios.delete(CUSTOMERS_BASE, {
+    params: { id },
+    headers: CUSTOMERS_HEADERS,
+  });
+};

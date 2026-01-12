@@ -10,6 +10,7 @@ import {
 import { getRoles } from "../../services/rolesApi";
 import {
   createCustomer,
+  deleteCustomer,
   getCustomers,
   updateCustomer,
 } from "../../services/customersApi";
@@ -197,7 +198,16 @@ function Users() {
     setError("");
 
     try {
+      if (Number(user.roleId) === 3) {
+        const matchedCustomer = customers.find(
+          (customer) => customer.email === user.email
+        );
+        if (matchedCustomer) {
+          await deleteCustomer(matchedCustomer.id);
+        }
+      }
       await deleteUser(user.id);
+      await loadCustomers();
       await loadUsers();
     } catch (err) {
       setError(err?.message || "Unable to delete the user.");

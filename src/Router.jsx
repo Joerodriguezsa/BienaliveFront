@@ -20,6 +20,7 @@ import ProductsSidebar from "./components/ShopPages/ProductsSidebar.jsx";
 import ProductsDetails from "./components/ShopPages/ProductsDetails.jsx";
 import Cart from "./components/ShopPages/Cart.jsx";
 import Checkout from "./components/ShopPages/Checkout.jsx";
+import UsersPages from "./components/UsersPages/index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
       {
         path: "/page-faq",
         element: <Faq />,
+      },
+      {
+        path: "/page-users",
+        element: <UsersPages />,
       },
       {
         path: "*",

@@ -103,6 +103,8 @@ function Users() {
       return;
     }
 
+    if (editingCustomerId) return;
+
     const matchedCustomer = customers.find(
       (customer) => customer.email === formData.email
     );
@@ -115,7 +117,13 @@ function Users() {
         address: matchedCustomer.address || "",
       }));
     }
-  }, [customers, editingUser, formData.email, formData.roleId]);
+  }, [
+    customers,
+    editingCustomerId,
+    editingUser,
+    formData.email,
+    formData.roleId,
+  ]);
 
   const resetForm = () => {
     setFormData(initialFormState);
@@ -175,18 +183,22 @@ function Users() {
   };
 
   const handleEdit = (user) => {
+    const matchedCustomer = customers.find(
+      (customer) => customer.email === user.email
+    );
+
     setEditingUser(user);
     setFormData({
       name: user.name || "",
       email: user.email || "",
       password: "",
-      phone: "",
-      dateOfBirth: "",
-      address: "",
+      phone: matchedCustomer?.phone || "",
+      dateOfBirth: matchedCustomer?.dateOfBirth || "",
+      address: matchedCustomer?.address || "",
       roleId: user.roleId ?? null,
       active: Boolean(user.active),
     });
-    setEditingCustomerId(null);
+    setEditingCustomerId(matchedCustomer?.id ?? null);
   };
 
   const handleDelete = async (user) => {

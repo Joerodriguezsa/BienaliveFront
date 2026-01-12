@@ -215,6 +215,9 @@ function Users() {
   };
 
   const roleLookup = new Map(roles.map((role) => [role.id, role.name]));
+  const customerLookup = new Map(
+    customers.map((customer) => [customer.email, customer])
+  );
   const normalizedSearch = searchText.trim().toLowerCase();
 
   const filteredUsers = users.filter((user) => {
@@ -361,6 +364,7 @@ function Users() {
             users={paginatedUsers}
             isLoading={isLoading}
             roleLookup={roleLookup}
+            customerLookup={customerLookup}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />

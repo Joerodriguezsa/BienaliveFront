@@ -159,7 +159,8 @@ function Users() {
         if (editingCustomerId) {
           await updateCustomer(editingCustomerId, customerPayload);
         } else {
-          await createCustomer(customerPayload);
+          const createdCustomer = await createCustomer(customerPayload);
+          setEditingCustomerId(createdCustomer.id);
         }
       }
 

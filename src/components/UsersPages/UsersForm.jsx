@@ -40,19 +40,7 @@ function UsersForm({
         </div>
       </div>
       <div className="row">
-        <div className="col-md-4">
-          <div className="mb-3">
-            <input
-              name="phone"
-              className="form-control"
-              type="tel"
-              placeholder="Phone"
-              value={formData.phone}
-              onChange={(event) => onChange("phone", event.target.value)}
-            />
-          </div>
-        </div>
-        <div className="col-md-4">
+        <div className="col-md-6">
           <div className="mb-3">
             <select
               name="roleId"
@@ -75,7 +63,7 @@ function UsersForm({
             </select>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-6">
           <div className="mb-3">
             <select
               name="active"

@@ -24,7 +24,6 @@ function UsersTable({ users, isLoading, onEdit, onDelete, roleLookup }) {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Phone</th>
             <th>Role</th>
             <th>Status</th>
             <th className="text-end">Actions</th>
@@ -35,7 +34,6 @@ function UsersTable({ users, isLoading, onEdit, onDelete, roleLookup }) {
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              <td>{user.phone || "-"}</td>
               <td>{user.role || roleLookup.get(user.roleId) || "-"}</td>
               <td>{user.active ? "Active" : "Inactive"}</td>
               <td className="text-end">

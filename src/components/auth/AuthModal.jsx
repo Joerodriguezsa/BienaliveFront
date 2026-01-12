@@ -56,7 +56,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
           (data.token || data.accessToken)) ||
         (typeof data === "string" ? data : null);
 
-      if (!token) throw new Error("Login OK pero no llegó token.");
+      if (!token) throw new Error("Login OK but no token arrived.");
 
       setSession({
         token,
@@ -66,7 +66,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
 
       onClose();
     } catch (err) {
-      setError(err?.message || "Error al iniciar sesión");
+      setError(err?.message || "Login error");
     } finally {
       setLoading(false);
     }
@@ -98,7 +98,8 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
           (loginData.token || loginData.accessToken)) ||
         (typeof loginData === "string" ? loginData : null);
 
-      if (!token) throw new Error("Registro OK pero login no devolvió token.");
+      if (!token)
+        throw new Error("Register OK but login didn't return a token.");
 
       setSession({
         token,
@@ -110,7 +111,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
 
       onClose();
     } catch (err) {
-      setError(err?.message || "Error al registrarse");
+      setError(err?.message || "Error registering");
     } finally {
       setLoading(false);
     }
@@ -173,7 +174,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
           </form>
         ) : (
           <form onSubmit={doRegister}>
-            <label className="auth-label">Nombre</label>
+            <label className="auth-label">Full name</label>
             <input
               className="auth-input"
               value={name}
@@ -190,7 +191,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
               required
             />
 
-            <label className="auth-label">Contraseña</label>
+            <label className="auth-label">Password</label>
             <input
               className="auth-input"
               type="password"
@@ -199,7 +200,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
               required
             />
 
-            <label className="auth-label">Teléfono</label>
+            <label className="auth-label">Phone</label>
             <input
               className="auth-input"
               value={phone}
@@ -207,7 +208,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
               required
             />
 
-            <label className="auth-label">Fecha de nacimiento</label>
+            <label className="auth-label">Birthdate</label>
             <input
               className="auth-input"
               type="date"
@@ -216,7 +217,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
               required
             />
 
-            <label className="auth-label">Dirección</label>
+            <label className="auth-label">Address</label>
             <input
               className="auth-input"
               value={address}
@@ -225,7 +226,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
             />
 
             <button className="auth-btn" disabled={loading}>
-              {loading ? "Registrando..." : "Crear cuenta"}
+              {loading ? "Registering..." : "Create account"}
             </button>
           </form>
         )}

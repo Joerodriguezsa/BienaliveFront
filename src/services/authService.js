@@ -1,4 +1,13 @@
-const API_BASE = "https://localhost:7240";
+// ✅ Usa .env (Vite)
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+
+// ✅ fallback útil si alguien olvida configurar .env
+if (!API_BASE) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    "VITE_API_URL is not defined. Please set it in your .env file, e.g. VITE_API_URL=https://yourdomain/api"
+  );
+}
 
 async function parseResponse(res) {
   const ct = res.headers.get("content-type") || "";
@@ -40,7 +49,8 @@ async function parseResponse(res) {
 export async function registerCustomerRequest(payload) {
   // payload esperado:
   // { name, email, password, roleId: 3, active: true, phone, dateOfBirth, address }
-  const res = await fetch(`${API_BASE}/api/Auth/registercustomer`, {
+
+  const res = await fetch(`${API_BASE}/Auth/registercustomer`, {
     method: "POST",
     headers: {
       accept: "text/plain",
@@ -53,7 +63,7 @@ export async function registerCustomerRequest(payload) {
 }
 
 export async function loginRequest(email, password) {
-  const res = await fetch(`${API_BASE}/api/Auth/login`, {
+  const res = await fetch(`${API_BASE}/Auth/login`, {
     method: "POST",
     headers: {
       accept: "text/plain",
@@ -65,44 +75,21 @@ export async function loginRequest(email, password) {
   return await parseResponse(res);
 }
 
-
 function normalizeAuthError(message) {
   if (!message) return "Unexpected error occurred.";
 
-  const m = message.toLowerCase();
+  const m = String(message).toLowerCase();
 
-  if (m.includes("already registered")) {
-    return "This email is already registered.";
-  }
+  if (m.includes("already registered")) return "This email is already registered.";
+  if (m.includes("user not found")) return "User not found.";
+  if (m.includes("unauthorized")) return "Invalid email or password.";
 
-  if (m.includes("invalid") && m.includes("password")) {
-    return "Invalid password.";
-  }
+  if (m.includes("invalid") && m.includes("password")) return "Invalid password.";
+  if (m.includes("invalid") && m.includes("email")) return "Invalid email address.";
 
-  if (m.includes("invalid") && m.includes("email")) {
-    return "Invalid email address.";
-  }
+  if (m.includes("password")) return "Password does not meet security requirements.";
+  if (m.includes("required")) return "One or more required fields are missing.";
+  if (m.includes("network")) return "Network error. Please try again.";
 
-  if (m.includes("user not found")) {
-    return "User not found.";
-  }
-
-  if (m.includes("unauthorized")) {
-    return "Invalid email or password.";
-  }
-
-  if (m.includes("password")) {
-    return "Password does not meet security requirements.";
-  }
-
-  if (m.includes("required")) {
-    return "One or more required fields are missing.";
-  }
-
-  if (m.includes("network")) {
-    return "Network error. Please try again.";
-  }
-
-  // fallback seguro
   return "Unable to complete the request. Please try again.";
 }

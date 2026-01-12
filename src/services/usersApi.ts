@@ -11,6 +11,10 @@ if (!API_BASE) {
 }
 
 const USERS_BASE = `${API_BASE}/Users`;
+const USERS_HEADERS = {
+  accept: "text/plain",
+  "Content-Type": "application/json-patch+json",
+};
 
 export const getUsers = async (): Promise<User[]> => {
   const response = await axios.get<User[]>(USERS_BASE);
@@ -18,7 +22,9 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 export const createUser = async (payload: UserPayload): Promise<User> => {
-  const response = await axios.post<User>(USERS_BASE, payload);
+  const response = await axios.post<User>(USERS_BASE, payload, {
+    headers: USERS_HEADERS,
+  });
   return response.data;
 };
 
@@ -26,10 +32,19 @@ export const updateUser = async (
   id: number,
   payload: UserPayload
 ): Promise<User> => {
-  const response = await axios.put<User>(`${USERS_BASE}/${id}`, payload);
+  const response = await axios.put<User>(
+    USERS_BASE,
+    { ...payload, id },
+    {
+      headers: USERS_HEADERS,
+    }
+  );
   return response.data;
 };
 
 export const deleteUser = async (id: number): Promise<void> => {
-  await axios.delete(`${USERS_BASE}/${id}`);
+  await axios.delete(USERS_BASE, {
+    params: { id },
+    headers: USERS_HEADERS,
+  });
 };

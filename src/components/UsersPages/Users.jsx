@@ -167,8 +167,13 @@ function Users() {
           address: formData.address,
         };
 
-        if (editingCustomerId) {
-          await updateCustomer(editingCustomerId, customerPayload);
+        const matchedCustomer =
+          editingCustomerId ||
+          customers.find((customer) => customer.userId === userId)?.id;
+
+        if (matchedCustomer) {
+          await updateCustomer(matchedCustomer, customerPayload);
+          setEditingCustomerId(matchedCustomer);
         } else {
           const createdCustomer = await createCustomer(customerPayload);
           setEditingCustomerId(createdCustomer.id);

@@ -41,7 +41,7 @@ function UsersTable({
         </thead>
         <tbody>
           {users.map((user) => {
-            const customer = customerLookup.get(user.email);
+            const customer = customerLookup.get(user.id);
 
             return (
               <tr key={user.id}>

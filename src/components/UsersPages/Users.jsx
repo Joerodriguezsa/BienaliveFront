@@ -106,7 +106,7 @@ function Users() {
     if (editingCustomerId) return;
 
     const matchedCustomer = customers.find(
-      (customer) => customer.email === formData.email
+      (customer) => customer.userId === editingUser.id
     );
     if (matchedCustomer) {
       setEditingCustomerId(matchedCustomer.id);
@@ -149,14 +149,17 @@ function Users() {
         delete payload.password;
       }
 
+      let userId = editingUser?.id;
       if (editingUser) {
         await updateUser(editingUser.id, payload);
       } else {
-        await createUser(payload);
+        const createdUser = await createUser(payload);
+        userId = createdUser.id;
       }
 
-      if (Number(payload.roleId) === 3) {
+      if (Number(payload.roleId) === 3 && userId) {
         const customerPayload = {
+          userId,
           name: payload.name,
           email: payload.email,
           phone: formData.phone,
@@ -184,7 +187,7 @@ function Users() {
 
   const handleEdit = (user) => {
     const matchedCustomer = customers.find(
-      (customer) => customer.email === user.email
+      (customer) => customer.userId === user.id
     );
 
     setEditingUser(user);
@@ -213,7 +216,7 @@ function Users() {
     try {
       if (Number(user.roleId) === 3) {
         const matchedCustomer = customers.find(
-          (customer) => customer.email === user.email
+          (customer) => customer.userId === user.id
         );
         if (matchedCustomer) {
           await deleteCustomer(matchedCustomer.id);
@@ -229,7 +232,7 @@ function Users() {
 
   const roleLookup = new Map(roles.map((role) => [role.id, role.name]));
   const customerLookup = new Map(
-    customers.map((customer) => [customer.email, customer])
+    customers.map((customer) => [customer.userId, customer])
   );
   const normalizedSearch = searchText.trim().toLowerCase();
 

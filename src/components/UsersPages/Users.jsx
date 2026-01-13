@@ -261,13 +261,10 @@ function Users() {
   const totalPages = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
   const safePage = Math.min(currentPage, totalPages);
   const startIndex = (safePage - 1) * pageSize;
-  const paginatedUsers = filteredUsers.slice(
-    startIndex,
-    startIndex + pageSize
-  );
+  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + pageSize);
 
   return (
-    <section className="contact-details pt-100 pb-100">
+    <section className="contact-details pt-30 pb-100">
       <div className="container">
         <div className="row align-items-center mb-40">
           <div className="col-lg-8">

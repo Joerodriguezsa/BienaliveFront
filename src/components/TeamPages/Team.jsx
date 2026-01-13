@@ -10,7 +10,7 @@ import { getTeamMembersCompleteCached } from "../../services/teamMembersApi";
 function Team() {
   return (
     <>
-      <section className="team-section pb-70 pt-120">
+      <section className="team-section pt-30">
         <div className="container">
           <div className="row">
             <div className="col-lg-3 col-md-6 team-block mb-50">

@@ -1,15 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import BackToTop from "../BackToTop.jsx";
 import Header from "../HomeOne/Header.jsx";
 import Footer from "../HomeOne/Footer.jsx";
 import PageTitle from "../PageTitle.jsx";
-import ProgressBar2 from "../../lib/ProgressBar2";
+import { getTeamMembersCompleteCached } from "../../services/teamMembersApi";
 
 // Import images
 import TeamDetailsImg from "../../assets/images/resource/team-details.jpg";
 
 function TeamDetails() {
+    const { id } = useParams();
+    const [teamMembers, setTeamMembers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const loadTeam = async () => {
+            setIsLoading(true);
+            setError("");
+
+            try {
+                const data = await getTeamMembersCompleteCached();
+                setTeamMembers(Array.isArray(data) ? data : []);
+            } catch (err) {
+                setError(err?.message || "Unable to load team member details.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadTeam();
+    }, []);
+
+    const selectedMember = useMemo(() => {
+        if (!id) return null;
+        const parsedId = Number(id);
+        if (Number.isNaN(parsedId)) return null;
+        return teamMembers.find((member) => member.id === parsedId) || null;
+    }, [id, teamMembers]);
+
     return (
         <>
             <Header />
@@ -24,7 +54,10 @@ function TeamDetails() {
                             <div className="col-xl-6 col-lg-6">
                                 <div className="team-details__top-left">
                                     <div className="team-details__top-img">
-                                        <img src={TeamDetailsImg} alt="Image" />
+                                        <img
+                                            src={selectedMember?.photo || TeamDetailsImg}
+                                            alt={selectedMember?.name || "Team member"}
+                                        />
                                         <div className="team-details__big-text"></div>
                                     </div>
                                 </div>
@@ -32,26 +65,35 @@ function TeamDetails() {
                             <div className="col-xl-6 col-lg-6">
                                 <div className="team-details__top-right">
                                     <div className="team-details__top-content">
-                                        <h3 className="team-details__top-name">Aleesha Brown</h3>
-                                        <p className="team-details__top-title mb-20">Managing Director & CEO</p>
-                                        <p className="team-details__top-text-1">I help my clients stand out and they help me grow.</p>
+                                        {error ? (
+                                            <p className="text-danger">{error}</p>
+                                        ) : null}
+                                        {isLoading ? (
+                                            <p>Loading team member...</p>
+                                        ) : selectedMember ? (
+                                            <>
+                                                <h3 className="team-details__top-name">{selectedMember.name}</h3>
+                                                <p className="team-details__top-title mb-20">
+                                                    {selectedMember.degree || "Team Member"}
+                                                </p>
+                                                <p className="team-details__top-text-1">
+                                                    {selectedMember.aboutMe || "Sin información adicional."}
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <p>No team member data available.</p>
+                                        )}
                                         <div className="team-details-contact mb-30">
                                             <h5 className="mb-0">Email Address</h5>
                                             <div>
-                                                <span>needhelp@yourdomain.com</span>
-                                            </div>
-                                        </div>
-                                        <div className="team-details-contact mb-30">
-                                            <h5 className="mb-0">Phone Number</h5>
-                                            <div>
-                                                <span>+012-3456-789</span>
+                                                <span>{selectedMember?.email || "Not available"}</span>
                                             </div>
                                         </div>
                                         <div className="team-details-contact mb-30">
                                             <div className="team-details__bottom-left">
                                                 <h4 className="team-details__bottom-left-title">Personal Experience</h4>
                                                 <p className="team-details__bottom-left-text">
-                                                    When an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries architecto dolorem ipsum quia
+                                                    {selectedMember?.personalExperience || "Sin información adicional."}
                                                 </p>
                                             </div>
                                         </div>

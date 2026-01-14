@@ -7,6 +7,7 @@ import AboutUs from "./components/AboutUs/index.jsx";
 import Gallery from "./components/GalleryPages/index.jsx";
 import Team from "./components/TeamPages/index.jsx";
 import TeamDetails from "./components/TeamPages/TeamDetails.jsx";
+import TeamMembersPages from "./components/TeamMembersPages/index.jsx";
 import Services from "./components/ServicesPages/index.jsx";
 import ServicesDetails from "./components/ServicesPages/ServicesDetails.jsx";
 import Testimonial from "./components/TestimonialPages/index.jsx";
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       },
       {
         path: "/page-team-details",
+        element: <TeamDetails />,
+      },
+      {
+        path: "/page-team-details/:id",
         element: <TeamDetails />,
       },
       {
@@ -110,6 +115,10 @@ const router = createBrowserRouter([
       {
         path: "/page-users",
         element: <UsersPages />,
+      },
+      {
+        path: "/page-team-members",
+        element: <TeamMembersPages />,
       },
       {
         path: "*",

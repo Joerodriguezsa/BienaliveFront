@@ -213,12 +213,41 @@ function TeamMembers() {
     setSelectedServiceIds(memberServiceIds);
   };
 
-  const handleServiceToggle = (serviceId) => {
-    setSelectedServiceIds((prev) =>
-      prev.includes(serviceId)
-        ? prev.filter((id) => id !== serviceId)
-        : [...prev, serviceId]
+  const handleServiceToggle = async (serviceId) => {
+    const wasSelected = selectedServiceIds.includes(serviceId);
+    const nextSelected = wasSelected
+      ? selectedServiceIds.filter((id) => id !== serviceId)
+      : [...selectedServiceIds, serviceId];
+
+    setSelectedServiceIds(nextSelected);
+
+    if (!editingMember) return;
+
+    const memberId = editingMember.id;
+    const existingAssignment = teamServices.find(
+      (teamService) =>
+        teamService.teamMemberId === memberId &&
+        String(teamService.serviceId) === serviceId
     );
+
+    try {
+      if (wasSelected && existingAssignment) {
+        await deleteTeamService(existingAssignment.id);
+        setTeamServices((prev) =>
+          prev.filter((item) => item.id !== existingAssignment.id)
+        );
+      }
+
+      if (!wasSelected && !existingAssignment) {
+        const createdAssignment = await createTeamService({
+          teamMemberId: memberId,
+          serviceId: Number(serviceId),
+        });
+        setTeamServices((prev) => [...prev, createdAssignment]);
+      }
+    } catch (err) {
+      setError(err?.message || "Unable to update service assignment.");
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -350,6 +379,7 @@ function TeamMembers() {
                               type="checkbox"
                               checked={selectedServiceIds.includes(id)}
                               onChange={() => handleServiceToggle(id)}
+                              disabled={isSubmitting}
                             />
                             <span>{service.name}</span>
                           </label>

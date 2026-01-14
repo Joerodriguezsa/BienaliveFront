@@ -161,7 +161,7 @@ function TeamMembers() {
   const handleEdit = (member) => {
     setEditingMember(member);
     setFormData({
-      userId: member.userId ?? "",
+      userId: member.userId ? String(member.userId) : "",
       degree: member.degree ?? "",
       personalExperience: member.personalExperience ?? "",
       aboutMe: member.aboutMe ?? "",
@@ -294,21 +294,23 @@ function TeamMembers() {
                     </small>
                   ) : null}
                 </div>
-                <div className="form-group d-flex gap-10">
+                <div className="d-flex flex-wrap gap-3 mt-4">
                   <button
                     type="submit"
-                    className="theme-btn"
+                    className="btn-one"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Saving..." : "Save"}
+                    <span className="btn-title">
+                      {isSubmitting ? "Saving..." : "Save"}
+                    </span>
                   </button>
                   <button
                     type="button"
-                    className="theme-btn style-two"
+                    className="btn-two bg-theme-color5"
                     onClick={resetForm}
                     disabled={isSubmitting}
                   >
-                    Clear
+                    <span className="btn-title">Clear</span>
                   </button>
                 </div>
               </form>

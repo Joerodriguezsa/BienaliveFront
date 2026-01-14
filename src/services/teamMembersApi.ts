@@ -9,7 +9,7 @@ const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
 const TEAM_MEMBERS_BASE = `${API_BASE}/TeamMembers`;
 const TEAM_MEMBERS_HEADERS = {
   accept: "text/plain",
-  "Content-Type": "application/json-patch+json",
+  "Content-Type": "application/json",
 };
 
 if (!API_BASE) {

@@ -5,6 +5,8 @@ import Header from "../HomeOne/Header.jsx";
 import Footer from "../HomeOne/Footer.jsx";
 import PageTitle from "../PageTitle.jsx";
 import { getTeamMembersCompleteCached } from "../../services/teamMembersApi";
+import { getServices } from "../../services/servicesApi";
+import { getTeamServices } from "../../services/teamServicesApi";
 
 // Import images
 import TeamDetailsImg from "../../assets/images/resource/team-details.jpg";
@@ -12,6 +14,8 @@ import TeamDetailsImg from "../../assets/images/resource/team-details.jpg";
 function TeamDetails() {
     const { id } = useParams();
     const [teamMembers, setTeamMembers] = useState([]);
+    const [services, setServices] = useState([]);
+    const [teamServices, setTeamServices] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -21,8 +25,18 @@ function TeamDetails() {
             setError("");
 
             try {
-                const data = await getTeamMembersCompleteCached();
-                setTeamMembers(Array.isArray(data) ? data : []);
+                const [membersData, servicesData, teamServicesData] =
+                    await Promise.all([
+                        getTeamMembersCompleteCached(),
+                        getServices(),
+                        getTeamServices(),
+                    ]);
+
+                setTeamMembers(Array.isArray(membersData) ? membersData : []);
+                setServices(Array.isArray(servicesData) ? servicesData : []);
+                setTeamServices(
+                    Array.isArray(teamServicesData) ? teamServicesData : []
+                );
             } catch (err) {
                 setError(err?.message || "Unable to load team member details.");
             } finally {
@@ -39,6 +53,20 @@ function TeamDetails() {
         if (Number.isNaN(parsedId)) return null;
         return teamMembers.find((member) => member.id === parsedId) || null;
     }, [id, teamMembers]);
+
+    const assignedServices = useMemo(() => {
+        if (!selectedMember) return [];
+        const assignedServiceIds = new Set(
+            teamServices
+                .filter(
+                    (teamService) =>
+                        teamService.teamMemberId === selectedMember.id
+                )
+                .map((teamService) => teamService.serviceId)
+        );
+
+        return services.filter((service) => assignedServiceIds.has(service.id));
+    }, [selectedMember, services, teamServices]);
 
     return (
         <>
@@ -95,6 +123,22 @@ function TeamDetails() {
                                                 <p className="team-details__bottom-left-text">
                                                     {selectedMember?.personalExperience || "Sin información adicional."}
                                                 </p>
+                                            </div>
+                                        </div>
+                                        <div className="team-details-contact mb-30">
+                                            <div className="team-details__bottom-left">
+                                                <h4 className="team-details__bottom-left-title">Services</h4>
+                                                {assignedServices.length ? (
+                                                    <ul className="list-unstyled">
+                                                        {assignedServices.map((service) => (
+                                                            <li key={service.id}>{service.name}</li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    <p className="team-details__bottom-left-text">
+                                                        No services assigned.
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

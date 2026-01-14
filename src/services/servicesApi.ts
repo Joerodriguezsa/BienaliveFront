@@ -1,10 +1,17 @@
-import.meta.env.VITE_API_URL
-import { Service } from "../types/service";
 import axios from "axios";
+import { Service } from "../types/service";
 
 const SERVICES_CACHE_KEY = "services_with_images";
 const CACHE_HOURS = 6;
 const CACHE_TTL = CACHE_HOURS * 60 * 60 * 1000;
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+
+if (!API_BASE) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    "VITE_API_URL is not defined. Please set it in your .env file, e.g. VITE_API_URL=https://yourdomain/api"
+  );
+}
 
 type ServicesCache = {
   data: Service[];
@@ -13,7 +20,14 @@ type ServicesCache = {
 
 export const getServicesWithImages = async (): Promise<Service[]> => {
   const response = await axios.get<Service[]>(
-    `${import.meta.env.VITE_API_URL}/Services/ConsultarServicesImages`
+    `${API_BASE}/Services/ConsultarServicesImages`
+  );
+  return response.data;
+};
+
+export const getServices = async (): Promise<Service[]> => {
+  const response = await axios.get<Service[]>(
+    `${API_BASE}/Services/ConsultarServices`
   );
   return response.data;
 };

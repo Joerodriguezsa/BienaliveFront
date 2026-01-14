@@ -5,6 +5,12 @@ import {
   getTeamMembersComplete,
   updateTeamMember,
 } from "../../services/teamMembersApi";
+import { getServices } from "../../services/servicesApi";
+import {
+  createTeamService,
+  deleteTeamService,
+  getTeamServices,
+} from "../../services/teamServicesApi";
 import { getUsers } from "../../services/usersApi";
 
 const STORAGE_BASE =
@@ -94,11 +100,15 @@ const uploadPhoto = async (file, userId) => {
 function TeamMembers() {
   const [teamMembers, setTeamMembers] = useState([]);
   const [users, setUsers] = useState([]);
+  const [services, setServices] = useState([]);
+  const [teamServices, setTeamServices] = useState([]);
+  const [selectedServiceIds, setSelectedServiceIds] = useState([]);
   const [formData, setFormData] = useState(initialFormState);
   const [photoFile, setPhotoFile] = useState(null);
   const [editingMember, setEditingMember] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUsersLoading, setIsUsersLoading] = useState(true);
+  const [isServicesLoading, setIsServicesLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -130,9 +140,36 @@ function TeamMembers() {
     }
   };
 
+  const loadServices = async () => {
+    setIsServicesLoading(true);
+    setError("");
+
+    try {
+      const data = await getServices();
+      setServices(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err?.message || "Unable to load services.");
+    } finally {
+      setIsServicesLoading(false);
+    }
+  };
+
+  const loadTeamServices = async () => {
+    setError("");
+
+    try {
+      const data = await getTeamServices();
+      setTeamServices(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err?.message || "Unable to load team services.");
+    }
+  };
+
   useEffect(() => {
     loadTeamMembers();
     loadUsers();
+    loadServices();
+    loadTeamServices();
   }, []);
 
   const userLookup = useMemo(
@@ -144,6 +181,7 @@ function TeamMembers() {
     setFormData(initialFormState);
     setPhotoFile(null);
     setEditingMember(null);
+    setSelectedServiceIds([]);
   };
 
   const handleChange = (field, value) => {
@@ -159,6 +197,10 @@ function TeamMembers() {
   };
 
   const handleEdit = (member) => {
+    const memberServiceIds = teamServices
+      .filter((teamService) => teamService.teamMemberId === member.id)
+      .map((teamService) => String(teamService.serviceId));
+
     setEditingMember(member);
     setFormData({
       userId: member.userId ? String(member.userId) : "",
@@ -168,6 +210,15 @@ function TeamMembers() {
       photo: member.photo ?? "",
     });
     setPhotoFile(null);
+    setSelectedServiceIds(memberServiceIds);
+  };
+
+  const handleServiceToggle = (serviceId) => {
+    setSelectedServiceIds((prev) =>
+      prev.includes(serviceId)
+        ? prev.filter((id) => id !== serviceId)
+        : [...prev, serviceId]
+    );
   };
 
   const handleSubmit = async (event) => {
@@ -189,14 +240,50 @@ function TeamMembers() {
         photo: photoUrl || null,
       };
 
+      let memberId = editingMember?.id;
       if (editingMember) {
         await updateTeamMember(editingMember.id, payload);
+        memberId = editingMember.id;
       } else {
-        await createTeamMember(payload);
+        const createdMember = await createTeamMember(payload);
+        memberId = createdMember.id;
+      }
+
+      if (memberId) {
+        const existingAssignments = teamServices.filter(
+          (teamService) => teamService.teamMemberId === memberId
+        );
+        const existingServiceIds = new Set(
+          existingAssignments.map((item) => String(item.serviceId))
+        );
+        const selectedIdsSet = new Set(selectedServiceIds);
+
+        const servicesToAdd = selectedServiceIds.filter(
+          (serviceId) => !existingServiceIds.has(serviceId)
+        );
+        const servicesToRemove = existingAssignments.filter(
+          (item) => !selectedIdsSet.has(String(item.serviceId))
+        );
+
+        await Promise.all(
+          servicesToAdd.map((serviceId) =>
+            createTeamService({
+              teamMemberId: memberId,
+              serviceId: Number(serviceId),
+            })
+          )
+        );
+
+        await Promise.all(
+          servicesToRemove.map((assignment) =>
+            deleteTeamService(assignment.id)
+          )
+        );
       }
 
       clearTeamMembersCache();
       await loadTeamMembers();
+      await loadTeamServices();
       resetForm();
     } catch (err) {
       setError(err?.message || "Unable to save the team member.");
@@ -235,12 +322,43 @@ function TeamMembers() {
                     disabled={isUsersLoading}
                   >
                     <option value="">Select a user</option>
-                    {users.map((user) => (
-                      <option key={user.id} value={user.id}>
-                        {user.name} ({user.email})
-                      </option>
-                    ))}
+                    {users
+                      .filter(
+                        (user) => user.roleId === 1 || user.roleId === 2
+                      )
+                      .map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.name} ({user.email})
+                        </option>
+                      ))}
                   </select>
+                </div>
+                <div className="form-group">
+                  <label>Assigned services</label>
+                  {isServicesLoading ? (
+                    <p>Loading services...</p>
+                  ) : services.length ? (
+                    <div className="d-flex flex-column gap-2">
+                      {services.map((service) => {
+                        const id = String(service.id);
+                        return (
+                          <label
+                            className="d-flex align-items-center gap-2"
+                            key={service.id}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedServiceIds.includes(id)}
+                              onChange={() => handleServiceToggle(id)}
+                            />
+                            <span>{service.name}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p>No services available.</p>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="degree">Degree</label>

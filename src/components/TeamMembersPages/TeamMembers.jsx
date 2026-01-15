@@ -13,8 +13,8 @@ import {
 } from "../../services/teamServicesApi";
 import { getUsers } from "../../services/usersApi";
 
-const STORAGE_BASE =
-  "https://bienalivestorage.blob.core.windows.net/images/team/";
+const STORAGE_UPLOAD_URL =
+  "https://bienaliveback.azurewebsites.net/api/BlobStorage/SubirArchivo";
 
 const initialFormState = {
   userId: "",
@@ -78,23 +78,33 @@ const convertToJpeg = (file) =>
 const uploadPhoto = async (file, userId) => {
   const jpegBlob = await convertToJpeg(file);
   const baseName = normalizeFileName(file.name) || "team-member";
-  const filename = `${baseName}-${userId || "new"}-${Date.now()}.jpg`;
-  const uploadUrl = `${STORAGE_BASE}${filename}`;
+  const filename = `${baseName}-${userId || "new"}-${Date.now()}`;
+  const formData = new FormData();
+  const jpegFile = new File([jpegBlob], `${filename}.jpg`, {
+    type: "image/jpeg",
+  });
+  formData.append("Archivo", jpegFile);
+  formData.append("NombreArchivo", filename);
+  formData.append("Carpeta", "team");
 
-  const response = await fetch(uploadUrl, {
-    method: "PUT",
+  const response = await fetch(STORAGE_UPLOAD_URL, {
+    method: "POST",
     headers: {
-      "Content-Type": "image/jpeg",
-      "x-ms-blob-type": "BlockBlob",
+      accept: "text/plain",
     },
-    body: jpegBlob,
+    body: formData,
   });
 
   if (!response.ok) {
     throw new Error("Unable to upload photo to storage.");
   }
 
-  return uploadUrl;
+  const data = await response.json();
+  if (!data?.url) {
+    throw new Error("Storage response missing photo URL.");
+  }
+
+  return data.url;
 };
 
 function TeamMembers() {

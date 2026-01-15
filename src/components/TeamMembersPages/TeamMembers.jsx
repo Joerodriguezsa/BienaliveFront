@@ -15,6 +15,13 @@ import { getUsers } from "../../services/usersApi";
 
 const STORAGE_BASE =
   "https://bienalivestorage.blob.core.windows.net/images/team/";
+const STORAGE_SAS = import.meta.env.VITE_TEAM_MEMBERS_STORAGE_SAS || "";
+
+const buildUploadUrl = (filename) => {
+  const cleanSas = STORAGE_SAS.replace(/^\?/, "");
+  const sasSuffix = cleanSas ? `?${cleanSas}` : "";
+  return `${STORAGE_BASE}${filename}${sasSuffix}`;
+};
 
 const initialFormState = {
   userId: "",
@@ -79,7 +86,7 @@ const uploadPhoto = async (file, userId) => {
   const jpegBlob = await convertToJpeg(file);
   const baseName = normalizeFileName(file.name) || "team-member";
   const filename = `${baseName}-${userId || "new"}-${Date.now()}.jpg`;
-  const uploadUrl = `${STORAGE_BASE}${filename}`;
+  const uploadUrl = buildUploadUrl(filename);
 
   const response = await fetch(uploadUrl, {
     method: "PUT",
@@ -91,6 +98,11 @@ const uploadPhoto = async (file, userId) => {
   });
 
   if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error(
+        "Upload blocked by storage CORS or missing permissions. Configure Azure Blob CORS to allow PUT/OPTIONS from this origin and ensure a valid SAS token or storage access."
+      );
+    }
     throw new Error("Unable to upload photo to storage.");
   }
 

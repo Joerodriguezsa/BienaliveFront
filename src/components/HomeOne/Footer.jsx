@@ -1,28 +1,29 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import FooterImage1 from '../../assets/images/shape/footer-shape-left.png';
-import FooterImage2 from '../../assets/images/logo/logo-light.png';
-import { COMPANY_NAME } from '../../config/constants';
+import React from "react";
+import { Link } from "react-router-dom";
+import FooterImage1 from "../../assets/images/shape/footer-shape-left.png";
+import FooterImage2 from "../../assets/images/logo/logo-light.png";
+import { COMPANY_NAME } from "../../config/constants";
 
 function FooterOne({ className }) {
-
-    return (
-		<footer className={`footer-area ${className || ''}`}>
-			<div className="footer__shape">
-				<img src={FooterImage1} alt="shape"/>
-			</div>
-			<div className="container">
-				<div className="footer__head">
-					<Link to="/" className="logo"><img src={FooterImage2} alt="logo"/></Link>
-				</div>
-				<div className="row g-5">
-					<div className="col-md-6 col-xl-4">
-						<div className="footer__item">
-							<div className="footer-about">
-								<div>
-									<p className="text">{COMPANY_NAME} Social Media.</p>
-									<div className="socials">
-										{/* <Link to="#0">
+  return (
+    <footer className={`footer-area ${className || ""}`}>
+      <div className="footer__shape">
+        <img src={FooterImage1} alt="shape" />
+      </div>
+      <div className="container">
+        <div className="footer__head">
+          <Link to="/" className="logo">
+            <img src={FooterImage2} alt="logo" />
+          </Link>
+        </div>
+        <div className="row g-5">
+          <div className="col-md-6 col-xl-4">
+            <div className="footer__item">
+              <div className="footer-about">
+                <div>
+                  <p className="text">{COMPANY_NAME} Social Media.</p>
+                  <div className="socials">
+                    {/* <Link to="#0">
 											<svg width="22" height="23" viewBox="0 0 25 26" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
 												<path
@@ -30,38 +31,57 @@ function FooterOne({ className }) {
 													fill="white" />
 											</svg>
 										</Link> */}
-										<Link to="#0"><i className="fa-brands fa-facebook-f"></i></Link>
-										<Link to="#0"><i className="fa-brands fa-instagram"></i></Link>
-										{/* <Link to="#0"><i className="fa-brands fa-vimeo-v"></i></Link> */}
-									</div>
-								</div>
-								<p className="copyright-text">&copy; 2025 <Link to="#">{COMPANY_NAME}</Link>, All Rights Reserved
-								</p>
-							</div>
-						</div>
-					</div>
-					<div className="col-md-6 col-xl-2">
-						<div className="footer__item">
-							<h3 className="title">Links</h3>
-							<ul className="links">
-								{/* <li><Link to="#0">About</Link></li> */}
-								{/* <li><Link to="#0">Pricing</Link></li> */}
-								<li><Link to="#0">Shop</Link></li>
-								<li><Link to="#0">Contact</Link></li>
-							</ul>
-						</div>
-					</div>
-					<div className="col-md-6 col-xl-3">
-						<div className="footer__item">
-							<h3 className="title">Contact</h3>
-							<ul className="links">
-								<li><Link to="#0">5920 Macleod Trail Southwest, <br /> Calgary, Alberta T2H 0K2</Link></li>
-								<li><Link to="#0">Esbeidia Banderas</Link></li>
-								<li><Link to="#0">esbebanderas@hotmail.com</Link></li>
-							</ul>
-						</div>
-					</div>
-					<div className="col-md-6 col-xl-3">
+                    <Link to="#0">
+                      <i className="fa-brands fa-facebook-f"></i>
+                    </Link>
+                    <Link to="#0">
+                      <i className="fa-brands fa-instagram"></i>
+                    </Link>
+                    {/* <Link to="#0"><i className="fa-brands fa-vimeo-v"></i></Link> */}
+                  </div>
+                </div>
+                <p className="copyright-text">
+                  &copy; 2026 <Link to="#">{COMPANY_NAME}</Link>, All Rights
+                  Reserved
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* <div className="col-md-6 col-xl-2">
+            <div className="footer__item">
+              <h3 className="title">Links</h3>
+              <ul className="links">
+                <li><Link to="#0">About</Link></li>
+                <li><Link to="#0">Pricing</Link></li>
+                <li>
+                  <Link to="#0">Shop</Link>
+                </li>
+                <li>
+                  <Link to="#0">Contact</Link>
+                </li>
+              </ul>
+            </div>
+          </div> */}
+          <div className="col-md-6 col-xl-3">
+            <div className="footer__item">
+              <h3 className="title">Contact</h3>
+              <ul className="links">
+                <li>
+                  <Link to="#0">
+                    5920 Macleod Trail Southwest, <br /> Calgary, Alberta T2H
+                    0K2
+                  </Link>
+                </li>
+                <li>
+                  <Link to="#0">Esbeidia Banderas</Link>
+                </li>
+                <li>
+                  <Link to="#0">esbebanderas@hotmail.com</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {/* <div className="col-md-6 col-xl-3">
 						<div className="footer__item">
 							<h3 className="title">Open Hours</h3>
 							<ul className="time-table">
@@ -70,11 +90,11 @@ function FooterOne({ className }) {
 								<li>Sunday: <span>09:00-18:00</span></li>
 							</ul>
 						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-    );
+					</div> */}
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 export default FooterOne;

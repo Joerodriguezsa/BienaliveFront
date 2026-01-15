@@ -314,9 +314,7 @@ function TeamMembers() {
         );
 
         await Promise.all(
-          servicesToRemove.map((assignment) =>
-            deleteTeamService(assignment.id)
-          )
+          servicesToRemove.map((assignment) => deleteTeamService(assignment.id))
         );
       }
 
@@ -362,9 +360,7 @@ function TeamMembers() {
                   >
                     <option value="">Select a user</option>
                     {users
-                      .filter(
-                        (user) => user.roleId === 1 || user.roleId === 2
-                      )
+                      .filter((user) => user.roleId === 1 || user.roleId === 2)
                       .map((user) => (
                         <option key={user.id} value={user.id}>
                           {user.name} ({user.email})
@@ -426,7 +422,9 @@ function TeamMembers() {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="personalExperience">Personal experience</label>
+                  <label htmlFor="personalExperience">
+                    Personal experience
+                  </label>
                   <textarea
                     id="personalExperience"
                     className="form-control"
@@ -451,6 +449,9 @@ function TeamMembers() {
                       Current photo: {formData.photo}
                     </small>
                   ) : null}
+                  <label htmlFor="photo">
+                    **Preferably use a photo size of 413 x 515
+                  </label>
                 </div>
                 <div className="d-flex flex-wrap gap-3 mt-4">
                   <button

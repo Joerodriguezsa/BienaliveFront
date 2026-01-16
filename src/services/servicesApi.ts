@@ -15,6 +15,16 @@ const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
 const SERVICES_BASE = `${API_BASE}/Services`;
 const SERVICE_IMAGES_BASE = `${API_BASE}/ServiceImages`;
 const SERVICES_TIME_PRICES_BASE = `${API_BASE}/ServicesTimePrice`;
+const SERVICES_ENDPOINTS = {
+  create: `${SERVICES_BASE}/CrearServices`,
+  update: `${SERVICES_BASE}/ActualizarServices`,
+  delete: `${SERVICES_BASE}/EliminarServices`,
+};
+const SERVICE_IMAGES_ENDPOINTS = {
+  create: `${SERVICE_IMAGES_BASE}/CrearServiceImages`,
+  update: `${SERVICE_IMAGES_BASE}/ActualizarServiceImages`,
+  delete: `${SERVICE_IMAGES_BASE}/EliminarServiceImages`,
+};
 const SERVICES_HEADERS = {
   accept: "text/plain",
   "Content-Type": "application/json-patch+json",
@@ -83,7 +93,7 @@ export const clearServicesCache = () => {
 export const createService = async (
   payload: ServicePayload
 ): Promise<Service> => {
-  const response = await axios.post<Service>(SERVICES_BASE, payload, {
+  const response = await axios.post<Service>(SERVICES_ENDPOINTS.create, payload, {
     headers: SERVICES_HEADERS,
   });
   return response.data;
@@ -94,7 +104,7 @@ export const updateService = async (
   payload: ServicePayload
 ): Promise<Service> => {
   const response = await axios.put<Service>(
-    SERVICES_BASE,
+    SERVICES_ENDPOINTS.update,
     { ...payload, id },
     {
       headers: SERVICES_HEADERS,
@@ -104,7 +114,7 @@ export const updateService = async (
 };
 
 export const deleteService = async (id: number): Promise<void> => {
-  await axios.delete(SERVICES_BASE, {
+  await axios.delete(SERVICES_ENDPOINTS.delete, {
     params: { id },
     headers: SERVICES_HEADERS,
   });
@@ -114,7 +124,7 @@ export const createServiceImage = async (
   payload: ServiceImagePayload
 ): Promise<ServiceImage> => {
   const response = await axios.post<ServiceImage>(
-    SERVICE_IMAGES_BASE,
+    SERVICE_IMAGES_ENDPOINTS.create,
     payload,
     {
       headers: SERVICES_HEADERS,
@@ -128,7 +138,7 @@ export const updateServiceImage = async (
   payload: ServiceImagePayload
 ): Promise<ServiceImage> => {
   const response = await axios.put<ServiceImage>(
-    SERVICE_IMAGES_BASE,
+    SERVICE_IMAGES_ENDPOINTS.update,
     { ...payload, id },
     {
       headers: SERVICES_HEADERS,
@@ -138,7 +148,7 @@ export const updateServiceImage = async (
 };
 
 export const deleteServiceImage = async (id: number): Promise<void> => {
-  await axios.delete(SERVICE_IMAGES_BASE, {
+  await axios.delete(SERVICE_IMAGES_ENDPOINTS.delete, {
     params: { id },
     headers: SERVICES_HEADERS,
   });

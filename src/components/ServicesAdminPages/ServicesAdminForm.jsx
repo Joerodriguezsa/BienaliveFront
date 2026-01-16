@@ -201,7 +201,7 @@ function ServicesAdminForm({
             <input
               name="primaryImageUrl"
               className="form-control"
-              type="url"
+              type="text"
               placeholder="Primary image URL"
               value={formData.primaryImageUrl}
               onChange={(event) =>
@@ -219,7 +219,7 @@ function ServicesAdminForm({
             <input
               name="secondaryImageUrl"
               className="form-control"
-              type="url"
+              type="text"
               placeholder="Secondary image URL"
               value={formData.secondaryImageUrl}
               onChange={(event) =>

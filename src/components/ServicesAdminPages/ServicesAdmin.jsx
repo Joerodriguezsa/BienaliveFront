@@ -40,9 +40,12 @@ const normalizeNumber = (value) => {
 const createTimePriceItem = (item = {}) => ({
   key: item.id ? `existing-${item.id}` : `new-${crypto.randomUUID()}`,
   id: item.id ?? null,
-  time: item.time ?? "",
-  price: item.price ?? "",
+  time: String(item.time ?? ""),
+  price: String(item.price ?? ""),
 });
+
+const toInputValue = (value) =>
+  value === null || value === undefined ? "" : String(value);
 
 const getServiceTimePrices = (service) =>
   service.servicesTimePrice || service.servicesTimePrices || [];
@@ -218,10 +221,10 @@ function ServicesAdmin() {
       name: service.name || "",
       shortDescription: service.shortDescription || "",
       longDescription: service.longDescription || "",
-      time1: service.time1 ?? timePricesSource[0]?.time ?? "",
-      price1: service.price1 ?? timePricesSource[0]?.price ?? "",
-      time2: service.time2 ?? timePricesSource[1]?.time ?? "",
-      price2: service.price2 ?? timePricesSource[1]?.price ?? "",
+      time1: toInputValue(service.time1 ?? timePricesSource[0]?.time),
+      price1: toInputValue(service.price1 ?? timePricesSource[0]?.price),
+      time2: toInputValue(service.time2 ?? timePricesSource[1]?.time),
+      price2: toInputValue(service.price2 ?? timePricesSource[1]?.price),
       primaryImageUrl: primaryImage?.imageUrl || "",
       secondaryImageUrl: secondaryImage?.imageUrl || "",
       timePrices: mappedTimePrices,

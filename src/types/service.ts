@@ -18,6 +18,12 @@ export interface ServicesTimePrice {
   price: number;
 }
 
+export interface ServiceTimePricePayload {
+  serviceId: number;
+  time: number;
+  price: number;
+}
+
 export interface Service {
   id: number;
   name: string;

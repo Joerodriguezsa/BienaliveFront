@@ -4,6 +4,8 @@ import {
   ServiceImage,
   ServiceImagePayload,
   ServicePayload,
+  ServicesTimePrice,
+  ServiceTimePricePayload,
 } from "../types/service";
 
 const SERVICES_CACHE_KEY = "services_with_images";
@@ -12,6 +14,7 @@ const CACHE_TTL = CACHE_HOURS * 60 * 60 * 1000;
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
 const SERVICES_BASE = `${API_BASE}/Services`;
 const SERVICE_IMAGES_BASE = `${API_BASE}/ServiceImages`;
+const SERVICES_TIME_PRICES_BASE = `${API_BASE}/ServicesTimePrice`;
 const SERVICES_HEADERS = {
   accept: "text/plain",
   "Content-Type": "application/json-patch+json",
@@ -136,6 +139,40 @@ export const updateServiceImage = async (
 
 export const deleteServiceImage = async (id: number): Promise<void> => {
   await axios.delete(SERVICE_IMAGES_BASE, {
+    params: { id },
+    headers: SERVICES_HEADERS,
+  });
+};
+
+export const createServiceTimePrice = async (
+  payload: ServiceTimePricePayload
+): Promise<ServicesTimePrice> => {
+  const response = await axios.post<ServicesTimePrice>(
+    SERVICES_TIME_PRICES_BASE,
+    payload,
+    {
+      headers: SERVICES_HEADERS,
+    }
+  );
+  return response.data;
+};
+
+export const updateServiceTimePrice = async (
+  id: number,
+  payload: ServiceTimePricePayload
+): Promise<ServicesTimePrice> => {
+  const response = await axios.put<ServicesTimePrice>(
+    SERVICES_TIME_PRICES_BASE,
+    { ...payload, id },
+    {
+      headers: SERVICES_HEADERS,
+    }
+  );
+  return response.data;
+};
+
+export const deleteServiceTimePrice = async (id: number): Promise<void> => {
+  await axios.delete(SERVICES_TIME_PRICES_BASE, {
     params: { id },
     headers: SERVICES_HEADERS,
   });

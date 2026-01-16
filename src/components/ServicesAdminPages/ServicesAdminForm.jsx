@@ -3,6 +3,9 @@ import React from "react";
 function ServicesAdminForm({
   formData,
   onChange,
+  onTimePriceChange,
+  onAddTimePrice,
+  onRemoveTimePrice,
   onSubmit,
   onReset,
   isSubmitting,
@@ -132,9 +135,69 @@ function ServicesAdminForm({
           </div>
         </div>
       </div>
+      <div className="mb-3">
+        <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <label className="form-label mb-0">Time &amp; price options</label>
+          <button
+            type="button"
+            className="btn-two bg-theme-color5"
+            onClick={onAddTimePrice}
+          >
+            <span className="btn-title">Add option</span>
+          </button>
+        </div>
+        {formData.timePrices.length ? (
+          <div className="mt-3">
+            {formData.timePrices.map((item, index) => (
+              <div className="row align-items-end mb-3" key={item.key}>
+                <div className="col-md-4">
+                  <label className="form-label">Time (min)</label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={item.time}
+                    onChange={(event) =>
+                      onTimePriceChange(index, "time", event.target.value)
+                    }
+                  />
+                </div>
+                <div className="col-md-4">
+                  <label className="form-label">Price</label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.price}
+                    onChange={(event) =>
+                      onTimePriceChange(index, "price", event.target.value)
+                    }
+                  />
+                </div>
+                <div className="col-md-4">
+                  <button
+                    type="button"
+                    className="btn-two bg-theme-color5"
+                    onClick={() => onRemoveTimePrice(index)}
+                  >
+                    <span className="btn-title">Remove</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted mt-2">
+            No time/price options added yet.
+          </p>
+        )}
+      </div>
       <div className="row">
         <div className="col-md-6">
           <div className="mb-3">
+            <label className="form-label">Primary image URL</label>
             <input
               name="primaryImageUrl"
               className="form-control"
@@ -145,10 +208,14 @@ function ServicesAdminForm({
                 onChange("primaryImageUrl", event.target.value)
               }
             />
+            <small className="text-muted">
+              Use the image path under <strong>images/service</strong>.
+            </small>
           </div>
         </div>
         <div className="col-md-6">
           <div className="mb-3">
+            <label className="form-label">Secondary image URL</label>
             <input
               name="secondaryImageUrl"
               className="form-control"
@@ -159,6 +226,9 @@ function ServicesAdminForm({
                 onChange("secondaryImageUrl", event.target.value)
               }
             />
+            <small className="text-muted">
+              Use the image path under <strong>images/service</strong>.
+            </small>
           </div>
         </div>
       </div>

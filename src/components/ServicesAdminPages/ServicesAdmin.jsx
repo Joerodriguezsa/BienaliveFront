@@ -5,11 +5,14 @@ import {
   clearServicesCache,
   createService,
   createServiceImage,
+  createServiceTimePrice,
   deleteService,
   deleteServiceImage,
+  deleteServiceTimePrice,
   getServicesWithImages,
   updateService,
   updateServiceImage,
+  updateServiceTimePrice,
 } from "../../services/servicesApi";
 
 const initialFormState = {
@@ -22,6 +25,7 @@ const initialFormState = {
   price2: "",
   primaryImageUrl: "",
   secondaryImageUrl: "",
+  timePrices: [],
   active: true,
 };
 
@@ -32,6 +36,13 @@ const normalizeNumber = (value) => {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : 0;
 };
+
+const createTimePriceItem = (item = {}) => ({
+  key: item.id ? `existing-${item.id}` : `new-${crypto.randomUUID()}`,
+  id: item.id ?? null,
+  time: item.time ?? "",
+  price: item.price ?? "",
+});
 
 function ServicesAdmin() {
   const [services, setServices] = useState([]);
@@ -101,6 +112,39 @@ function ServicesAdmin() {
       }
 
       if (serviceId) {
+        const desiredTimePrices = formData.timePrices.map((item) => ({
+          id: item.id,
+          time: normalizeNumber(item.time),
+          price: normalizeNumber(item.price),
+        }));
+        const existingTimePrices = editingService?.servicesTimePrices || [];
+        const desiredIds = new Set(
+          desiredTimePrices.filter((item) => item.id).map((item) => item.id)
+        );
+
+        await Promise.all(
+          desiredTimePrices.map((item) => {
+            if (item.id) {
+              return updateServiceTimePrice(item.id, {
+                serviceId,
+                time: item.time,
+                price: item.price,
+              });
+            }
+            return createServiceTimePrice({
+              serviceId,
+              time: item.time,
+              price: item.price,
+            });
+          })
+        );
+
+        await Promise.all(
+          existingTimePrices
+            .filter((item) => !desiredIds.has(item.id))
+            .map((item) => deleteServiceTimePrice(item.id))
+        );
+
         const imageInputs = [
           {
             tipoImagenId: 1,
@@ -172,6 +216,7 @@ function ServicesAdmin() {
       price2: service.price2 ?? "",
       primaryImageUrl: primaryImage?.imageUrl || "",
       secondaryImageUrl: secondaryImage?.imageUrl || "",
+      timePrices: (service.servicesTimePrices || []).map(createTimePriceItem),
       active: Boolean(service.active),
     });
   };
@@ -186,6 +231,13 @@ function ServicesAdmin() {
     setError("");
 
     try {
+      if (service.servicesTimePrices?.length) {
+        await Promise.all(
+          service.servicesTimePrices.map((item) =>
+            deleteServiceTimePrice(item.id)
+          )
+        );
+      }
       if (service.serviceImages?.length) {
         await Promise.all(
           service.serviceImages.map((image) => deleteServiceImage(image.id))
@@ -229,6 +281,28 @@ function ServicesAdmin() {
     startIndex + pageSize
   );
 
+  const handleTimePriceChange = (index, field, value) => {
+    setFormData((prev) => {
+      const next = [...prev.timePrices];
+      next[index] = { ...next[index], [field]: value };
+      return { ...prev, timePrices: next };
+    });
+  };
+
+  const handleAddTimePrice = () => {
+    setFormData((prev) => ({
+      ...prev,
+      timePrices: [...prev.timePrices, createTimePriceItem()],
+    }));
+  };
+
+  const handleRemoveTimePrice = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      timePrices: prev.timePrices.filter((_, itemIndex) => itemIndex !== index),
+    }));
+  };
+
   return (
     <section className="contact-details pt-30 pb-100">
       <div className="container">
@@ -259,6 +333,9 @@ function ServicesAdmin() {
           <ServicesAdminForm
             formData={formData}
             onChange={handleChange}
+            onTimePriceChange={handleTimePriceChange}
+            onAddTimePrice={handleAddTimePrice}
+            onRemoveTimePrice={handleRemoveTimePrice}
             onSubmit={handleSubmit}
             onReset={resetForm}
             isSubmitting={isSubmitting}

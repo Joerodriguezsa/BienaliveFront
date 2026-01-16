@@ -29,6 +29,7 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
             <th>Long description</th>
             <th>Time/Price 1</th>
             <th>Time/Price 2</th>
+            <th>Extra time/price</th>
             <th>Primary image</th>
             <th>Secondary image</th>
             <th>Status</th>
@@ -43,6 +44,9 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
             const secondaryImage = service.serviceImages?.find(
               (image) => image.tipoImagenId === 2
             );
+            const extraTimePrices = (service.servicesTimePrices || []).map(
+              (item) => `${item.time} min / $${item.price}`
+            );
 
             return (
               <tr key={service.id}>
@@ -56,6 +60,9 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
                 <td>
                   {service.time2 ? `${service.time2} min` : "-"}
                   {service.price2 ? ` / $${service.price2}` : ""}
+                </td>
+                <td>
+                  {extraTimePrices.length ? extraTimePrices.join(", ") : "-"}
                 </td>
                 <td>
                   {primaryImage?.imageUrl ? (

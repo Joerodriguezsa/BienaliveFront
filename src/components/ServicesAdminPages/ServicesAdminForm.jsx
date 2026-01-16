@@ -6,6 +6,8 @@ function ServicesAdminForm({
   onTimePriceChange,
   onAddTimePrice,
   onRemoveTimePrice,
+  onImageFileChange,
+  imagePreviews,
   onSubmit,
   onReset,
   isSubmitting,
@@ -208,6 +210,20 @@ function ServicesAdminForm({
                 onChange("primaryImageUrl", event.target.value)
               }
             />
+            {imagePreviews.primary ? (
+              <div className="mt-2">
+                <img
+                  src={imagePreviews.primary}
+                  alt="Primary preview"
+                  style={{
+                    width: "64px",
+                    height: "64px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+            ) : null}
             <small className="text-muted">
               Use the image path under <strong>images/service</strong>.
             </small>
@@ -226,8 +242,52 @@ function ServicesAdminForm({
                 onChange("secondaryImageUrl", event.target.value)
               }
             />
+            {imagePreviews.secondary ? (
+              <div className="mt-2">
+                <img
+                  src={imagePreviews.secondary}
+                  alt="Secondary preview"
+                  style={{
+                    width: "64px",
+                    height: "64px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+            ) : null}
             <small className="text-muted">
               Use the image path under <strong>images/service</strong>.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label className="form-label">Photo (JPG/PNG)</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={(event) => onImageFileChange("primary", event)}
+            />
+            <small className="text-muted">
+              File selection is preview-only. Add the final URL above.
+            </small>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="mb-3">
+            <label className="form-label">Photo (JPG/PNG)</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={(event) => onImageFileChange("secondary", event)}
+            />
+            <small className="text-muted">
+              File selection is preview-only. Add the final URL above.
             </small>
           </div>
         </div>

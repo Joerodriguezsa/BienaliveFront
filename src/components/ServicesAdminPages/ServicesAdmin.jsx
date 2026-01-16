@@ -61,6 +61,10 @@ function ServicesAdmin() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [imagePreviews, setImagePreviews] = useState({
+    primary: "",
+    secondary: "",
+  });
 
   const loadServices = async () => {
     setIsLoading(true);
@@ -83,6 +87,7 @@ function ServicesAdmin() {
   const resetForm = () => {
     setFormData(initialFormState);
     setEditingService(null);
+    setImagePreviews({ primary: "", secondary: "" });
   };
 
   const handleChange = (field, value) => {
@@ -230,6 +235,10 @@ function ServicesAdmin() {
       timePrices: mappedTimePrices,
       active: Boolean(service.active),
     });
+    setImagePreviews({
+      primary: primaryImage?.imageUrl || "",
+      secondary: secondaryImage?.imageUrl || "",
+    });
   };
 
   const handleDelete = async (service) => {
@@ -313,6 +322,22 @@ function ServicesAdmin() {
     }));
   };
 
+  const handleImageFileChange = (field, event) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      setImagePreviews((prev) => ({ ...prev, [field]: "" }));
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreviews((prev) => {
+      if (prev[field]) {
+        URL.revokeObjectURL(prev[field]);
+      }
+      return { ...prev, [field]: previewUrl };
+    });
+  };
+
   return (
     <section className="contact-details pt-30 pb-100">
       <div className="container">
@@ -346,6 +371,8 @@ function ServicesAdmin() {
             onTimePriceChange={handleTimePriceChange}
             onAddTimePrice={handleAddTimePrice}
             onRemoveTimePrice={handleRemoveTimePrice}
+            onImageFileChange={handleImageFileChange}
+            imagePreviews={imagePreviews}
             onSubmit={handleSubmit}
             onReset={resetForm}
             isSubmitting={isSubmitting}

@@ -72,26 +72,32 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
                 </td>
                 <td>
                   {primaryImage?.imageUrl ? (
-                    <a
-                      href={primaryImage.imageUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      View
-                    </a>
+                    <img
+                      src={primaryImage.imageUrl}
+                      alt={`${service.name} primary`}
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                      }}
+                    />
                   ) : (
                     "-"
                   )}
                 </td>
                 <td>
                   {secondaryImage?.imageUrl ? (
-                    <a
-                      href={secondaryImage.imageUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      View
-                    </a>
+                    <img
+                      src={secondaryImage.imageUrl}
+                      alt={`${service.name} secondary`}
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                      }}
+                    />
                   ) : (
                     "-"
                   )}

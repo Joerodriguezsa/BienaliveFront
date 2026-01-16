@@ -79,7 +79,7 @@ function ServicesAdminForm({
           </div>
         </div>
       </div>
-      <div className="row">
+      <div className="row" style={{ display: "none" }}>
         <div className="col-md-3">
           <div className="mb-3">
             <input
@@ -191,9 +191,7 @@ function ServicesAdminForm({
             ))}
           </div>
         ) : (
-          <p className="text-muted mt-2">
-            No time/price options added yet.
-          </p>
+          <p className="text-muted mt-2">No time/price options added yet.</p>
         )}
       </div>
       <div className="row">

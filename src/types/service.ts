@@ -5,6 +5,12 @@ export interface ServiceImage {
   tipoImagenId: number;
 }
 
+export interface ServiceImagePayload {
+  serviceId: number;
+  imageUrl: string;
+  tipoImagenId: number;
+}
+
 export interface ServicesTimePrice {
   id: number;
   serviceId: number;
@@ -24,4 +30,15 @@ export interface Service {
   active: boolean;
   servicesTimePrices: ServicesTimePrice[];
   serviceImages: ServiceImage[];
+}
+
+export interface ServicePayload {
+  name: string;
+  shortDescription: string;
+  longDescription: string;
+  time1: number;
+  price1: number;
+  time2: number;
+  price2: number;
+  active: boolean;
 }

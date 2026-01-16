@@ -100,6 +100,9 @@ function Navigation() {
         <Link to="/page-users">Users</Link>
       </li>
       <li>
+        <Link to="/page-services-admin">Services Admin</Link>
+      </li>
+      <li>
         <Link to="/page-team-members">Team Members</Link>
       </li>
     </ul>

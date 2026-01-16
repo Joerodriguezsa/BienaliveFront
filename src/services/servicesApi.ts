@@ -1,10 +1,21 @@
 import axios from "axios";
-import { Service } from "../types/service";
+import {
+  Service,
+  ServiceImage,
+  ServiceImagePayload,
+  ServicePayload,
+} from "../types/service";
 
 const SERVICES_CACHE_KEY = "services_with_images";
 const CACHE_HOURS = 6;
 const CACHE_TTL = CACHE_HOURS * 60 * 60 * 1000;
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+const SERVICES_BASE = `${API_BASE}/Services`;
+const SERVICE_IMAGES_BASE = `${API_BASE}/ServiceImages`;
+const SERVICES_HEADERS = {
+  accept: "text/plain",
+  "Content-Type": "application/json-patch+json",
+};
 
 if (!API_BASE) {
   // eslint-disable-next-line no-console
@@ -64,4 +75,68 @@ export const getServicesWithImagesCached = async (): Promise<Service[]> => {
 
 export const clearServicesCache = () => {
   sessionStorage.removeItem(SERVICES_CACHE_KEY);
+};
+
+export const createService = async (
+  payload: ServicePayload
+): Promise<Service> => {
+  const response = await axios.post<Service>(SERVICES_BASE, payload, {
+    headers: SERVICES_HEADERS,
+  });
+  return response.data;
+};
+
+export const updateService = async (
+  id: number,
+  payload: ServicePayload
+): Promise<Service> => {
+  const response = await axios.put<Service>(
+    SERVICES_BASE,
+    { ...payload, id },
+    {
+      headers: SERVICES_HEADERS,
+    }
+  );
+  return response.data;
+};
+
+export const deleteService = async (id: number): Promise<void> => {
+  await axios.delete(SERVICES_BASE, {
+    params: { id },
+    headers: SERVICES_HEADERS,
+  });
+};
+
+export const createServiceImage = async (
+  payload: ServiceImagePayload
+): Promise<ServiceImage> => {
+  const response = await axios.post<ServiceImage>(
+    SERVICE_IMAGES_BASE,
+    payload,
+    {
+      headers: SERVICES_HEADERS,
+    }
+  );
+  return response.data;
+};
+
+export const updateServiceImage = async (
+  id: number,
+  payload: ServiceImagePayload
+): Promise<ServiceImage> => {
+  const response = await axios.put<ServiceImage>(
+    SERVICE_IMAGES_BASE,
+    { ...payload, id },
+    {
+      headers: SERVICES_HEADERS,
+    }
+  );
+  return response.data;
+};
+
+export const deleteServiceImage = async (id: number): Promise<void> => {
+  await axios.delete(SERVICE_IMAGES_BASE, {
+    params: { id },
+    headers: SERVICES_HEADERS,
+  });
 };

@@ -57,14 +57,14 @@ function Navigation() {
                     <li><Link to="/page-404">404 Error</Link></li> */}
         {/* </ul> */}
       </li>
-      <li>
-        <Link to="/page-services">Services </Link>
-        {/* <ul className="sub-menu">
+      {/* <li> */}
+      {/* <Link to="/page-services">Services </Link> */}
+      {/* <ul className="sub-menu">
                     <li><Link to="/page-services">Service Grid</Link></li>
                     <li><Link to="/page-service-details">Service Details</Link></li>
                 </ul> */}
-      </li>
-      <li>
+      {/* </li> */}
+      {/* <li>
         <Link to="/shop-products">
           Products <i className="fa-solid fa-angle-down"></i>
         </Link>
@@ -85,7 +85,7 @@ function Navigation() {
             <Link to="/shop-cart">Cart</Link>
           </li>
         </ul>
-      </li>
+      </li> */}
       {/* <li>
                 <Link to="/#0">News <i className="fa-solid fa-angle-down"></i></Link>
                 <ul className="sub-menu">
@@ -93,17 +93,25 @@ function Navigation() {
                     <li><Link to="/news-details">News Details</Link></li>
                 </ul>
             </li> */}
+
       <li>
         <Link to="/page-contact">Contact</Link>
       </li>
       <li>
-        <Link to="/page-users">Users</Link>
-      </li>
-      <li>
-        <Link to="/page-services-admin">Services Admin</Link>
-      </li>
-      <li>
-        <Link to="/page-team-members">Team Members</Link>
+        <Link to="/">
+          Admin <i className="fa-solid fa-angle-down"></i>
+        </Link>
+        <ul className="sub-menu">
+          <li>
+            <Link to="/page-users">Users</Link>
+          </li>
+          <li>
+            <Link to="/page-services-admin">Services Admin</Link>
+          </li>
+          <li>
+            <Link to="/page-team-members">Team Members</Link>
+          </li>
+        </ul>
       </li>
     </ul>
   );

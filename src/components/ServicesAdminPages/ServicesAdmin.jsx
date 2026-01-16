@@ -44,6 +44,9 @@ const createTimePriceItem = (item = {}) => ({
   price: item.price ?? "",
 });
 
+const getServiceTimePrices = (service) =>
+  service.servicesTimePrice || service.servicesTimePrices || [];
+
 function ServicesAdmin() {
   const [services, setServices] = useState([]);
   const [formData, setFormData] = useState(initialFormState);
@@ -117,7 +120,9 @@ function ServicesAdmin() {
           time: normalizeNumber(item.time),
           price: normalizeNumber(item.price),
         }));
-        const existingTimePrices = editingService?.servicesTimePrices || [];
+        const existingTimePrices = editingService
+          ? getServiceTimePrices(editingService)
+          : [];
         const desiredIds = new Set(
           desiredTimePrices.filter((item) => item.id).map((item) => item.id)
         );
@@ -206,17 +211,20 @@ function ServicesAdmin() {
     );
 
     setEditingService(service);
+    const timePricesSource = getServiceTimePrices(service);
+    const mappedTimePrices = timePricesSource.map(createTimePriceItem);
+
     setFormData({
       name: service.name || "",
       shortDescription: service.shortDescription || "",
       longDescription: service.longDescription || "",
-      time1: service.time1 ?? "",
-      price1: service.price1 ?? "",
-      time2: service.time2 ?? "",
-      price2: service.price2 ?? "",
+      time1: service.time1 ?? timePricesSource[0]?.time ?? "",
+      price1: service.price1 ?? timePricesSource[0]?.price ?? "",
+      time2: service.time2 ?? timePricesSource[1]?.time ?? "",
+      price2: service.price2 ?? timePricesSource[1]?.price ?? "",
       primaryImageUrl: primaryImage?.imageUrl || "",
       secondaryImageUrl: secondaryImage?.imageUrl || "",
-      timePrices: (service.servicesTimePrices || []).map(createTimePriceItem),
+      timePrices: mappedTimePrices,
       active: Boolean(service.active),
     });
   };
@@ -231,11 +239,10 @@ function ServicesAdmin() {
     setError("");
 
     try {
-      if (service.servicesTimePrices?.length) {
+      const timePrices = getServiceTimePrices(service);
+      if (timePrices.length) {
         await Promise.all(
-          service.servicesTimePrices.map((item) =>
-            deleteServiceTimePrice(item.id)
-          )
+          timePrices.map((item) => deleteServiceTimePrice(item.id))
         );
       }
       if (service.serviceImages?.length) {

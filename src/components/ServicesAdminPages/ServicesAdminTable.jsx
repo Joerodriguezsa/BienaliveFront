@@ -44,9 +44,15 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
             const secondaryImage = service.serviceImages?.find(
               (image) => image.tipoImagenId === 2
             );
-            const extraTimePrices = (service.servicesTimePrices || []).map(
+            const timePricesSource =
+              service.servicesTimePrice || service.servicesTimePrices || [];
+            const extraTimePrices = timePricesSource.map(
               (item) => `${item.time} min / $${item.price}`
             );
+            const time1 = service.time1 ?? timePricesSource[0]?.time ?? null;
+            const price1 = service.price1 ?? timePricesSource[0]?.price ?? null;
+            const time2 = service.time2 ?? timePricesSource[1]?.time ?? null;
+            const price2 = service.price2 ?? timePricesSource[1]?.price ?? null;
 
             return (
               <tr key={service.id}>
@@ -54,12 +60,12 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
                 <td className="text-muted">{service.shortDescription}</td>
                 <td className="text-muted">{service.longDescription}</td>
                 <td>
-                  {service.time1 ? `${service.time1} min` : "-"}
-                  {service.price1 ? ` / $${service.price1}` : ""}
+                  {time1 !== null ? `${time1} min` : "-"}
+                  {price1 !== null ? ` / $${price1}` : ""}
                 </td>
                 <td>
-                  {service.time2 ? `${service.time2} min` : "-"}
-                  {service.price2 ? ` / $${service.price2}` : ""}
+                  {time2 !== null ? `${time2} min` : "-"}
+                  {price2 !== null ? ` / $${price2}` : ""}
                 </td>
                 <td>
                   {extraTimePrices.length ? extraTimePrices.join(", ") : "-"}

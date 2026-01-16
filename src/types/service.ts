@@ -35,6 +35,7 @@ export interface Service {
   price2: number;
   active: boolean;
   servicesTimePrices: ServicesTimePrice[];
+  servicesTimePrice?: ServicesTimePrice[];
   serviceImages: ServiceImage[];
 }
 

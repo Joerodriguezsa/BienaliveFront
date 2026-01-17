@@ -17,6 +17,17 @@ const initialFormState = {
 const normalizeTime = (value) =>
   value ? String(value).trim().slice(0, 5) : "";
 
+const formatTimeForApi = (value) => {
+  if (!value) {
+    return "";
+  }
+  const trimmed = String(value).trim();
+  if (trimmed.length === 5) {
+    return `${trimmed}:00`;
+  }
+  return trimmed;
+};
+
 const formatSlotLabel = (entry) => {
   if (entry.fullDay) {
     return "Full-day availability";
@@ -157,8 +168,12 @@ function SchedulesAdmin() {
     const payload = {
       teamMemberId: Number(formData.teamMemberId),
       scheduleDate: formData.scheduleDate,
-      startTime: formData.fullDay ? "00:00" : formData.startTime,
-      endTime: formData.fullDay ? "23:59" : formData.endTime,
+      startTime: formatTimeForApi(
+        formData.fullDay ? "00:00" : formData.startTime
+      ),
+      endTime: formatTimeForApi(
+        formData.fullDay ? "23:59" : formData.endTime
+      ),
     };
 
     setIsSubmitting(true);

@@ -27,9 +27,9 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
             <th>Name</th>
             <th>Short description</th>
             <th>Long description</th>
-            <th>Time/Price 1</th>
-            <th>Time/Price 2</th>
-            <th>Extra time/price</th>
+            {/* <th>Time/Price 1</th>
+            <th>Time/Price 2</th> */}
+            <th>time/price</th>
             <th>Primary image</th>
             <th>Secondary image</th>
             <th>Status</th>
@@ -59,14 +59,14 @@ function ServicesAdminTable({ services, isLoading, onEdit, onDelete }) {
                 <td>{service.name}</td>
                 <td className="text-muted">{service.shortDescription}</td>
                 <td className="text-muted">{service.longDescription}</td>
-                <td>
+                {/* <td>
                   {time1 !== null ? `${time1} min` : "-"}
                   {price1 !== null ? ` / $${price1}` : ""}
                 </td>
                 <td>
                   {time2 !== null ? `${time2} min` : "-"}
                   {price2 !== null ? ` / $${price2}` : ""}
-                </td>
+                </td> */}
                 <td>
                   {extraTimePrices.length ? extraTimePrices.join(", ") : "-"}
                 </td>

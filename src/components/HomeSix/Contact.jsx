@@ -4,6 +4,7 @@ import CounterUp5 from '../../lib/CounterUp5.jsx';
 import ContactImage1 from '../../assets/images/contact/contact-three-image.jpg';
 import ContactImage2 from '../../assets/images/contact/shape.png';
 import ContactBgImage from '../../assets/images/contact/bg-shape.png';
+import AppointmentBookingForm from '../Booking/AppointmentBookingForm.jsx';
 
 function Contact() {
     const [isOpen, setOpen] = useState(false);
@@ -99,36 +100,7 @@ function Contact() {
                                         data-wow-duration="1500ms"> Proin efficitur, mauris vel condimentum pulvinar,
                                         velit orci consectetur ligula.</p>
                                 </div>
-                                <form action="#0">
-                                    <div className="row g-4">
-                                        <div className="col-sm-6">
-                                            <input type="text" placeholder="Name *"/>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <input type="email" placeholder="Email Address *"/>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <select className="nice-select" name="#" id="subject">
-                                                <option value="0">Select Service *</option>
-                                                <option value="2">Stone spa</option>
-                                                <option value="2">Candle Message</option>
-                                                <option value="3">Stone Message</option>
-                                                <option value="4">Head Message</option>
-                                                <option value="5">Mesotherapy</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <div className="dateTimePicker">
-                                                <input type="date" name="filter-date" id="filter-date"
-                                                    placeholder="Select Date & Time *"/>
-                                                <i className="fa-solid fa-calendar-days"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <textarea className="mt-4 rounded-0" name="masage" id="masage"
-                                        placeholder="Write a Message"></textarea>
-                                    <button>Book Now</button>
-                                </form>
+                                <AppointmentBookingForm buttonLabel="Book Now" />
                                 <div className="shape">
                                     <img className="pxl-image-zoom" src={ContactImage2} alt="image"/>
                                 </div>

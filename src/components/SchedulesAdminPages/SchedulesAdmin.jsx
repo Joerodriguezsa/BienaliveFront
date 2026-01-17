@@ -73,6 +73,13 @@ function SchedulesAdmin() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filters, setFilters] = useState({
+    teamMemberId: "",
+    dateFrom: "",
+    dateTo: "",
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const selectedMember = useMemo(
     () =>
@@ -99,6 +106,39 @@ function SchedulesAdmin() {
   }, [entries]);
 
   const summaryRows = useMemo(() => Object.values(groupedByDay), [groupedByDay]);
+
+  const sortedRows = useMemo(() => {
+    return [...summaryRows].sort((a, b) =>
+      b.scheduleDate.localeCompare(a.scheduleDate)
+    );
+  }, [summaryRows]);
+
+  const filteredRows = useMemo(() => {
+    return sortedRows.filter((row) => {
+      if (filters.teamMemberId) {
+        if (row.teamMemberId !== Number(filters.teamMemberId)) {
+          return false;
+        }
+      }
+
+      if (filters.dateFrom && row.scheduleDate < filters.dateFrom) {
+        return false;
+      }
+
+      if (filters.dateTo && row.scheduleDate > filters.dateTo) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [filters, sortedRows]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+
+  const paginatedRows = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return filteredRows.slice(startIndex, startIndex + pageSize);
+  }, [currentPage, filteredRows, pageSize]);
 
   const loadTeamMembers = async () => {
     try {
@@ -157,9 +197,27 @@ function SchedulesAdmin() {
     }));
   };
 
+  const handleFilterChange = (field, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+    setCurrentPage(1);
+  };
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setCurrentPage(1);
+  };
+
   const resetForm = () => {
     setFormData(initialFormState);
     setError("");
+  };
+
+  const handlePageChange = (nextPage) => {
+    const safePage = Math.min(Math.max(1, nextPage), totalPages);
+    setCurrentPage(safePage);
   };
 
   const handleAddSlot = (event) => {
@@ -346,12 +404,72 @@ function SchedulesAdmin() {
           <div className="col-lg-7">
             <div className="contact-form">
               <h3 className="mb-3">Saved availability</h3>
-              {summaryRows.length === 0 ? (
+              {filteredRows.length === 0 ? (
                 <p className="text-muted">
                   No schedules have been added yet.
                 </p>
               ) : (
                 <div className="table-responsive">
+                  <div className="row g-3 align-items-end mb-3">
+                    <div className="col-md-4">
+                      <label className="form-label">Filter by member</label>
+                      <select
+                        className="form-control"
+                        value={filters.teamMemberId}
+                        onChange={(event) =>
+                          handleFilterChange(
+                            "teamMemberId",
+                            event.target.value
+                          )
+                        }
+                      >
+                        <option value="">All</option>
+                        {teamMembers.map((member) => (
+                          <option key={member.id} value={member.id}>
+                            {getMemberDisplayName(member)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">From</label>
+                      <input
+                        className="form-control"
+                        type="date"
+                        value={filters.dateFrom}
+                        onChange={(event) =>
+                          handleFilterChange("dateFrom", event.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="col-md-3">
+                      <label className="form-label">To</label>
+                      <input
+                        className="form-control"
+                        type="date"
+                        value={filters.dateTo}
+                        onChange={(event) =>
+                          handleFilterChange("dateTo", event.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="col-md-2">
+                      <label className="form-label">Page size</label>
+                      <select
+                        className="form-control"
+                        value={pageSize}
+                        onChange={(event) =>
+                          handlePageSizeChange(Number(event.target.value))
+                        }
+                      >
+                        {[5, 10, 15].map((size) => (
+                          <option key={size} value={size}>
+                            {size}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                   <table className="table table-striped">
                     <thead>
                       <tr>
@@ -362,7 +480,7 @@ function SchedulesAdmin() {
                       </tr>
                     </thead>
                     <tbody>
-                      {summaryRows.map((row) => (
+                      {paginatedRows.map((row) => (
                         <tr key={`${row.scheduleDate}-${row.teamMemberId}`}>
                           <td>{row.scheduleDate}</td>
                           <td>{row.teamMemberName}</td>
@@ -392,6 +510,29 @@ function SchedulesAdmin() {
                       ))}
                     </tbody>
                   </table>
+                  <div className="d-flex flex-wrap justify-content-between align-items-center mt-3">
+                    <span className="text-muted">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <div className="d-flex gap-2">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                      >
+                        Previous
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

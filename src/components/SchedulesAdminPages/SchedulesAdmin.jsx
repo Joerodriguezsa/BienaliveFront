@@ -49,6 +49,23 @@ const compareTime = (start, end) => {
   return start < end;
 };
 
+const toMinutes = (value) => {
+  if (!value) {
+    return 0;
+  }
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
+};
+
+const hasOverlap = ({ startTime, endTime }, existing) => {
+  const startMinutes = toMinutes(startTime);
+  const endMinutes = toMinutes(endTime);
+  const existingStart = toMinutes(existing.startTime);
+  const existingEnd = toMinutes(existing.endTime);
+
+  return startMinutes < existingEnd && endMinutes > existingStart;
+};
+
 function SchedulesAdmin() {
   const [formData, setFormData] = useState(initialFormState);
   const [entries, setEntries] = useState([]);
@@ -165,15 +182,28 @@ function SchedulesAdmin() {
       }
     }
 
+    const proposedSlot = {
+      startTime: formData.fullDay ? "00:00" : formData.startTime,
+      endTime: formData.fullDay ? "23:59" : formData.endTime,
+    };
+
+    const conflicting = entries.some(
+      (entry) =>
+        entry.teamMemberId === Number(formData.teamMemberId) &&
+        entry.scheduleDate === formData.scheduleDate &&
+        hasOverlap(proposedSlot, entry)
+    );
+
+    if (conflicting) {
+      setError("This time overlaps with an existing slot for the same day.");
+      return;
+    }
+
     const payload = {
       teamMemberId: Number(formData.teamMemberId),
       scheduleDate: formData.scheduleDate,
-      startTime: formatTimeForApi(
-        formData.fullDay ? "00:00" : formData.startTime
-      ),
-      endTime: formatTimeForApi(
-        formData.fullDay ? "23:59" : formData.endTime
-      ),
+      startTime: formatTimeForApi(proposedSlot.startTime),
+      endTime: formatTimeForApi(proposedSlot.endTime),
     };
 
     setIsSubmitting(true);

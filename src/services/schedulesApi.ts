@@ -30,5 +30,5 @@ export const createSchedule = async (
 };
 
 export const deleteSchedule = async (id: number): Promise<void> => {
-  await axios.delete(`${SCHEDULES_BASE}/${id}`);
+  await axios.delete(`${SCHEDULES_BASE}?id=${id}`);
 };

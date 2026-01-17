@@ -111,6 +111,9 @@ function Navigation() {
           <li>
             <Link to="/page-team-members">Team Members</Link>
           </li>
+          <li>
+            <Link to="/page-schedules-admin">Services schedules</Link>
+          </li>
         </ul>
       </li>
     </ul>

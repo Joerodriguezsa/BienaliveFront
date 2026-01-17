@@ -80,6 +80,7 @@ export function AuthProvider({ children }) {
     return {
       token,
       user: session?.user || null,
+      raw: session?.raw || null,
       role,
       roleId,
       isAuthenticated: Boolean(token),

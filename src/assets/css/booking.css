@@ -1,0 +1,36 @@
+.booking-time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.booking-time-slot {
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.booking-time-slot.active {
+  background: #111;
+  color: #fff;
+}
+
+.calendar-dates li button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.calendar-dates li.inactive button {
+  cursor: not-allowed;
+  color: #b5b5b5;
+}
+
+.calendar-dates li.selected button {
+  font-weight: 700;
+}

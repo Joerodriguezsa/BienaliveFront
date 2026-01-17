@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { getCustomers } from "../../services/customersApi";
+import { useAuth } from "../../auth/AuthContext.jsx";
 import { createAppointment } from "../../services/appointmentsApi";
 import { getSchedules } from "../../services/schedulesApi";
 import { getServices } from "../../services/servicesApi";
-import {
-  getTeamMembersCompleteCached,
-} from "../../services/teamMembersApi";
+import { getTeamMembersCompleteCached } from "../../services/teamMembersApi";
 import { getTeamServices } from "../../services/teamServicesApi";
+import "../../assets/css/booking.css";
 
 const combineDateTime = (dateValue, timeValue) => {
   if (!dateValue) {
@@ -25,15 +24,31 @@ const formatTeamMemberLabel = (member) =>
 
 const formatScheduleLabel = (schedule) => {
   const start = combineDateTime(schedule.scheduleDate, schedule.startTime);
-  const end = combineDateTime(schedule.scheduleDate, schedule.endTime);
   const startLabel = start
-    ? start.toLocaleString()
-    : `${schedule.scheduleDate} ${schedule.startTime || ""}`.trim();
-  const endLabel = end
-    ? end.toLocaleTimeString()
-    : schedule.endTime || "";
-  return endLabel ? `${startLabel} - ${endLabel}` : startLabel;
+    ? start.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+    : `${schedule.startTime || ""}`.trim();
+  return startLabel;
 };
+
+const getMonthDays = (date) => {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const days = [];
+
+  for (let i = 0; i < firstDay; i += 1) {
+    days.push(null);
+  }
+
+  for (let i = 1; i <= daysInMonth; i += 1) {
+    days.push(i);
+  }
+
+  return days;
+};
+
+const formatDateKey = (date) => date.toISOString().split("T")[0];
 
 function AppointmentBookingForm({
   buttonClassName = "",
@@ -41,21 +56,21 @@ function AppointmentBookingForm({
   formClassName = "",
   formProps = {},
 }) {
+  const { isAuthenticated, user, token, raw } = useAuth();
   const [services, setServices] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamServices, setTeamServices] = useState([]);
   const [schedules, setSchedules] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [formData, setFormData] = useState({
-    customerId: "",
     serviceId: "",
     teamMemberId: "",
-    scheduleId: "",
-    notes: "",
   });
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedScheduleId, setSelectedScheduleId] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -69,13 +84,11 @@ function AppointmentBookingForm({
           teamMembersResponse,
           teamServicesResponse,
           schedulesResponse,
-          customersResponse,
         ] = await Promise.all([
           getServices(),
           getTeamMembersCompleteCached(),
           getTeamServices(),
           getSchedules(),
-          getCustomers(),
         ]);
 
         if (!isMounted) {
@@ -86,7 +99,6 @@ function AppointmentBookingForm({
         setTeamMembers(teamMembersResponse || []);
         setTeamServices(teamServicesResponse || []);
         setSchedules(schedulesResponse || []);
-        setCustomers(customersResponse || []);
       } catch (err) {
         if (!isMounted) {
           return;
@@ -145,6 +157,29 @@ function AppointmentBookingForm({
       });
   }, [formData.teamMemberId, schedules]);
 
+  const schedulesByDate = useMemo(() => {
+    const grouped = new Map();
+    availableSchedules.forEach((schedule) => {
+      const key = schedule.scheduleDate;
+      if (!grouped.has(key)) {
+        grouped.set(key, []);
+      }
+      grouped.get(key).push(schedule);
+    });
+    return grouped;
+  }, [availableSchedules]);
+
+  const customerId = useMemo(() => {
+    return (
+      user?.customerId ||
+      user?.id ||
+      raw?.customerId ||
+      raw?.user?.customerId ||
+      raw?.user?.id ||
+      null
+    );
+  }, [raw, user]);
+
   const handleFieldChange = (field) => (event) => {
     const nextValue = event.target.value;
     setSuccessMessage("");
@@ -155,18 +190,41 @@ function AppointmentBookingForm({
           ...prev,
           serviceId: nextValue,
           teamMemberId: "",
-          scheduleId: "",
         };
       }
       if (field === "teamMemberId") {
         return {
           ...prev,
           teamMemberId: nextValue,
-          scheduleId: "",
         };
       }
       return { ...prev, [field]: nextValue };
     });
+    if (field === "serviceId" || field === "teamMemberId") {
+      setSelectedDate("");
+      setSelectedScheduleId("");
+    }
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentDate(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
+    );
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
+    );
+  };
+
+  const handleDateSelect = (dateKey) => {
+    setSelectedDate(dateKey);
+    setSelectedScheduleId("");
+  };
+
+  const handleScheduleSelect = (scheduleId) => {
+    setSelectedScheduleId(String(scheduleId));
   };
 
   const handleSubmit = async (event) => {
@@ -174,18 +232,23 @@ function AppointmentBookingForm({
     setError("");
     setSuccessMessage("");
 
-    if (
-      !formData.customerId ||
-      !formData.serviceId ||
-      !formData.teamMemberId ||
-      !formData.scheduleId
-    ) {
-      setError("Please select a customer, service, team member, and schedule.");
+    if (!isAuthenticated || !token) {
+      setError("Please log in to book an appointment.");
+      return;
+    }
+
+    if (!customerId) {
+      setError("Unable to identify your customer profile.");
+      return;
+    }
+
+    if (!formData.serviceId || !formData.teamMemberId || !selectedScheduleId) {
+      setError("Please select a service, team member, and time slot.");
       return;
     }
 
     const schedule = schedules.find(
-      (item) => item.id === Number(formData.scheduleId)
+      (item) => item.id === Number(selectedScheduleId)
     );
 
     if (!schedule) {
@@ -210,7 +273,7 @@ function AppointmentBookingForm({
     try {
       await createAppointment({
         id: 0,
-        customerId: Number(formData.customerId),
+        customerId: Number(customerId),
         serviceId: Number(formData.serviceId),
         appointmentDateStart: appointmentStart.toISOString(),
         appointmentDateEnd: (appointmentEnd || appointmentStart).toISOString(),
@@ -220,11 +283,7 @@ function AppointmentBookingForm({
       setSuccessMessage(
         "Appointment created successfully. We'll see you soon!"
       );
-      setFormData((prev) => ({
-        ...prev,
-        scheduleId: "",
-        notes: "",
-      }));
+      setSelectedScheduleId("");
     } catch (err) {
       setError(
         err?.message || "Unable to create the appointment. Please try again."
@@ -239,21 +298,6 @@ function AppointmentBookingForm({
       {...formProps}
     >
       <div className="row g-4">
-        <div className="col-sm-6">
-          <select
-            className="nice-select"
-            value={formData.customerId}
-            onChange={handleFieldChange("customerId")}
-            disabled={isLoading}
-          >
-            <option value="">Select Customer *</option>
-            {customers.map((customer) => (
-              <option key={customer.id} value={customer.id}>
-                {customer.name} ({customer.email})
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="col-sm-6">
           <select
             className="nice-select"
@@ -284,30 +328,102 @@ function AppointmentBookingForm({
             ))}
           </select>
         </div>
-        <div className="col-sm-6">
-          <select
-            className="nice-select"
-            value={formData.scheduleId}
-            onChange={handleFieldChange("scheduleId")}
-            disabled={isLoading || !formData.teamMemberId}
-          >
-            <option value="">Select Schedule *</option>
-            {availableSchedules.map((schedule) => (
-              <option key={schedule.id} value={schedule.id}>
-                {formatScheduleLabel(schedule)}
-              </option>
-            ))}
-          </select>
+      </div>
+      <div className="calendar-block mt-4">
+        <div className="inner-box">
+          <div className="calendar">
+            <div className="calendar-header flex justify-between items-center py-2 px-4 bg-gray-200 rounded">
+              <button
+                type="button"
+                onClick={handlePrevMonth}
+                className="material-symbols-rounded"
+                disabled={!formData.teamMemberId}
+              >
+                <i className="fa-light fa-angle-left"></i>
+              </button>
+              <p className="calendar-current-date font-medium">
+                {currentDate.toLocaleString("default", { month: "long" })}{" "}
+                {currentDate.getFullYear()}
+              </p>
+              <button
+                type="button"
+                onClick={handleNextMonth}
+                className="material-symbols-rounded"
+                disabled={!formData.teamMemberId}
+              >
+                <i className="fa-light fa-angle-right"></i>
+              </button>
+            </div>
+            <div className="calendar-body mt-4">
+              <ul className="calendar-weekdays grid grid-cols-7 text-center font-bold">
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                  (day) => (
+                    <li key={day}>{day}</li>
+                  )
+                )}
+              </ul>
+              <ul className="calendar-dates grid grid-cols-7 text-center mt-2">
+                {getMonthDays(currentDate).map((day, idx) => {
+                  if (!day) {
+                    return <li key={`empty-${idx}`} className="inactive"></li>;
+                  }
+
+                  const dateKey = formatDateKey(
+                    new Date(
+                      currentDate.getFullYear(),
+                      currentDate.getMonth(),
+                      day
+                    )
+                  );
+                  const hasAvailability = schedulesByDate.has(dateKey);
+                  const isSelected = selectedDate === dateKey;
+                  const className = [
+                    hasAvailability ? "active" : "inactive",
+                    isSelected ? "selected" : "",
+                  ]
+                    .join(" ")
+                    .trim();
+
+                  return (
+                    <li key={dateKey} className={className}>
+                      <button
+                        type="button"
+                        onClick={() => handleDateSelect(dateKey)}
+                        disabled={!hasAvailability}
+                      >
+                        {day}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-      <textarea
-        className="mt-4 rounded-0"
-        name="notes"
-        placeholder="Write a Message"
-        value={formData.notes}
-        onChange={handleFieldChange("notes")}
-      ></textarea>
+      {selectedDate && (
+        <div className="booking-time-slots mt-4">
+          {schedulesByDate.get(selectedDate)?.map((schedule) => {
+            const isSelected = selectedScheduleId === String(schedule.id);
+            return (
+              <button
+                key={schedule.id}
+                type="button"
+                className={`booking-time-slot ${isSelected ? "active" : ""}`}
+                onClick={() => handleScheduleSelect(schedule.id)}
+              >
+                {formatScheduleLabel(schedule)}
+              </button>
+            );
+          })}
+        </div>
+      )}
       {isLoading && <p className="mt-3">Loading booking options...</p>}
+      {!isLoading && !isAuthenticated && (
+        <p className="mt-3 text-danger">
+          Please log in to choose a time and confirm your appointment.
+        </p>
+      )}
       {!isLoading && formData.serviceId && !availableTeamMembers.length && (
         <p className="mt-3">
           No team members are assigned to this service yet.
@@ -322,7 +438,11 @@ function AppointmentBookingForm({
       {successMessage && (
         <p className="mt-3 text-success">{successMessage}</p>
       )}
-      <button type="submit" className={buttonClassName}>
+      <button
+        type="submit"
+        className={buttonClassName}
+        disabled={!selectedScheduleId}
+      >
         {buttonLabel}
       </button>
     </form>

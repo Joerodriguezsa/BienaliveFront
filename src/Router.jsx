@@ -8,6 +8,7 @@ import Gallery from "./components/GalleryPages/index.jsx";
 import Team from "./components/TeamPages/index.jsx";
 import TeamDetails from "./components/TeamPages/TeamDetails.jsx";
 import TeamMembersPages from "./components/TeamMembersPages/index.jsx";
+import SchedulesAdminPages from "./components/SchedulesAdminPages/index.jsx";
 import Services from "./components/ServicesPages/index.jsx";
 import ServicesDetails from "./components/ServicesPages/ServicesDetails.jsx";
 import Testimonial from "./components/TestimonialPages/index.jsx";
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
       {
         path: "/page-services-admin",
         element: <ServicesAdminPages />,
+      },
+      {
+        path: "/page-schedules-admin",
+        element: <SchedulesAdminPages />,
       },
       {
         path: "/page-team-members",

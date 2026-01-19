@@ -58,8 +58,9 @@
 }
 
 .booking-calendar .calendar-dates li.active button {
-  border-color: #111;
-  background: #fff;
+  border-color: #2f8f4e;
+  background: #2f8f4e;
+  color: #fff;
 }
 
 .booking-calendar .calendar-dates li.selected button {

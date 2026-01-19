@@ -331,7 +331,8 @@ function AppointmentBookingForm({
       </div>
       <div className="calendar-block mt-4">
         <div className="inner-box">
-          <div className="calendar">
+          <h3 className="booking-title">Select Date &amp; Time</h3>
+          <div className="calendar booking-calendar">
             <div className="calendar-header flex justify-between items-center py-2 px-4 bg-gray-200 rounded">
               <button
                 type="button"

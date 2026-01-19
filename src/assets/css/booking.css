@@ -8,8 +8,8 @@
   border: 1px solid #111;
   background: #fff;
   color: #111;
-  padding: 10px 16px;
-  border-radius: 10px;
+  padding: 10px 18px;
+  border-radius: 12px;
   font-weight: 600;
 }
 
@@ -18,19 +18,69 @@
   color: #fff;
 }
 
-.calendar-dates li button {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  padding: 6px 0;
-  cursor: pointer;
+.booking-title {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-.calendar-dates li.inactive button {
+.booking-calendar .calendar-header {
+  background: #f1f1f1;
+  border-radius: 12px;
+}
+
+.booking-calendar .calendar-body {
+  padding-top: 10px;
+}
+
+.booking-calendar .calendar-weekdays li {
+  font-weight: 600;
+  color: #222;
+}
+
+.booking-calendar .calendar-dates li {
+  padding: 6px;
+}
+
+.booking-calendar .calendar-dates li::before {
+  display: none;
+}
+
+.booking-calendar .calendar-dates li button {
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  background: #f4f4f4;
+  padding: 8px 0;
+  cursor: pointer;
+  border-radius: 12px;
+  font-weight: 600;
+  position: relative;
+}
+
+.booking-calendar .calendar-dates li.active button {
+  border-color: #111;
+  background: #fff;
+}
+
+.booking-calendar .calendar-dates li.selected button {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.booking-calendar .calendar-dates li.inactive button {
   cursor: not-allowed;
   color: #b5b5b5;
+  background: #f4f4f4;
 }
 
-.calendar-dates li.selected button {
-  font-weight: 700;
+.booking-calendar .calendar-dates li.inactive button::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 50%;
+  height: 1px;
+  background: #c7c7c7;
+  transform: rotate(45deg);
 }

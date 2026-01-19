@@ -39,6 +39,7 @@
 
 .booking-calendar .calendar-body {
   padding-top: 10px;
+  background: #fff;
 }
 
 .booking-calendar .calendar-header .calendar-current-date {
@@ -83,21 +84,22 @@
 }
 
 .booking-calendar .calendar-dates li.available button {
-  border-color: #111;
-  background: #fff;
-  color: #111;
+  border-color: #111 !important;
+  background: #fff !important;
+  color: #111 !important;
 }
 
 .booking-calendar .calendar-dates li.selected button {
-  background: #111;
-  color: #fff;
-  border-color: #111;
+  background: #111 !important;
+  color: #fff !important;
+  border-color: #111 !important;
 }
 
 .booking-calendar .calendar-dates li.unavailable button {
   cursor: not-allowed;
   color: #b5b5b5;
   background: #f4f4f4;
+  border-color: #d4d4d4;
 }
 
 .booking-calendar .calendar-dates li.unavailable button::before {
@@ -112,6 +114,7 @@
   cursor: not-allowed;
   color: #b5b5b5;
   background: #f4f4f4;
+  border-color: #d4d4d4;
 }
 
 .booking-calendar .calendar-dates li.past button::after {

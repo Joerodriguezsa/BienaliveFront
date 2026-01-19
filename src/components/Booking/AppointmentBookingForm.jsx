@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import { createAppointment } from "../../services/appointmentsApi";
 import { getSchedules } from "../../services/schedulesApi";
-import { getServices } from "../../services/servicesApi";
+import { getServicesWithImagesCached } from "../../services/servicesApi";
 import { getTeamMembersCompleteCached } from "../../services/teamMembersApi";
 import { getTeamServices } from "../../services/teamServicesApi";
 import "../../assets/css/booking.css";
@@ -89,7 +89,7 @@ function AppointmentBookingForm({
           teamServicesResponse,
           schedulesResponse,
         ] = await Promise.all([
-          getServices(),
+          getServicesWithImagesCached(),
           getTeamMembersCompleteCached(),
           getTeamServices(),
           getSchedules(),

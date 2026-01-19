@@ -57,10 +57,10 @@
   position: relative;
 }
 
-.booking-calendar .calendar-dates li.active button {
-  border-color: #2f8f4e;
-  background: #2f8f4e;
-  color: #fff;
+.booking-calendar .calendar-dates li.available button {
+  border-color: #111;
+  background: #fff;
+  color: #111;
 }
 
 .booking-calendar .calendar-dates li.selected button {
@@ -69,13 +69,27 @@
   border-color: #111;
 }
 
-.booking-calendar .calendar-dates li.inactive button {
+.booking-calendar .calendar-dates li.unavailable button {
   cursor: not-allowed;
   color: #b5b5b5;
   background: #f4f4f4;
 }
 
-.booking-calendar .calendar-dates li.inactive button::after {
+.booking-calendar .calendar-dates li.unavailable button::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid #d4d4d4;
+  border-radius: 12px;
+}
+
+.booking-calendar .calendar-dates li.past button {
+  cursor: not-allowed;
+  color: #b5b5b5;
+  background: #f4f4f4;
+}
+
+.booking-calendar .calendar-dates li.past button::after {
   content: "";
   position: absolute;
   left: 6px;

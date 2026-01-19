@@ -377,11 +377,15 @@ function AppointmentBookingForm({
                     )
                   );
                   const hasAvailability = schedulesByDate.has(dateKey);
+                  const todayKey = formatDateKey(new Date());
+                  const isPastDate = dateKey < todayKey;
                   const isSelected = selectedDate === dateKey;
-                  const className = [
-                    hasAvailability ? "active" : "inactive",
-                    isSelected ? "selected" : "",
-                  ]
+                  const availabilityClass = isPastDate
+                    ? "past"
+                    : hasAvailability
+                    ? "available"
+                    : "unavailable";
+                  const className = [availabilityClass, isSelected ? "selected" : ""]
                     .join(" ")
                     .trim();
 
@@ -390,7 +394,7 @@ function AppointmentBookingForm({
                       <button
                         type="button"
                         onClick={() => handleDateSelect(dateKey)}
-                        disabled={!hasAvailability}
+                        disabled={!hasAvailability || isPastDate}
                       >
                         {day}
                       </button>

@@ -8,8 +8,8 @@
   border: 1px solid #111;
   background: #fff;
   color: #111;
-  padding: 10px 18px;
-  border-radius: 12px;
+  padding: 8px 16px;
+  border-radius: 10px;
   font-weight: 600;
 }
 
@@ -24,13 +24,38 @@
   margin-bottom: 20px;
 }
 
-.booking-calendar .calendar-header {
-  background: #f1f1f1;
+.booking-calendar {
+  background: #fff;
   border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.booking-calendar .calendar-header {
+  background: transparent;
+  border-radius: 12px;
+  gap: 10px;
 }
 
 .booking-calendar .calendar-body {
   padding-top: 10px;
+}
+
+.booking-calendar .calendar-header .calendar-current-date {
+  background: #f1f1f1;
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+.booking-calendar .calendar-header button {
+  background: #f1f1f1;
+  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .booking-calendar .calendar-weekdays li {
@@ -52,7 +77,7 @@
   background: #f4f4f4;
   padding: 8px 0;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 10px;
   font-weight: 600;
   position: relative;
 }
@@ -80,7 +105,7 @@
   position: absolute;
   inset: -4px;
   border: 1px solid #d4d4d4;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .booking-calendar .calendar-dates li.past button {

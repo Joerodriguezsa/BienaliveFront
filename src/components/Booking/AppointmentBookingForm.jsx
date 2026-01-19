@@ -124,18 +124,22 @@ function AppointmentBookingForm({
     };
   }, []);
 
-  const availableTeamMembers = useMemo(() => {
-    if (!formData.serviceId) {
+  const availableServices = useMemo(() => {
+    if (!formData.teamMemberId) {
       return [];
     }
-    const serviceId = Number(formData.serviceId);
-    const allowedMemberIds = new Set(
+    const teamMemberId = Number(formData.teamMemberId);
+    const allowedServiceIds = new Set(
       teamServices
-        .filter((assignment) => assignment.serviceId === serviceId)
-        .map((assignment) => assignment.teamMemberId)
+        .filter((assignment) => assignment.teamMemberId === teamMemberId)
+        .map((assignment) => assignment.serviceId)
     );
-    return teamMembers.filter((member) => allowedMemberIds.has(member.id));
-  }, [formData.serviceId, teamMembers, teamServices]);
+    return services.filter((service) => allowedServiceIds.has(service.id));
+  }, [formData.teamMemberId, services, teamServices]);
+
+  const availableTeamMembers = useMemo(() => {
+    return teamMembers;
+  }, [teamMembers]);
 
   const selectedService = useMemo(() => {
     const serviceId = Number(formData.serviceId);
@@ -150,7 +154,7 @@ function AppointmentBookingForm({
       selectedService?.servicesTimePrice ||
       selectedService?.servicesTimePrices ||
       [];
-    return options.map((option) => option.time);
+    return options.map((option) => option.time).filter(Boolean);
   }, [selectedService]);
 
   const availableSchedules = useMemo(() => {
@@ -241,18 +245,23 @@ function AppointmentBookingForm({
           ...prev,
           serviceId: nextValue,
           serviceDuration: "",
-          teamMemberId: "",
         };
       }
       if (field === "teamMemberId") {
         return {
           ...prev,
           teamMemberId: nextValue,
+          serviceId: "",
+          serviceDuration: "",
         };
       }
       return { ...prev, [field]: nextValue };
     });
-    if (field === "serviceId" || field === "teamMemberId" || field === "serviceDuration") {
+    if (
+      field === "serviceId" ||
+      field === "teamMemberId" ||
+      field === "serviceDuration"
+    ) {
       setSelectedDate("");
       setSelectedScheduleId("");
     }
@@ -347,12 +356,27 @@ function AppointmentBookingForm({
         <div className="col-sm-6">
           <select
             className="nice-select"
-            value={formData.serviceId}
-            onChange={handleFieldChange("serviceId")}
+            value={formData.teamMemberId}
+            onChange={handleFieldChange("teamMemberId")}
             disabled={isLoading}
           >
+            <option value="">Select Team Member *</option>
+            {availableTeamMembers.map((member) => (
+              <option key={member.id} value={member.id}>
+                {formatTeamMemberLabel(member)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-sm-6">
+          <select
+            className="nice-select"
+            value={formData.serviceId}
+            onChange={handleFieldChange("serviceId")}
+            disabled={isLoading || !formData.teamMemberId}
+          >
             <option value="">Select Service *</option>
-            {services.map((service) => (
+            {availableServices.map((service) => (
               <option key={service.id} value={service.id}>
                 {service.name}
               </option>
@@ -370,21 +394,6 @@ function AppointmentBookingForm({
             {serviceDurations.map((duration) => (
               <option key={duration} value={duration}>
                 {duration} mins
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-sm-6">
-          <select
-            className="nice-select"
-            value={formData.teamMemberId}
-            onChange={handleFieldChange("teamMemberId")}
-            disabled={isLoading || !formData.serviceId}
-          >
-            <option value="">Select Team Member *</option>
-            {availableTeamMembers.map((member) => (
-              <option key={member.id} value={member.id}>
-                {formatTeamMemberLabel(member)}
               </option>
             ))}
           </select>
@@ -485,19 +494,24 @@ function AppointmentBookingForm({
         </div>
       )}
       {isLoading && <p className="mt-3">Loading booking options...</p>}
+      {!isLoading && formData.teamMemberId && !availableServices.length && (
+        <p className="mt-3">
+          This team member has no services assigned yet.
+        </p>
+      )}
       {!isLoading && !isAuthenticated && (
         <p className="mt-3 text-danger">
           Please log in to choose a time and confirm your appointment.
         </p>
       )}
-      {!isLoading && formData.serviceId && !availableTeamMembers.length && (
-        <p className="mt-3">
-          No team members are assigned to this service yet.
-        </p>
-      )}
       {!isLoading && formData.teamMemberId && !availableSchedules.length && (
         <p className="mt-3">
           This team member has no upcoming schedules available.
+        </p>
+      )}
+      {!isLoading && formData.serviceId && !serviceDurations.length && (
+        <p className="mt-3">
+          This service has no durations configured yet.
         </p>
       )}
       {error && <p className="mt-3 text-danger">{error}</p>}

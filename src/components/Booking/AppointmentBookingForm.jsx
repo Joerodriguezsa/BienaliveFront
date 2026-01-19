@@ -22,12 +22,15 @@ const formatTeamMemberLabel = (member) =>
   member?.email ||
   `Team member #${member?.id ?? ""}`;
 
-const formatScheduleLabel = (schedule) => {
-  const start = combineDateTime(schedule.scheduleDate, schedule.startTime);
-  const startLabel = start
-    ? start.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
-    : `${schedule.startTime || ""}`.trim();
-  return startLabel;
+const formatTimeLabel = (value) => {
+  if (!value) {
+    return "";
+  }
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+  return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 };
 
 const getMonthDays = (date) => {
@@ -66,6 +69,7 @@ function AppointmentBookingForm({
   const [successMessage, setSuccessMessage] = useState("");
   const [formData, setFormData] = useState({
     serviceId: "",
+    serviceDuration: "",
     teamMemberId: "",
   });
   const [currentDate, setCurrentDate] = useState(() => new Date());
@@ -133,6 +137,22 @@ function AppointmentBookingForm({
     return teamMembers.filter((member) => allowedMemberIds.has(member.id));
   }, [formData.serviceId, teamMembers, teamServices]);
 
+  const selectedService = useMemo(() => {
+    const serviceId = Number(formData.serviceId);
+    if (!serviceId) {
+      return null;
+    }
+    return services.find((service) => service.id === serviceId) || null;
+  }, [formData.serviceId, services]);
+
+  const serviceDurations = useMemo(() => {
+    const options =
+      selectedService?.servicesTimePrice ||
+      selectedService?.servicesTimePrices ||
+      [];
+    return options.map((option) => option.time);
+  }, [selectedService]);
+
   const availableSchedules = useMemo(() => {
     if (!formData.teamMemberId) {
       return [];
@@ -157,17 +177,48 @@ function AppointmentBookingForm({
       });
   }, [formData.teamMemberId, schedules]);
 
-  const schedulesByDate = useMemo(() => {
-    const grouped = new Map();
+  const serviceDurationMinutes = useMemo(() => {
+    const minutes = Number(formData.serviceDuration);
+    return Number.isFinite(minutes) && minutes > 0 ? minutes : null;
+  }, [formData.serviceDuration]);
+
+  const availableSlots = useMemo(() => {
+    if (!serviceDurationMinutes) {
+      return [];
+    }
+    const slots = [];
     availableSchedules.forEach((schedule) => {
-      const key = schedule.scheduleDate;
+      const start = combineDateTime(schedule.scheduleDate, schedule.startTime);
+      const end = combineDateTime(schedule.scheduleDate, schedule.endTime);
+      if (!start || !end) {
+        return;
+      }
+      let cursor = new Date(start);
+      const latestStart = new Date(end.getTime() - serviceDurationMinutes * 60000);
+      while (cursor <= latestStart) {
+        slots.push({
+          key: `${schedule.id}-${cursor.toISOString()}`,
+          scheduleId: schedule.id,
+          start: new Date(cursor),
+          end: new Date(cursor.getTime() + serviceDurationMinutes * 60000),
+        });
+        cursor = new Date(cursor.getTime() + serviceDurationMinutes * 60000);
+      }
+    });
+    return slots;
+  }, [availableSchedules, serviceDurationMinutes]);
+
+  const slotsByDate = useMemo(() => {
+    const grouped = new Map();
+    availableSlots.forEach((slot) => {
+      const key = formatDateKey(slot.start);
       if (!grouped.has(key)) {
         grouped.set(key, []);
       }
-      grouped.get(key).push(schedule);
+      grouped.get(key).push(slot);
     });
     return grouped;
-  }, [availableSchedules]);
+  }, [availableSlots]);
 
   const customerId = useMemo(() => {
     return (
@@ -189,6 +240,7 @@ function AppointmentBookingForm({
         return {
           ...prev,
           serviceId: nextValue,
+          serviceDuration: "",
           teamMemberId: "",
         };
       }
@@ -200,7 +252,7 @@ function AppointmentBookingForm({
       }
       return { ...prev, [field]: nextValue };
     });
-    if (field === "serviceId" || field === "teamMemberId") {
+    if (field === "serviceId" || field === "teamMemberId" || field === "serviceDuration") {
       setSelectedDate("");
       setSelectedScheduleId("");
     }
@@ -242,31 +294,25 @@ function AppointmentBookingForm({
       return;
     }
 
-    if (!formData.serviceId || !formData.teamMemberId || !selectedScheduleId) {
+    if (
+      !formData.serviceId ||
+      !formData.serviceDuration ||
+      !formData.teamMemberId ||
+      !selectedScheduleId
+    ) {
       setError("Please select a service, team member, and time slot.");
       return;
     }
 
-    const schedule = schedules.find(
-      (item) => item.id === Number(selectedScheduleId)
-    );
+    const slot = availableSlots.find((item) => item.key === selectedScheduleId);
 
-    if (!schedule) {
-      setError("The selected schedule is no longer available.");
+    if (!slot) {
+      setError("The selected time slot is no longer available.");
       return;
     }
 
-    const appointmentStart = combineDateTime(
-      schedule.scheduleDate,
-      schedule.startTime
-    );
-    const appointmentEnd = combineDateTime(
-      schedule.scheduleDate,
-      schedule.endTime
-    );
-
-    if (!appointmentStart) {
-      setError("Unable to parse the selected schedule.");
+    if (!slot.start) {
+      setError("Unable to parse the selected time slot.");
       return;
     }
 
@@ -275,8 +321,8 @@ function AppointmentBookingForm({
         id: 0,
         customerId: Number(customerId),
         serviceId: Number(formData.serviceId),
-        appointmentDateStart: appointmentStart.toISOString(),
-        appointmentDateEnd: (appointmentEnd || appointmentStart).toISOString(),
+        appointmentDateStart: slot.start.toISOString(),
+        appointmentDateEnd: slot.end.toISOString(),
         teamMemberId: Number(formData.teamMemberId),
         statusId: 1,
       });
@@ -309,6 +355,21 @@ function AppointmentBookingForm({
             {services.map((service) => (
               <option key={service.id} value={service.id}>
                 {service.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-sm-6">
+          <select
+            className="nice-select"
+            value={formData.serviceDuration}
+            onChange={handleFieldChange("serviceDuration")}
+            disabled={isLoading || !formData.serviceId}
+          >
+            <option value="">Select Duration *</option>
+            {serviceDurations.map((duration) => (
+              <option key={duration} value={duration}>
+                {duration} mins
               </option>
             ))}
           </select>
@@ -376,7 +437,7 @@ function AppointmentBookingForm({
                       day
                     )
                   );
-                  const hasAvailability = schedulesByDate.has(dateKey);
+                  const hasAvailability = slotsByDate.has(dateKey);
                   const todayKey = formatDateKey(new Date());
                   const isPastDate = dateKey < todayKey;
                   const isSelected = selectedDate === dateKey;
@@ -408,16 +469,16 @@ function AppointmentBookingForm({
       </div>
       {selectedDate && (
         <div className="booking-time-slots mt-4">
-          {schedulesByDate.get(selectedDate)?.map((schedule) => {
-            const isSelected = selectedScheduleId === String(schedule.id);
+          {slotsByDate.get(selectedDate)?.map((slot) => {
+            const isSelected = selectedScheduleId === slot.key;
             return (
               <button
-                key={schedule.id}
+                key={slot.key}
                 type="button"
                 className={`booking-time-slot ${isSelected ? "active" : ""}`}
-                onClick={() => handleScheduleSelect(schedule.id)}
+                onClick={() => handleScheduleSelect(slot.key)}
               >
-                {formatScheduleLabel(schedule)}
+                {formatTimeLabel(slot.start)}
               </button>
             );
           })}

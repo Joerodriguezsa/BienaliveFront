@@ -96,6 +96,8 @@ const toDateOnly = (dateKey) => {
   return new Date(parts.year, parts.month - 1, parts.day);
 };
 
+const minutesOfDay = (date) => date.getHours() * 60 + date.getMinutes();
+
 function AppointmentBookingForm({
   buttonClassName = "",
   buttonLabel = "Book Now",
@@ -225,6 +227,8 @@ function AppointmentBookingForm({
     }
     const slots = [];
     const now = new Date();
+    const todayKey = formatDateKey(now);
+    const nowMinutes = minutesOfDay(now);
     availableSchedules.forEach((schedule) => {
       const start = combineDateTime(schedule.scheduleDate, schedule.startTime);
       const end = combineDateTime(schedule.scheduleDate, schedule.endTime);
@@ -234,7 +238,9 @@ function AppointmentBookingForm({
       let cursor = new Date(start);
       const latestStart = new Date(end.getTime() - serviceDurationMinutes * 60000);
       while (cursor <= latestStart) {
-        if (cursor >= now) {
+        const cursorKey = formatDateKey(cursor);
+        const isToday = cursorKey === todayKey;
+        if (!isToday || minutesOfDay(cursor) >= nowMinutes) {
           slots.push({
             key: `${schedule.id}-${cursor.toISOString()}`,
             scheduleId: schedule.id,

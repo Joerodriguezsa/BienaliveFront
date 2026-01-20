@@ -88,6 +88,14 @@ const formatDateKey = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+const toDateOnly = (dateKey) => {
+  const parts = parseDateParts(dateKey);
+  if (!parts) {
+    return null;
+  }
+  return new Date(parts.year, parts.month - 1, parts.day);
+};
+
 function AppointmentBookingForm({
   buttonClassName = "",
   buttonLabel = "Book Now",
@@ -476,7 +484,10 @@ function AppointmentBookingForm({
                   );
                   const hasAvailability = slotsByDate.has(dateKey);
                   const todayKey = formatDateKey(new Date());
-                  const isPastDate = dateKey < todayKey;
+                  const dateValue = toDateOnly(dateKey);
+                  const todayValue = toDateOnly(todayKey);
+                  const isPastDate =
+                    dateValue && todayValue ? dateValue < todayValue : false;
                   const isSelected = selectedDate === dateKey;
                   const availabilityClass = isPastDate
                     ? "past"

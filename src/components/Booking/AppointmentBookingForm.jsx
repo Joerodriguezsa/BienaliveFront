@@ -7,16 +7,42 @@ import { getTeamMembersCompleteCached } from "../../services/teamMembersApi";
 import { getTeamServices } from "../../services/teamServicesApi";
 import "../../assets/css/booking.css";
 
-const combineDateTime = (dateValue, timeValue) => {
-  if (!dateValue || !timeValue) {
+const parseDateParts = (value) => {
+  if (!value) {
     return null;
   }
-  const datePart = String(dateValue).split("T")[0];
-  const timePart = String(timeValue).includes("T")
-    ? String(timeValue).split("T")[1]
-    : String(timeValue);
-  const combined = `${datePart}T${timePart}`;
-  const parsed = new Date(combined);
+  const [datePart] = String(value).split("T");
+  const [year, month, day] = datePart.split("-").map(Number);
+  if (!year || !month || !day) {
+    return null;
+  }
+  return { year, month, day };
+};
+
+const parseTimeParts = (value) => {
+  if (!value) {
+    return null;
+  }
+  const timePart = String(value).includes("T")
+    ? String(value).split("T")[1]
+    : String(value);
+  const [timeValue] = timePart.split(".");
+  const [hour, minute, second] = timeValue.split(":").map(Number);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+    return null;
+  }
+  return { hour, minute, second: Number.isFinite(second) ? second : 0 };
+};
+
+const combineDateTime = (dateValue, timeValue) => {
+  const dateParts = parseDateParts(dateValue);
+  const timeParts = parseTimeParts(timeValue);
+  if (!dateParts || !timeParts) {
+    return null;
+  }
+  const { year, month, day } = dateParts;
+  const { hour, minute, second } = timeParts;
+  const parsed = new Date(year, month - 1, day, hour, minute, second);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 };
 
@@ -55,7 +81,12 @@ const getMonthDays = (date) => {
   return days;
 };
 
-const formatDateKey = (date) => date.toISOString().split("T")[0];
+const formatDateKey = (date) => {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 function AppointmentBookingForm({
   buttonClassName = "",

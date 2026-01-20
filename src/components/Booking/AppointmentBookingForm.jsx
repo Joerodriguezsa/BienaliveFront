@@ -8,10 +8,14 @@ import { getTeamServices } from "../../services/teamServicesApi";
 import "../../assets/css/booking.css";
 
 const combineDateTime = (dateValue, timeValue) => {
-  if (!dateValue) {
+  if (!dateValue || !timeValue) {
     return null;
   }
-  const combined = timeValue ? `${dateValue}T${timeValue}` : dateValue;
+  const datePart = String(dateValue).split("T")[0];
+  const timePart = String(timeValue).includes("T")
+    ? String(timeValue).split("T")[1]
+    : String(timeValue);
+  const combined = `${datePart}T${timePart}`;
   const parsed = new Date(combined);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 };

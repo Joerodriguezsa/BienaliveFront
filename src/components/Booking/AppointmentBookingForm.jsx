@@ -159,22 +159,20 @@ function AppointmentBookingForm({
     };
   }, []);
 
-  const availableServices = useMemo(() => {
-    if (!formData.teamMemberId) {
-      return [];
-    }
-    const teamMemberId = Number(formData.teamMemberId);
-    const allowedServiceIds = new Set(
-      teamServices
-        .filter((assignment) => assignment.teamMemberId === teamMemberId)
-        .map((assignment) => assignment.serviceId)
-    );
-    return services.filter((service) => allowedServiceIds.has(service.id));
-  }, [formData.teamMemberId, services, teamServices]);
+  const availableServices = useMemo(() => services, [services]);
 
   const availableTeamMembers = useMemo(() => {
-    return teamMembers;
-  }, [teamMembers]);
+    if (!formData.serviceId) {
+      return [];
+    }
+    const serviceId = Number(formData.serviceId);
+    const allowedMemberIds = new Set(
+      teamServices
+        .filter((assignment) => assignment.serviceId === serviceId)
+        .map((assignment) => assignment.teamMemberId)
+    );
+    return teamMembers.filter((member) => allowedMemberIds.has(member.id));
+  }, [formData.serviceId, teamMembers, teamServices]);
 
   const selectedService = useMemo(() => {
     const serviceId = Number(formData.serviceId);
@@ -275,13 +273,13 @@ function AppointmentBookingForm({
           ...prev,
           serviceId: nextValue,
           serviceDuration: "",
+          teamMemberId: "",
         };
       }
       if (field === "teamMemberId") {
         return {
           ...prev,
           teamMemberId: nextValue,
-          serviceId: "",
           serviceDuration: "",
         };
       }
@@ -386,24 +384,9 @@ function AppointmentBookingForm({
         <div className="col-sm-6">
           <select
             className="nice-select"
-            value={formData.teamMemberId}
-            onChange={handleFieldChange("teamMemberId")}
-            disabled={isLoading}
-          >
-            <option value="">Select Team Member *</option>
-            {availableTeamMembers.map((member) => (
-              <option key={member.id} value={member.id}>
-                {formatTeamMemberLabel(member)}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-sm-6">
-          <select
-            className="nice-select"
             value={formData.serviceId}
             onChange={handleFieldChange("serviceId")}
-            disabled={isLoading || !formData.teamMemberId}
+            disabled={isLoading}
           >
             <option value="">Select Service *</option>
             {availableServices.map((service) => (
@@ -416,9 +399,24 @@ function AppointmentBookingForm({
         <div className="col-sm-6">
           <select
             className="nice-select"
+            value={formData.teamMemberId}
+            onChange={handleFieldChange("teamMemberId")}
+            disabled={isLoading || !formData.serviceId}
+          >
+            <option value="">Select Team Member *</option>
+            {availableTeamMembers.map((member) => (
+              <option key={member.id} value={member.id}>
+                {formatTeamMemberLabel(member)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-sm-6">
+          <select
+            className="nice-select"
             value={formData.serviceDuration}
             onChange={handleFieldChange("serviceDuration")}
-            disabled={isLoading || !formData.serviceId}
+            disabled={isLoading || !formData.teamMemberId}
           >
             <option value="">Select Duration *</option>
             {serviceDurations.map((duration) => (
@@ -524,9 +522,9 @@ function AppointmentBookingForm({
         </div>
       )}
       {isLoading && <p className="mt-3">Loading booking options...</p>}
-      {!isLoading && formData.teamMemberId && !availableServices.length && (
+      {!isLoading && formData.serviceId && !availableTeamMembers.length && (
         <p className="mt-3">
-          This team member has no services assigned yet.
+          No team members are assigned to this service yet.
         </p>
       )}
       {!isLoading && !isAuthenticated && (

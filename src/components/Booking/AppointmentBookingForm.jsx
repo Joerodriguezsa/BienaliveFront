@@ -226,6 +226,7 @@ function AppointmentBookingForm({
       return [];
     }
     const slots = [];
+    const now = new Date();
     availableSchedules.forEach((schedule) => {
       const start = combineDateTime(schedule.scheduleDate, schedule.startTime);
       const end = combineDateTime(schedule.scheduleDate, schedule.endTime);
@@ -235,12 +236,14 @@ function AppointmentBookingForm({
       let cursor = new Date(start);
       const latestStart = new Date(end.getTime() - serviceDurationMinutes * 60000);
       while (cursor <= latestStart) {
-        slots.push({
-          key: `${schedule.id}-${cursor.toISOString()}`,
-          scheduleId: schedule.id,
-          start: new Date(cursor),
-          end: new Date(cursor.getTime() + serviceDurationMinutes * 60000),
-        });
+        if (cursor >= now) {
+          slots.push({
+            key: `${schedule.id}-${cursor.toISOString()}`,
+            scheduleId: schedule.id,
+            start: new Date(cursor),
+            end: new Date(cursor.getTime() + serviceDurationMinutes * 60000),
+          });
+        }
         cursor = new Date(cursor.getTime() + serviceDurationMinutes * 60000);
       }
     });

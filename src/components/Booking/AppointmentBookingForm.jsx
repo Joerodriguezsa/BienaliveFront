@@ -197,16 +197,8 @@ function AppointmentBookingForm({
       return [];
     }
     const teamMemberId = Number(formData.teamMemberId);
-    const now = new Date();
     return schedules
       .filter((schedule) => schedule.teamMemberId === teamMemberId)
-      .filter((schedule) => {
-        const start = combineDateTime(
-          schedule.scheduleDate,
-          schedule.startTime
-        );
-        return start ? start >= now : true;
-      })
       .sort((a, b) => {
         const aDate =
           combineDateTime(a.scheduleDate, a.startTime)?.getTime() || 0;

@@ -129,7 +129,7 @@ function Header({ className = "", scroll = false }) {
                 </button>
               ) : (
                 <div className="header-auth">
-                  <span className="header-auth__name text-white">
+                  <span className="header-auth__name">
                     {name ? `Hola, ${name}` : "Sesion iniciada"}
                   </span>
                   <button

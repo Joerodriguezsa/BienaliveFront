@@ -370,13 +370,23 @@ function AppointmentBookingForm({
       return;
     }
 
+    if (!serviceDurationMinutes) {
+      setError("Please select a valid service duration.");
+      return;
+    }
+
+    const appointmentStart = new Date(slot.start);
+    const appointmentEnd = new Date(
+      appointmentStart.getTime() + serviceDurationMinutes * 60000
+    );
+
     try {
       await createAppointment({
         id: 0,
         customerId: Number(customerId),
         serviceId: Number(formData.serviceId),
-        appointmentDateStart: slot.start.toISOString(),
-        appointmentDateEnd: slot.end.toISOString(),
+        appointmentDateStart: appointmentStart.toISOString(),
+        appointmentDateEnd: appointmentEnd.toISOString(),
         teamMemberId: Number(formData.teamMemberId),
         statusId: 1,
       });

@@ -26,7 +26,7 @@ function Header({ className = "", scroll = false }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [authTab, setAuthTab] = useState("login"); // "login" | "register"
 
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, name } = useAuth();
 
   useEffect(() => {
     StickyHeader();
@@ -128,14 +128,19 @@ function Header({ className = "", scroll = false }) {
                   </svg>
                 </button>
               ) : (
-                <button
-                  type="button"
-                  className="book-now"
-                  onClick={logout}
-                  style={{ border: "none" }}
-                >
-                  Logout
-                </button>
+                <>
+                  <span className="me-2 text-white">
+                    {name ? `Hola, ${name}` : "Sesion iniciada"}
+                  </span>
+                  <button
+                    type="button"
+                    className="book-now"
+                    onClick={logout}
+                    style={{ border: "none" }}
+                  >
+                    Logout
+                  </button>
+                </>
               )}
 
               {/* ✅ HAMBURGUESA (solo móvil/tablet) */}

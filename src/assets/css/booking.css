@@ -22,7 +22,7 @@
 .booking-time-slot.active:hover,
 .booking-time-slot.active:focus,
 .booking-time-slot.active:active {
-  background: #2f8f4e;
+  background: #2f8f4e !important;
   color: #fff;
   border-color: #2f8f4e;
 }

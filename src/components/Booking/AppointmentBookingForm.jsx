@@ -393,7 +393,6 @@ function AppointmentBookingForm({
       setSuccessMessage(
         "Appointment created successfully. We'll see you soon!"
       );
-      setSelectedScheduleId("");
     } catch (err) {
       setError(
         err?.message || "Unable to create the appointment. Please try again."

@@ -13785,3 +13785,31 @@ Sidebar
 .map {
   height: 450px;
 }
+
+.header-auth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.header-auth__name {
+  font-size: 14px;
+  line-height: 1.2;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 767px) {
+  .header-auth__name {
+    font-size: 12px;
+    max-width: 120px;
+  }
+
+  .header-auth .book-now {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}

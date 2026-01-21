@@ -128,8 +128,8 @@ function Header({ className = "", scroll = false }) {
                   </svg>
                 </button>
               ) : (
-                <>
-                  <span className="me-2 text-white">
+                <div className="header-auth">
+                  <span className="header-auth__name text-white">
                     {name ? `Hola, ${name}` : "Sesion iniciada"}
                   </span>
                   <button
@@ -140,7 +140,7 @@ function Header({ className = "", scroll = false }) {
                   >
                     Logout
                   </button>
-                </>
+                </div>
               )}
 
               {/* ✅ HAMBURGUESA (solo móvil/tablet) */}

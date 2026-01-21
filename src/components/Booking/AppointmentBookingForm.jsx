@@ -269,9 +269,12 @@ function AppointmentBookingForm({
   const customerId = useMemo(() => {
     return (
       user?.customerId ||
+      user?.userId ||
       user?.id ||
       raw?.customerId ||
+      raw?.userId ||
       raw?.user?.customerId ||
+      raw?.user?.userId ||
       raw?.user?.id ||
       null
     );

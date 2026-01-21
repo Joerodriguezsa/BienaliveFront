@@ -41,12 +41,31 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
 
   if (!isOpen) return null;
 
+  const getUserFromAuthPayload = (payload) => {
+    if (!payload || typeof payload !== "object") return null;
+    if (payload.user) return payload.user;
+
+    const userId = payload.userId ?? payload.id ?? null;
+    const name = payload.name ?? null;
+    const email = payload.email ?? null;
+
+    if (!userId && !name && !email) return null;
+
+    return {
+      id: userId,
+      userId,
+      name,
+      email,
+    };
+  };
+
   const doLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
       const data = await loginRequest(email, password);
+      const sessionUser = getUserFromAuthPayload(data);
 
       // ✅ adapta según lo que devuelva tu API
       // común: { token, user } o { accessToken } o simplemente "TOKEN..."
@@ -60,7 +79,14 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
 
       setSession({
         token,
-        user: (data && typeof data === "object" && data.user) || null,
+        user: sessionUser,
+        userId:
+          sessionUser?.userId ||
+          sessionUser?.id ||
+          (data && typeof data === "object" ? data.userId : null),
+        name:
+          sessionUser?.name ||
+          (data && typeof data === "object" ? data.name : null),
         raw: data,
       });
 
@@ -91,6 +117,7 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
 
       // ✅ auto-login después de registrar
       const loginData = await loginRequest(regEmail, regPassword);
+      const sessionUser = getUserFromAuthPayload(loginData);
 
       const token =
         (loginData &&
@@ -103,9 +130,16 @@ export default function AuthModal({ isOpen, onClose, defaultTab = "login" }) {
 
       setSession({
         token,
-        user:
-          (loginData && typeof loginData === "object" && loginData.user) ||
-          null,
+        user: sessionUser,
+        userId:
+          sessionUser?.userId ||
+          sessionUser?.id ||
+          (loginData && typeof loginData === "object"
+            ? loginData.userId
+            : null),
+        name:
+          sessionUser?.name ||
+          (loginData && typeof loginData === "object" ? loginData.name : null),
         raw: loginData,
       });
 

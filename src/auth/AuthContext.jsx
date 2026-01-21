@@ -76,11 +76,27 @@ export function AuthProvider({ children }) {
     // role/roleId pueden venir arriba o dentro de raw (como en tu captura)
     const role = session?.role ?? session?.raw?.role ?? null;
     const roleId = session?.roleId ?? session?.raw?.roleId ?? null;
+    const userId =
+      session?.user?.userId ??
+      session?.user?.id ??
+      session?.userId ??
+      session?.raw?.userId ??
+      session?.raw?.user?.userId ??
+      session?.raw?.user?.id ??
+      null;
+    const name =
+      session?.user?.name ??
+      session?.name ??
+      session?.raw?.name ??
+      session?.raw?.user?.name ??
+      null;
 
     return {
       token,
       user: session?.user || null,
       raw: session?.raw || null,
+      userId,
+      name,
       role,
       roleId,
       isAuthenticated: Boolean(token),

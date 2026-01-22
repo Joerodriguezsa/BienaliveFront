@@ -153,7 +153,7 @@ function AppointmentBookingForm({
           return;
         }
         setError(
-          err?.message || "Unable to load booking data. Please try again."
+          err?.message || "Unable to load booking data. Please try again.",
         );
       } finally {
         if (isMounted) {
@@ -179,7 +179,7 @@ function AppointmentBookingForm({
     const allowedMemberIds = new Set(
       teamServices
         .filter((assignment) => assignment.serviceId === serviceId)
-        .map((assignment) => assignment.teamMemberId)
+        .map((assignment) => assignment.teamMemberId),
     );
     return teamMembers.filter((member) => allowedMemberIds.has(member.id));
   }, [formData.serviceId, teamMembers, teamServices]);
@@ -236,7 +236,9 @@ function AppointmentBookingForm({
         return;
       }
       let cursor = new Date(start);
-      const latestStart = new Date(end.getTime() - serviceDurationMinutes * 60000);
+      const latestStart = new Date(
+        end.getTime() - serviceDurationMinutes * 60000,
+      );
       while (cursor <= latestStart) {
         const cursorKey = formatDateKey(cursor);
         const isToday = cursorKey === todayKey;
@@ -314,13 +316,13 @@ function AppointmentBookingForm({
 
   const handlePrevMonth = () => {
     setCurrentDate(
-      (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1),
     );
   };
 
   const handleNextMonth = () => {
     setCurrentDate(
-      (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1),
     );
   };
 
@@ -375,37 +377,50 @@ function AppointmentBookingForm({
       return;
     }
 
+    function toIsoKeepLocalTimeAsZ(d) {
+      // toma componentes LOCALES y los construye como UTC
+      const utc = new Date(
+        Date.UTC(
+          d.getFullYear(),
+          d.getMonth(),
+          d.getDate(),
+          d.getHours(),
+          d.getMinutes(),
+          d.getSeconds(),
+          d.getMilliseconds(),
+        ),
+      );
+      return utc.toISOString();
+    }
+
     const appointmentStart = new Date(slot.start);
     const appointmentEnd = new Date(
-      appointmentStart.getTime() + serviceDurationMinutes * 60000
+      appointmentStart.getTime() + serviceDurationMinutes * 60000,
     );
+    console.log({ appointmentEnd });
 
     try {
       await createAppointment({
         id: 0,
         customerId: Number(customerId),
         serviceId: Number(formData.serviceId),
-        appointmentDateStart: appointmentStart.toISOString(),
-        appointmentDateEnd: appointmentEnd.toISOString(),
+        appointmentDateStart: toIsoKeepLocalTimeAsZ(appointmentStart),
+        appointmentDateEnd: toIsoKeepLocalTimeAsZ(appointmentEnd),
         teamMemberId: Number(formData.teamMemberId),
         statusId: 1,
       });
       setSuccessMessage(
-        "Appointment created successfully. We'll see you soon!"
+        "Appointment created successfully. We'll see you soon!",
       );
     } catch (err) {
       setError(
-        err?.message || "Unable to create the appointment. Please try again."
+        err?.message || "Unable to create the appointment. Please try again.",
       );
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={formClassName}
-      {...formProps}
-    >
+    <form onSubmit={handleSubmit} className={formClassName} {...formProps}>
       <div className="row g-4">
         <div className="col-sm-6">
           <select
@@ -484,7 +499,7 @@ function AppointmentBookingForm({
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                   (day) => (
                     <li key={day}>{day}</li>
-                  )
+                  ),
                 )}
               </ul>
               <ul className="calendar-dates grid grid-cols-7 text-center mt-2">
@@ -497,8 +512,8 @@ function AppointmentBookingForm({
                     new Date(
                       currentDate.getFullYear(),
                       currentDate.getMonth(),
-                      day
-                    )
+                      day,
+                    ),
                   );
                   const hasAvailability = slotsByDate.has(dateKey);
                   const todayKey = formatDateKey(new Date());
@@ -510,9 +525,12 @@ function AppointmentBookingForm({
                   const availabilityClass = isPastDate
                     ? "past"
                     : hasAvailability
-                    ? "available"
-                    : "unavailable";
-                  const className = [availabilityClass, isSelected ? "selected" : ""]
+                      ? "available"
+                      : "unavailable";
+                  const className = [
+                    availabilityClass,
+                    isSelected ? "selected" : "",
+                  ]
                     .join(" ")
                     .trim();
 
@@ -567,14 +585,10 @@ function AppointmentBookingForm({
         </p>
       )}
       {!isLoading && formData.serviceId && !serviceDurations.length && (
-        <p className="mt-3">
-          This service has no durations configured yet.
-        </p>
+        <p className="mt-3">This service has no durations configured yet.</p>
       )}
       {error && <p className="mt-3 text-danger">{error}</p>}
-      {successMessage && (
-        <p className="mt-3 text-success">{successMessage}</p>
-      )}
+      {successMessage && <p className="mt-3 text-success">{successMessage}</p>}
       <button
         type="submit"
         className={buttonClassName}

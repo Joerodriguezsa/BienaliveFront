@@ -6,6 +6,7 @@ export interface AppointmentPayload {
   appointmentDateEnd: string;
   teamMemberId: number;
   statusId: number;
+  price: number;
 }
 
 export interface Appointment extends AppointmentPayload {}

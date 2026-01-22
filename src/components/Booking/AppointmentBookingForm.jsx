@@ -116,6 +116,7 @@ function AppointmentBookingForm({
     serviceId: "",
     serviceDuration: "",
     teamMemberId: "",
+    servicePrice: "",
   });
   const [currentDate, setCurrentDate] = useState(() => new Date());
   const [selectedDate, setSelectedDate] = useState("");
@@ -192,13 +193,17 @@ function AppointmentBookingForm({
     return services.find((service) => service.id === serviceId) || null;
   }, [formData.serviceId, services]);
 
-  const serviceDurations = useMemo(() => {
-    const options =
+  const timePriceOptions = useMemo(() => {
+    return (
       selectedService?.servicesTimePrice ||
       selectedService?.servicesTimePrices ||
-      [];
-    return options.map((option) => option.time).filter(Boolean);
+      []
+    );
   }, [selectedService]);
+
+  const serviceDurations = useMemo(() => {
+    return timePriceOptions.map((option) => option.time).filter(Boolean);
+  }, [timePriceOptions]);
 
   const availableSchedules = useMemo(() => {
     if (!formData.teamMemberId) {
@@ -220,6 +225,11 @@ function AppointmentBookingForm({
     const minutes = Number(formData.serviceDuration);
     return Number.isFinite(minutes) && minutes > 0 ? minutes : null;
   }, [formData.serviceDuration]);
+
+  const selectedPrice = useMemo(() => {
+    const price = Number(formData.servicePrice);
+    return Number.isFinite(price) ? price : null;
+  }, [formData.servicePrice]);
 
   const availableSlots = useMemo(() => {
     if (!serviceDurationMinutes) {
@@ -293,6 +303,7 @@ function AppointmentBookingForm({
           serviceId: nextValue,
           serviceDuration: "",
           teamMemberId: "",
+          servicePrice: "",
         };
       }
       if (field === "teamMemberId") {
@@ -300,6 +311,21 @@ function AppointmentBookingForm({
           ...prev,
           teamMemberId: nextValue,
           serviceDuration: "",
+          servicePrice: "",
+        };
+      }
+      if (field === "serviceDuration") {
+        const selectedMinutes = Number(nextValue);
+        const match = timePriceOptions.find(
+          (option) => Number(option.time) === selectedMinutes,
+        );
+        return {
+          ...prev,
+          serviceDuration: nextValue,
+          servicePrice:
+            match && Number.isFinite(Number(match.price))
+              ? String(match.price)
+              : "",
         };
       }
       return { ...prev, [field]: nextValue };
@@ -377,6 +403,11 @@ function AppointmentBookingForm({
       return;
     }
 
+    if (!Number.isFinite(selectedPrice)) {
+      setError("Unable to determine the price for the selected duration.");
+      return;
+    }
+
     function toIsoKeepLocalTimeAsZ(d) {
       // toma componentes LOCALES y los construye como UTC
       const utc = new Date(
@@ -408,6 +439,7 @@ function AppointmentBookingForm({
         appointmentDateEnd: toIsoKeepLocalTimeAsZ(appointmentEnd),
         teamMemberId: Number(formData.teamMemberId),
         statusId: 1,
+        price: selectedPrice,
       });
       setSuccessMessage(
         "Appointment created successfully. We'll see you soon!",

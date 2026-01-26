@@ -42,18 +42,33 @@ type ServicesCache = {
   expiresAt: number;
 };
 
+const normalizeServicesResponse = (payload: unknown): Service[] => {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (
+    payload &&
+    typeof payload === "object" &&
+    "data" in payload &&
+    Array.isArray((payload as { data: unknown }).data)
+  ) {
+    return (payload as { data: Service[] }).data;
+  }
+
+  return [];
+};
+
 export const getServicesWithImages = async (): Promise<Service[]> => {
-  const response = await axios.get<Service[]>(
+  const response = await axios.get(
     `${API_BASE}/Services/ConsultarServicesImages`
   );
-  return response.data;
+  return normalizeServicesResponse(response.data);
 };
 
 export const getServices = async (): Promise<Service[]> => {
-  const response = await axios.get<Service[]>(
-    `${API_BASE}/Services/ConsultarServices`
-  );
-  return response.data;
+  const response = await axios.get(`${API_BASE}/Services/ConsultarServices`);
+  return normalizeServicesResponse(response.data);
 };
 
 export const getServicesWithImagesCached = async (): Promise<Service[]> => {

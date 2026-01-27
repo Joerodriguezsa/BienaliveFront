@@ -139,3 +139,36 @@
     z-index: 1;
     cursor: pointer;
 }
+
+@media (max-width: 480px) {
+	.calendar-block {
+		.inner-box {
+			.calendar {
+				.calendar-header {
+					padding: 8px 16px;
+					button {
+						font-size: 20px;
+						padding: 6px;
+					}
+					.calendar-current-date {
+						font-size: 18px;
+						line-height: 28px;
+					}
+				}
+				.calendar-body {
+					padding: 20px 0 16px;
+					li {
+						font-size: 0.9rem;
+					}
+					.calendar-dates li {
+						margin-top: 18px;
+						&::before {
+							width: 32px;
+							height: 32px;
+						}
+					}
+				}
+			}
+		}
+	}
+}

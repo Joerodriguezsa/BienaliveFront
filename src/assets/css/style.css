@@ -7854,6 +7854,33 @@ textarea.form-control {
   cursor: pointer;
 }
 
+@media (max-width: 480px) {
+  .calendar-block .inner-box .calendar .calendar-header {
+    padding: 8px 16px;
+  }
+  .calendar-block .inner-box .calendar .calendar-header button {
+    font-size: 20px;
+    padding: 6px;
+  }
+  .calendar-block .inner-box .calendar .calendar-header .calendar-current-date {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .calendar-block .inner-box .calendar .calendar-body {
+    padding: 20px 0 16px;
+  }
+  .calendar-block .inner-box .calendar .calendar-body li {
+    font-size: 0.9rem;
+  }
+  .calendar-block .inner-box .calendar .calendar-body .calendar-dates li {
+    margin-top: 18px;
+  }
+  .calendar-block .inner-box .calendar .calendar-body .calendar-dates li::before {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 .package-section {
   overflow: hidden;
   position: relative;

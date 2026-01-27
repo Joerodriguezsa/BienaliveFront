@@ -67,7 +67,7 @@ function ServicesDetails() {
           title="Loading service..."
           breadcrumb={[{ link: "/", title: "Home" }]}
         />
-        <p style={{ textAlign: "center" }}>Cargando servicio...</p>
+        <p style={{ textAlign: "center" }}>Loading services...</p>
         <Footer />
       </>
     );

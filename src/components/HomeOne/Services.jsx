@@ -14,7 +14,7 @@ function Services() {
         const data = await getServicesWithImagesCached();
         setServices(data);
       } catch (error) {
-        console.error("Error cargando servicios", error);
+        console.error("Error loading services", error);
       } finally {
         setLoading(false);
       }
@@ -86,7 +86,7 @@ function Services() {
           </h2>
         </div>
         <div className="row g-5">
-          {loading && <p>Cargando servicios...</p>}
+          {loading && <p>Loading services...</p>}
           {!loading &&
             services.map((service) => (
               <div

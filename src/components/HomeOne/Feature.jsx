@@ -17,7 +17,7 @@ function Features({ className }) {
         const data = await getServicesWithImagesCached();
         setServicesFeature(data);
       } catch (error) {
-        console.error("Error cargando servicios", error);
+        console.error("Error loading services", error);
       } finally {
         setLoadingFeature(false);
       }
@@ -89,7 +89,7 @@ function Features({ className }) {
       <div className="container">
         <Swiper {...swiperOptions} className="swiper feature-slider">
           <div className="swiper-wrapper">
-            {loadingFeature && <p>Cargando servicios...</p>}
+            {loadingFeature && <p>Loading services...</p>}
             {!loadingFeature &&
               servicesFeature.map((service) => (
                 <SwiperSlide

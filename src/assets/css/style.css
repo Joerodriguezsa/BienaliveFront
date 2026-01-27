@@ -7869,15 +7869,21 @@ textarea.form-control {
   .calendar-block .inner-box .calendar .calendar-body {
     padding: 20px 0 16px;
   }
+  .calendar-block .inner-box .calendar .calendar-body ul {
+    row-gap: 12px;
+  }
   .calendar-block .inner-box .calendar .calendar-body li {
     font-size: 0.9rem;
+    line-height: 28px;
   }
   .calendar-block .inner-box .calendar .calendar-body .calendar-dates li {
-    margin-top: 18px;
+    margin-top: 0;
+    height: 32px;
+    line-height: 32px;
   }
   .calendar-block .inner-box .calendar .calendar-body .calendar-dates li::before {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
 }
 

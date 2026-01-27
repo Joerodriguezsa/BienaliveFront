@@ -6611,7 +6611,7 @@ textarea.form-control {
   resize: none;
 }
 .contact-section .form-column .inner-column form button {
-  padding: 12px 30px;
+  padding: 0px 6px;
   border-radius: 30px;
   color: var(--theme-color-white);
   font-weight: 500;
